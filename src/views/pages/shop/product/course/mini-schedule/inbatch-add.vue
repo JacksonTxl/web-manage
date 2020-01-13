@@ -1,213 +1,201 @@
 <template>
-  <st-panel-layout>
-    <st-panel>
-      <div :class="b()">
-        <st-form :class="b('head')" labelWidth="80px" :form="form">
-          <st-form-item :label="`${$c('small_course')}`" required>
-            <a-select
-              placeholder="请选择"
-              @change="onChangeCourse"
-              v-decorator="decorators.course_id"
+  <st-panel app>
+    <div :class="b()">
+      <st-form :class="b('head')" labelWidth="80px" :form="form">
+        <st-form-item :label="`${$c('small_course')}`" required>
+          <a-select
+            placeholder="请选择"
+            @change="onChangeCourse"
+            v-decorator="decorators.course_id"
+          >
+            <a-select-option
+              v-for="course in courseSmallCourseOptions"
+              :key="course.course_id"
+              :value="+course.course_id"
             >
-              <a-select-option
-                v-for="course in courseSmallCourseOptions"
-                :key="course.course_id"
-                :value="+course.course_id"
+              {{ course.course_name }}
+            </a-select-option>
+          </a-select>
+        </st-form-item>
+        <st-form-item required label="排课方式">
+          <a-select
+            placeholder="请选择"
+            @change="onChangeScheduleType"
+            v-model="select_cycle_type"
+          >
+            <a-select-option :key="1" :value="1">
+              周排课方式
+            </a-select-option>
+            <a-select-option :key="2" :value="2">
+              自定义排课方式
+            </a-select-option>
+          </a-select>
+        </st-form-item>
+      </st-form>
+      <div :class="b('schedule')">
+        <div v-if="cycle_type == 1">
+          <st-container v-for="(scheduleItem, i) in scheduleList" :key="i">
+            <st-form labelWidth="80px">
+              <st-form-item
+                required
+                label="上课周期"
+                :class="b('select__date')"
               >
-                {{ course.course_name }}
-              </a-select-option>
-            </a-select>
-          </st-form-item>
-          <st-form-item required label="排课方式">
-            <a-select
-              placeholder="请选择"
-              @change="onChangeScheduleType"
-              v-model="select_cycle_type"
-            >
-              <a-select-option :key="1" :value="1">
-                周排课方式
-              </a-select-option>
-              <a-select-option :key="2" :value="2">
-                自定义排课方式
-              </a-select-option>
-            </a-select>
-          </st-form-item>
-        </st-form>
-        <div :class="b('schedule')">
-          <div v-if="cycle_type == 1">
-            <st-container v-for="(scheduleItem, i) in scheduleList" :key="i">
-              <st-form labelWidth="80px">
-                <st-form-item
-                  required
-                  label="上课周期"
-                  :class="b('select__date')"
-                >
-                  <a-range-picker
-                    @change="onChangeRangePicker($event, $event, i)"
-                    :value="pickerList[i]"
-                    :disabledDate="disabledEndDate"
-                    format="YYYY-MM-DD"
-                  ></a-range-picker>
-                </st-form-item>
+                <a-range-picker
+                  @change="onChangeRangePicker($event, $event, i)"
+                  :value="pickerList[i]"
+                  :disabledDate="disabledEndDate"
+                  format="YYYY-MM-DD"
+                ></a-range-picker>
+              </st-form-item>
+              <div
+                :class="
+                  scheduleList.length > 1
+                    ? [b('delete-btn'), b('delete')]
+                    : [b('delete-btn'), b('disabled-delete')]
+                "
+                @click="onDeleteCycleSchedule(i)"
+              >
+                <st-icon type="delete" class="delete-course-btn"></st-icon>
+                删除排期
+              </div>
+            </st-form>
+            <div :class="b('schedule__table')">
+              <div
+                :class="b('schedule__item')"
+                v-for="item in weekList"
+                :key="item.weekId"
+              >
+                <st-t4 class="mg-b12">{{ item.date }}</st-t4>
                 <div
-                  :class="
-                    scheduleList.length > 1
-                      ? [b('delete-btn'), b('delete')]
-                      : [b('delete-btn'), b('disabled-delete')]
+                  v-if="
+                    filterDate[i][item.week][0].week ||
+                      filterDate[i][item.week][0].week == 0
                   "
-                  @click="onDeleteCycleSchedule(i)"
                 >
-                  <st-icon type="delete" class="delete-course-btn"></st-icon>
-                  删除排期
-                </div>
-              </st-form>
-              <div :class="b('schedule__table')">
-                <div
-                  :class="b('schedule__item')"
-                  v-for="item in weekList"
-                  :key="item.weekId"
-                >
-                  <st-t4 class="mg-b12">{{ item.date }}</st-t4>
                   <div
-                    v-if="
-                      filterDate[i][item.week][0].week ||
-                        filterDate[i][item.week][0].week == 0
-                    "
+                    :class="b('schedule__card')"
+                    v-for="(cardItem, index) in filterDate[i][item.week]"
+                    :key="index"
                   >
-                    <div
-                      :class="b('schedule__card')"
-                      v-for="(cardItem, index) in filterDate[i][item.week]"
-                      :key="index"
-                    >
-                      <course-card-popover
-                        :cardItem="cardItem"
-                        @onEditCourse="onEditCourseSchedule(cardItem, i, index)"
-                        @onDeleteCourse="
-                          onDeleteCourseSchedule(cardItem, i, index)
-                        "
-                      ></course-card-popover>
-                    </div>
-                  </div>
-                  <add-course
-                    @addCourse="pushCourseInfo"
-                    :item="filterDate[i][item.week]"
-                    :disabledAddCourseBtn="disabledAddCourseBtn"
-                    :cycleIndex="i"
-                    :week="item.week"
-                    :cycle="pickerList[i]"
-                    :cycle_type="cycle_type"
-                    :courseInfo="smallCourseInfo"
-                    :editScheduleCycleFlag="editScheduleCycleFlag"
-                  ></add-course>
-                </div>
-              </div>
-              <div :class="b('schedule__tips')" v-if="pickerList.length">
-                即：上课时间为
-                <span class="schedule__tips-date">
-                  {{ pickerList[i][0].format('YYYY/MM/DD').valueOf() }}~{{
-                    pickerList[i][1].format('YYYY/MM/DD').valueOf()
-                  }}
-                </span>
-                <span class="schedule__tips-time">{{ tipsText[i] }}</span>
-                共
-                <span class="schedule__tips-num" v-if="tipsCourseNum[i]">
-                  {{ tipsCourseNum[i] }}
-                </span>
-                节
-              </div>
-            </st-container>
-            <div :class="b('add-schedule-btn')">
-              <a v-if="addScheduleFlag" @click="addScheduleWeek">
-                新增上课周期
-              </a>
-              <span v-else>新增上课周期</span>
-            </div>
-          </div>
-          <div v-else>
-            <st-container>
-              <st-form labelWidth="80px">
-                <st-form-item
-                  required
-                  label="上课周期"
-                  :class="b('select__date')"
-                >
-                  <span>
-                    {{ smallCourseInfo.course_begin_time }} ~
-                    {{ smallCourseInfo.course_end_time }}
-                  </span>
-                </st-form-item>
-              </st-form>
-              <div :class="b('schedule__table-custom')">
-                <div
-                  :class="b('schedule__item-custom')"
-                  v-for="(item, index) in customizeScheduleList"
-                  :key="index"
-                >
-                  <div class="eidt-current-course-btns">
-                    <a @click="onEditCustomSchedule(item, index)">
-                      <st-icon type="edit" class="edit-course-btn"></st-icon>
-                    </a>
-                    <a @click="onDeleteCustomSchedule(item, index)">
-                      <st-icon
-                        type="delete"
-                        class="delete-course-btn"
-                      ></st-icon>
-                    </a>
-                  </div>
-                  <span class="time">
-                    <st-icon type="timer"></st-icon>
-                    {{ item.start_time }} -
-                    {{ item.end_time }}
-                  </span>
-                  <st-t3 class="course__name">
-                    {{ item.current_course_name }}
-                  </st-t3>
-                  <div class="course-message">
-                    <p class="course__coach">
-                      {{ $c('coach') }}：
-                      <span>{{ item.coach_name }}</span>
-                    </p>
-                    <p class="course__scene mg-l16">
-                      场地：
-                      <span>
-                        {{
-                          dealCourtSiteName(
-                            item.court_name,
-                            item.court_site_name
-                          )
-                        }}
-                      </span>
-                    </p>
+                    <course-card-popover
+                      :cardItem="cardItem"
+                      @onEditCourse="onEditCourseSchedule(cardItem, i, index)"
+                      @onDeleteCourse="
+                        onDeleteCourseSchedule(cardItem, i, index)
+                      "
+                    ></course-card-popover>
                   </div>
                 </div>
                 <add-course
-                  :customizeShow="customizeShow"
-                  :disabledCustomBtn="disabledCustomBtn"
-                  @addCustomCourse="pushCustomCourseInfo"
-                  :cycle="smallPickerList"
+                  @addCourse="pushCourseInfo"
+                  :item="filterDate[i][item.week]"
+                  :disabledAddCourseBtn="disabledAddCourseBtn"
+                  :cycleIndex="i"
+                  :week="item.week"
+                  :cycle="pickerList[i]"
                   :cycle_type="cycle_type"
                   :courseInfo="smallCourseInfo"
                   :editScheduleCycleFlag="editScheduleCycleFlag"
                 ></add-course>
               </div>
-            </st-container>
-          </div>
-          <div :class="b('save-schedule-btn')">
-            <st-button @click="onDeleteScheduleAll">
-              取消
-            </st-button>
-            <st-button
-              type="primary"
-              @click="onClickSaveSchedule"
-              class="mg-l12"
-            >
-              完成排课
-            </st-button>
+            </div>
+            <div :class="b('schedule__tips')" v-if="pickerList.length">
+              即：上课时间为
+              <span class="schedule__tips-date">
+                {{ pickerList[i][0].format('YYYY/MM/DD').valueOf() }}~{{
+                  pickerList[i][1].format('YYYY/MM/DD').valueOf()
+                }}
+              </span>
+              <span class="schedule__tips-time">{{ tipsText[i] }}</span>
+              共
+              <span class="schedule__tips-num" v-if="tipsCourseNum[i]">
+                {{ tipsCourseNum[i] }}
+              </span>
+              节
+            </div>
+          </st-container>
+          <div :class="b('add-schedule-btn')">
+            <a v-if="addScheduleFlag" @click="addScheduleWeek">
+              新增上课周期
+            </a>
+            <span v-else>新增上课周期</span>
           </div>
         </div>
+        <div v-else>
+          <st-container>
+            <st-form labelWidth="80px">
+              <st-form-item
+                required
+                label="上课周期"
+                :class="b('select__date')"
+              >
+                <span>
+                  {{ smallCourseInfo.course_begin_time }} ~
+                  {{ smallCourseInfo.course_end_time }}
+                </span>
+              </st-form-item>
+            </st-form>
+            <div :class="b('schedule__table-custom')">
+              <div
+                :class="b('schedule__item-custom')"
+                v-for="(item, index) in customizeScheduleList"
+                :key="index"
+              >
+                <div class="eidt-current-course-btns">
+                  <a @click="onEditCustomSchedule(item, index)">
+                    <st-icon type="edit" class="edit-course-btn"></st-icon>
+                  </a>
+                  <a @click="onDeleteCustomSchedule(item, index)">
+                    <st-icon type="delete" class="delete-course-btn"></st-icon>
+                  </a>
+                </div>
+                <span class="time">
+                  <st-icon type="timer"></st-icon>
+                  {{ item.start_time }} -
+                  {{ item.end_time }}
+                </span>
+                <st-t3 class="course__name">
+                  {{ item.current_course_name }}
+                </st-t3>
+                <div class="course-message">
+                  <p class="course__coach">
+                    {{ $c('coach') }}：
+                    <span>{{ item.coach_name }}</span>
+                  </p>
+                  <p class="course__scene mg-l16">
+                    场地：
+                    <span>
+                      {{
+                        dealCourtSiteName(item.court_name, item.court_site_name)
+                      }}
+                    </span>
+                  </p>
+                </div>
+              </div>
+              <add-course
+                :customizeShow="customizeShow"
+                :disabledCustomBtn="disabledCustomBtn"
+                @addCustomCourse="pushCustomCourseInfo"
+                :cycle="smallPickerList"
+                :cycle_type="cycle_type"
+                :courseInfo="smallCourseInfo"
+                :editScheduleCycleFlag="editScheduleCycleFlag"
+              ></add-course>
+            </div>
+          </st-container>
+        </div>
+        <div :class="b('save-schedule-btn')">
+          <st-button @click="onDeleteScheduleAll">
+            取消
+          </st-button>
+          <st-button type="primary" @click="onClickSaveSchedule" class="mg-l12">
+            完成排课
+          </st-button>
+        </div>
       </div>
-    </st-panel>
-  </st-panel-layout>
+    </div>
+  </st-panel>
 </template>
 
 <script>
