@@ -1,5 +1,5 @@
 <template>
-  <st-modal title="旷课情况" :footer="null" v-model="show">
+  <st-modal title="旷课情况" :footer="null" v-model="show" width="640px">
     <div :class="b()">
       <div :class="b('left')">
         <div :class="b('item')" class="bg-gray">
@@ -35,7 +35,7 @@
           <div :class="b('title')">
             {{ item.make_up_info && item.make_up_info.course_name }}
           </div>
-          <div v-if="item.make_up_info" :class="b('wrap')">
+          <div v-if="item.make_up_info">
             <span :class="b('label')">时间：</span>
             <span :class="b('value')" class="mg-r16">
               {{ item.make_up_info.time }}
