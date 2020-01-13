@@ -185,7 +185,7 @@ export default {
     },
     onReset() {
       this.date = [null, null]
-      this.onSearchReset()
+      this.onSearchNative()
     },
     onPrint(id) {
       window.open('/ticket/print?id=' + id, '_blank', 'width=800,height=600')
