@@ -3,7 +3,6 @@
     :wrapClassName="b()"
     v-model="show"
     @ok="onOk"
-    @cancel="onOk"
     @close="onOk"
     width="640px"
     :footer="null"
