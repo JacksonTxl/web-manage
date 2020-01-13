@@ -9,9 +9,7 @@
       />
     </portal>
     <div :class="log('search')" class="mg-b16">
-      <st-recent-radio-group
-        @change="courseRecentChange"
-      ></st-recent-radio-group>
+      <st-recent-radio-group @change="onChangeDate"></st-recent-radio-group>
       <div>
         <a-select
           style="width: 160px"
@@ -56,7 +54,7 @@ export default {
     columns
   },
   methods: {
-    courseRecentChange() {
+    onChangeDate(val) {
       console.log('dsafas')
     }
   }
