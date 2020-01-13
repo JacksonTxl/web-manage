@@ -43,6 +43,9 @@
           :dataSource="list"
           :scroll="{ x: 3500 }"
         >
+          <template slot="sex" slot-scope="text">
+            {{ text | enumFilter('staff.sex') }}
+          </template>
           <template slot="is_valid" slot-scope="text">
             <st-text
               :status="{

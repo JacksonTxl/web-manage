@@ -30,7 +30,8 @@ export const columns = () => [
   },
   {
     title: '性别',
-    dataIndex: 'sex'
+    dataIndex: 'sex',
+    scopedSlots: { customRender: 'sex' }
   },
   {
     title: '手机号',

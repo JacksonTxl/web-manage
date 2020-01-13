@@ -98,6 +98,9 @@
               {{ text | enumFilter('sold_common.course_status') }}
             </st-text>
           </template>
+          <template slot="sex" slot-scope="text">
+            {{ text | enumFilter('staff.sex') }}
+          </template>
           <template slot="package_type" slot-scope="text">
             {{ text | enumFilter('package_course.package_type') }}
           </template>
