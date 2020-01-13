@@ -32,10 +32,12 @@
 import { columns } from './put-out.config.ts'
 import { PutOutService } from './put-out.service.ts'
 import { cloneDeep } from 'lodash-es'
+import { NotificationService } from '@/services/notification.service'
 export default {
   serviceInject() {
     return {
-      putOutService: PutOutService
+      putOutService: PutOutService,
+      notificationService: NotificationService
     }
   },
   rxState() {
@@ -64,7 +66,22 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$emit('success')
+      let isEmpty = this.skuList.some(item => !item.stock_amount)
+      let isZero = this.skuList.some(item => item.stock_amount === '0')
+      if (isEmpty) {
+        this.notificationService.error({
+          title: '保存失败',
+          content: '出库数不能为空'
+        })
+        return
+      }
+      if (isZero) {
+        this.notificationService.error({
+          title: '保存失败',
+          content: '出库数不能为0'
+        })
+        return
+      }
       this.putOutService
         .stockOutbound({ stock: this.skuList })
         .subscribe(res => {
