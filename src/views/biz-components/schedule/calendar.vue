@@ -154,6 +154,7 @@
       <month-board
         v-if="$searchQuery.time_unit === 4"
         :courses="cardList"
+        :addTitle="addTitle"
         @onClickAddBtn="addTeamCourse"
         @onClickCourse="onClickCourse"
       />

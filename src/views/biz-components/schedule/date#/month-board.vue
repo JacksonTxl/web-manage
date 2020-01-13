@@ -32,10 +32,16 @@
           <a-popover
             placement="right"
             v-if="!day.addBtnShow"
+            v-model="day.popoverShow"
             :class="boardContent('hover-content')"
           >
             <!-- popover content -->
-            <span slot="content" :class="popoverBox()">
+            <span
+              slot="content"
+              :class="popoverBox()"
+              @mouseenter="onPopoverMouseEnter(day)"
+              @click="hidePopover(day)"
+            >
               <st-button
                 :class="popoverBox('hover-add-btn')"
                 type="default"
@@ -52,7 +58,16 @@
                   :key="course.id"
                   @click="onClickCourse(course)"
                 >
-                  <div :class="popoverBox('item-point')"></div>
+                  <div
+                    :class="
+                      course.schedule_status > 2
+                        ? [
+                            popoverBox('item-point'),
+                            popoverBox('item-point--active')
+                          ]
+                        : popoverBox('item-point')
+                    "
+                  ></div>
                   <div :class="popoverBox('item-text')">
                     {{ course.course_name }}
                   </div>
@@ -75,7 +90,7 @@
                   <div
                     :class="
                       course.schedule_status > 2
-                        ? dayContent('point--active')
+                        ? [dayContent('point--active'), dayContent('point')]
                         : dayContent('point')
                     "
                   ></div>
@@ -103,7 +118,7 @@
               <div class="mg-b8" :class="addBtnContent('icon')">
                 <st-icon type="add"></st-icon>
               </div>
-              <div :class="addBtnContent('text')">新增团体课</div>
+              <div :class="addBtnContent('text')">{{ addTitle }}</div>
             </div>
           </div>
         </div>
@@ -125,6 +140,10 @@ export default {
     addBtnContent: 'add-btn-content'
   },
   props: {
+    addTitle: {
+      type: String,
+      default: '新增团体课'
+    },
     courses: {
       type: Array,
       default: () => {
@@ -137,7 +156,6 @@ export default {
       this.init()
     },
     courses() {
-      console.log('进来watch了')
       this.getCoursesList()
     }
   },
@@ -157,6 +175,9 @@ export default {
     this.getCoursesList()
   },
   methods: {
+    onPopoverMouseEnter(day) {
+      day.popoverShow = true
+    },
     init() {
       this.date = this.$searchQuery.start_date
       this.dayList = this.getCurrentMonthDayList()
@@ -205,6 +226,7 @@ export default {
     },
     onMouseMove(day, er) {
       if (day.courses.length !== 0) {
+        day.popoverShow = true
         return
       }
       this.dayList.forEach(item => {
@@ -219,6 +241,9 @@ export default {
         date: e.date,
         fullDate: e.fullDate
       })
+    },
+    hidePopover(e) {
+      e.popoverShow = false
     },
     onClickCourse(e) {
       this.$emit('onClickCourse', {
