@@ -210,6 +210,7 @@ import ScheduleSmallCourseEditCourse from '@/views/biz-modals/schedule/small-cou
 import ScheduleSmallCourseSubmitCourse from '@/views/biz-modals/schedule/small-course/submit-course'
 import { MessageService } from '@/services/message.service'
 import { DELETE_TYPE } from '@/constants/stat/course'
+import { SCHEDULE_CODE } from '@/constants/course/small-course'
 import { cloneDeep } from 'lodash-es'
 import { ruleOptions } from './inbatch-add.config'
 export default {
@@ -239,6 +240,7 @@ export default {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
+      SCHEDULE_CODE,
       showList: false,
       form,
       decorators,
@@ -350,13 +352,35 @@ export default {
     onChangeScheduleType(value) {
       if (!this.courseId) {
         this.select_cycle_type = value
+        this.cycle_type = value
         return
       }
       const params = {
         course_id: this.courseId,
         cycle_type: value
       }
-      this.getScheduleInBatch(params, value)
+      let hasCoursesFlag = false
+      if (this.cycle_type === 1) {
+        this.scheduleList.forEach((item, index) => {
+          if (item.course_time.length > 0) {
+            hasCoursesFlag = true
+          }
+        })
+      }
+      if (hasCoursesFlag) {
+        this.$confirm({
+          title: '提示',
+          content: `切换为自定义排课方式后，若需切换回周期排课，已排课程无法保存，确认切换？`,
+          onCancel: () => {
+            this.select_cycle_type = 1
+          },
+          onOk: () => {
+            this.getScheduleInBatch(params, value)
+          }
+        })
+      } else {
+        this.getScheduleInBatch(params, value)
+      }
     },
     getScheduleInBatch(params, changeTyps) {
       this.smallCourseScheduleService.getScheduleInBatch(params).subscribe(
@@ -366,7 +390,7 @@ export default {
           this.initScheduleList(res.list, res.cycle_type, changeTyps)
         },
         err => {
-          if (err.response.code === 54640) {
+          if (err.response.code === SCHEDULE_CODE.ERR) {
             this.select_cycle_type = 2
             this.$warning({
               title: '提示',
@@ -452,8 +476,8 @@ export default {
     },
     disabledEndDate(current) {
       return (
-        (current && current > moment(this.end_date).valueOf()) ||
-        current < moment(this.start_date).valueOf()
+        (current && current > moment(this.end_date)) ||
+        current < moment(this.start_date)
       )
     },
     getScheduleTips(index, text, courseNum) {

@@ -3,7 +3,6 @@
     wrapClassName="modal-reserved-info"
     title="预约详情"
     @ok="save"
-    :footer="null"
     v-model="show"
     width="710px"
   >
@@ -299,7 +298,7 @@
         </tbody>
       </st-form-table>
     </st-container>
-    <div class="mg-t24 ta-r">
+    <div slot="footer" class="ta-r">
       <a-popconfirm
         @confirm="cancelSchedule"
         okText="确认"
@@ -420,7 +419,6 @@ export default {
         .subscribe()
     },
     onChange(value) {
-      console.log(value)
       this.memberId = value
       this.showConsumeType = ''
       this.commonService
