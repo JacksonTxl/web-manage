@@ -10,6 +10,8 @@ export class MemberService implements Controller {
   list$ = new State({})
   page$ = new State({})
   loading$ = new State({})
+  total$ = new State({})
+
   auth$ = this.authService.authMap$({
     export: 'shop:sold:sold_member_card|export',
     gift: 'shop:sold:sold_member_card|gift',
@@ -38,6 +40,7 @@ export class MemberService implements Controller {
         res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }

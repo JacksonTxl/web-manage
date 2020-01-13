@@ -1,9 +1,9 @@
 <template>
   <div :class="b()">
     <a-radio-group v-model="recent">
-      <a-radio-button :value="7">近7天</a-radio-button>
-      <a-radio-button :value="30">近30天</a-radio-button>
-      <a-radio-button :value="90">近90天</a-radio-button>
+      <a-radio-button v-for="item in days" :value="item" :key="item">
+        近{{ item }}天
+      </a-radio-button>
     </a-radio-group>
     <a-range-picker
       :class="[b('range'), { active: !recent }]"
@@ -22,6 +22,12 @@ export default {
     b: 'st-recent-radio-group'
   },
   props: {
+    days: {
+      type: Array,
+      default: () => {
+        return [7, 30, 90]
+      }
+    },
     value: {
       type: Object,
       default: () => {

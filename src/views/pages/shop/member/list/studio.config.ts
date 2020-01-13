@@ -26,7 +26,9 @@ export const columns = (vm: any) => [
   { title: `跟进${vm.$c('coach')}`, dataIndex: 'follow_coach' },
   { title: '注册时间', dataIndex: 'register_time' },
   { title: '成为会员时间', dataIndex: 'be_member_time' },
+  { title: '净收入(元)', align: 'right', dataIndex: 'sum_revenue' },
   { title: '累计消费(元)', align: 'right', dataIndex: 'sum_consumption' },
+  { title: '累计退款(元)', align: 'right', dataIndex: 'sum_refund' },
   {
     title: '操作',
     fixed: 'right',

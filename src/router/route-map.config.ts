@@ -85,7 +85,8 @@ export const routeMapConfig = {
     routeConfig.queryOptions = {
       course_id: { type: Number, default: -1 },
       court_id: { type: Number, default: -1 },
-      coach_id: { type: Number, default: -1 }
+      coach_id: { type: Number, default: -1 },
+      time_unit: { type: Number, default: 2 }
     }
   },
   'shop-product-course-schedule-team-team-table'(routeConfig: RouteConfig) {
@@ -103,7 +104,8 @@ export const routeMapConfig = {
   'shop-product-course-schedule-personal-personal'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '私教1v1预约'
     routeConfig.queryOptions = {
-      coach_id: { type: Number, default: -1 }
+      coach_id: { type: Number, default: -1 },
+      time_unit: { type: Number, default: 2 }
     }
   },
   'shop-product-course-schedule-personal-personal-reserve-table'(
@@ -674,6 +676,24 @@ export const routeMapConfig = {
   'shop-reception-entrance'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '入场管理'
     routeConfig.meta.parentRouteName = 'shop-reception-index'
+    routeConfig.meta.tabs = [
+      'shop-reception-entrance-entrance',
+      'shop-reception-entrance-log'
+    ]
+  },
+  'shop-reception-entrance-entrance'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '入场管理'
+    routeConfig.meta.parentRouteName = 'shop-reception-entrance'
+    routeConfig.queryOptions = {
+      page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 },
+      entry_type: { type: Number, default: -1 },
+      keyword: { type: String, default: '' }
+    }
+  },
+  'shop-reception-entrance-log'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '入场管理明细'
+    routeConfig.meta.parentRouteName = 'shop-reception-entrance'
     routeConfig.queryOptions = {
       page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -1183,7 +1203,8 @@ export const routeMapConfig = {
   ) {
     routeConfig.meta.title = '私教小团课排期'
     routeConfig.queryOptions = {
-      coach_id: { type: Number, default: -1 }
+      coach_id: { type: Number, default: -1 },
+      time_unit: { type: Number, default: 2 }
     }
   },
   'shop-product-course-schedule-small-course'(routeConfig: RouteConfig) {

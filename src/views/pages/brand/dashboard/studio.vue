@@ -8,9 +8,12 @@
         <a-col :span="6" :class="bCount('item')">
           <div :class="bCount('box')">
             <count-card
-              title="今日营收额(元)"
+              title="今日净营收(元)"
               :count="this.revenue.num"
-              :footer="{ label: '近7天日均营收额：', value: this.revenue.avg }"
+              :footer="{
+                label: '近7天日均净营收额：',
+                value: this.revenue.avg
+              }"
               :trend="{
                 isUp: this.revenue.ratio >= 0,
                 rate: this.revenue.ratio + this.revenue.ratio_mark
