@@ -17,13 +17,13 @@
           :value="$searchQuery.time_unit"
           @change="handleSizeChange($event, 'date')"
         >
-          <a-radio-button :value="3">
+          <a-radio-button :value="TIME_UNIT.TIME_DAY">
             日
           </a-radio-button>
-          <a-radio-button :value="2">
+          <a-radio-button :value="TIME_UNIT.TIME_WEEK">
             周
           </a-radio-button>
-          <a-radio-button :value="4">
+          <a-radio-button :value="TIME_UNIT.TIME_MONTH">
             月
           </a-radio-button>
         </a-radio-group>
@@ -43,10 +43,13 @@
     <div :class="bSchedule('content')">
       <div
         :class="bContent('time-collection')"
-        v-if="$searchQuery.time_unit !== 4"
+        v-if="$searchQuery.time_unit !== TIME_UNIT.TIME_MONTH"
       ></div>
 
-      <ul :class="bContent('day-group')" v-if="$searchQuery.time_unit === 3">
+      <ul
+        :class="bContent('day-group')"
+        v-if="$searchQuery.time_unit === TIME_UNIT.TIME_DAY"
+      >
         <li
           class="day"
           :class="currentDay(item)"
@@ -95,7 +98,7 @@
 
       <ul
         :class="bContent('day-group')"
-        v-else-if="$searchQuery.time_unit === 2"
+        v-else-if="$searchQuery.time_unit === TIME_UNIT.TIME_WEEK"
       >
         <li
           class="day"
@@ -152,7 +155,7 @@
       </ul>
       <!-- 月度组件 -->
       <month-board
-        v-if="$searchQuery.time_unit === 4"
+        v-if="$searchQuery.time_unit === TIME_UNIT.TIME_MONTH"
         :courses="cardList"
         :addTitle="addTitle"
         @onClickAddBtn="addTeamCourse"
@@ -170,6 +173,7 @@ import ScheduleCard from './date#/schedule-card'
 import MonthBoard from './date#/month-board'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
+import { TIME_UNIT } from '@/constants/course/team'
 
 export default {
   name: 'ScheduleCalendar',
@@ -183,7 +187,8 @@ export default {
       start: moment().format('YYYY-MM-DD'),
       currentWeek: '',
       weeks: [],
-      pageBtnFocusState: 'calendar'
+      pageBtnFocusState: 'calendar',
+      TIME_UNIT
     }
   },
   props: {
@@ -216,7 +221,6 @@ export default {
     isDay() {
       const start = this.$searchQuery.start_date
       const end = this.$searchQuery.end_date
-      console.log(start, end, 'dfasdf')
       return start === end
     },
     currentTime() {
@@ -260,9 +264,9 @@ export default {
   methods: {
     handleSizeChange(evt, type) {
       if (type === 'date') {
-        if (evt.target.value === 3) {
+        if (evt.target.value === this.TIME_UNIT.TIME_DAY) {
           this.onClickGetCurrent()
-        } else if (evt.target.value === 4) {
+        } else if (evt.target.value === this.TIME_UNIT.TIME_MONTH) {
           this.onClickGetMonth()
         } else {
           this.onClickGetWeek()
@@ -314,14 +318,14 @@ export default {
     onClickGetCurrent() {
       this.weeks = []
       this.weeks.push({ week: 0, date: this.$searchQuery.start_date })
-      this.$searchQuery.time_unit = 3
+      this.$searchQuery.time_unit = this.TIME_UNIT.TIME_DAY
       let current = moment().format('YYYY-MM-DD')
       this.getWeeks()
       this.$router.push({
         query: {
           start_date: current,
           end_date: current,
-          time_unit: 3
+          time_unit: this.TIME_UNIT.TIME_DAY
         }
       })
     },
@@ -339,7 +343,7 @@ export default {
         query: {
           start_date: startDate,
           end_date: endDate,
-          time_unit: 4
+          time_unit: this.TIME_UNIT.TIME_MONTH
         }
       })
     },
@@ -366,7 +370,7 @@ export default {
     },
     onClickGetWeek() {
       this.$router.push({
-        query: { ...this.currentWeek, time_unit: 2 }
+        query: { ...this.currentWeek, time_unit: this.TIME_UNIT.TIME_WEEK }
       })
       this.getWeeks('week')
     },

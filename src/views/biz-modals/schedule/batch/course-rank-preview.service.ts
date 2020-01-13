@@ -1,6 +1,6 @@
 import {
   TeamScheduleScheduleApi,
-  AddSourseQuery
+  AddCourseQuery
 } from '@/api/v1/schedule/team/schedule'
 import { PersonalTeamScheduleScheduleApi } from '@/api/v1/schedule/personal-team/schedule'
 import { Injectable } from 'vue-service-app'
@@ -18,23 +18,23 @@ export class CourseRankPreviewService {
    * 校验排课
    */
   @Effect()
-  validTeamBatch(params: AddSourseQuery) {
+  validTeamBatch(params: AddCourseQuery) {
     return this.teamApi.validTeamBatch({ course_schedule: params })
   }
   /**
    * 排课
    */
-  teamBatch(params: AddSourseQuery) {
+  teamBatch(params: AddCourseQuery) {
     return this.teamApi.teamBatch({ course_schedule: params })
   }
   @Effect()
-  validSmallBatch(params: AddSourseQuery) {
+  validSmallBatch(params: AddCourseQuery) {
     return this.smallApi.validSmallBatch({ course_schedule: params })
   }
   /**
    * 排课
    */
-  smallBatch(params: AddSourseQuery) {
+  smallBatch(params: AddCourseQuery) {
     return this.smallApi.smallBatch({ course_schedule: params })
   }
 }

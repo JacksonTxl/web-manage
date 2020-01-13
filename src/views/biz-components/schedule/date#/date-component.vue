@@ -15,11 +15,13 @@
   </div>
 </template>
 <script>
+import { TIME_UNIT } from '@/constants/course/team'
 export default {
   name: 'date',
   data() {
     return {
-      startTime: moment().format('YYYY-MM-DD')
+      startTime: moment().format('YYYY-MM-DD'),
+      TIME_UNIT
     }
   },
   props: {
@@ -30,11 +32,10 @@ export default {
   },
   created() {
     let weekOfday = moment(this.start).format('E')
-    if (this.$searchQuery.time_unit === 3) {
+    if (this.$searchQuery.time_unit === this.TIME_UNIT.TIME_DAY) {
       this.startTime = moment(this.start).format('YYYY-MM-DD')
-    } else if (this.$searchQuery.time_unit === 4) {
+    } else if (this.$searchQuery.time_unit === this.TIME_UNIT.TIME_MONTH) {
       this.startTime = this.$searchQuery.start_date
-      console.log(this.startTime, '这是最初的')
     } else {
       this.startTime = moment(this.start)
         .subtract(weekOfday - 1, 'days')
@@ -45,7 +46,7 @@ export default {
     start(n, o) {
       let weekOfday = moment(n).format('E')
       this.startTime =
-        this.$searchQuery.time_unit !== 2
+        this.$searchQuery.time_unit !== this.TIME_UNIT.TIME_WEEK
           ? moment(this.start).format('YYYY-MM-DD')
           : moment(this.start)
               .subtract(weekOfday - 1, 'days')
@@ -68,9 +69,9 @@ export default {
       return this.$searchQuery.start_date
     },
     endTime() {
-      if (this.$searchQuery.time_unit === 3) {
+      if (this.$searchQuery.time_unit === this.TIME_UNIT.TIME_DAY) {
         return moment(this.startTime).format('YYYY-MM-DD')
-      } else if (this.$searchQuery.time_unit === 4) {
+      } else if (this.$searchQuery.time_unit === this.TIME_UNIT.TIME_MONTH) {
         return moment(this.startTime)
           .endOf('month')
           .add(1, 'days')
@@ -105,11 +106,11 @@ export default {
       //       .subtract(7, 'days')
       //       .format('YYYY-MM-DD')
 
-      if (this.$searchQuery.time_unit === 3) {
+      if (this.$searchQuery.time_unit === this.TIME_UNIT.TIME_DAY) {
         this.startTime = moment(this.$searchQuery.start_date)
           .subtract(1, 'days')
           .format('YYYY-MM-DD')
-      } else if (this.$searchQuery.time_unit === 4) {
+      } else if (this.$searchQuery.time_unit === this.TIME_UNIT.TIME_MONTH) {
         this.startTime = moment(this.startTime)
           .subtract(1, 'months')
           .format('YYYY-MM-DD')
@@ -132,11 +133,11 @@ export default {
       //   : moment(this.startTime)
       //       .add(7, 'days')
       //       .format('YYYY-MM-DD')
-      if (this.$searchQuery.time_unit === 3) {
+      if (this.$searchQuery.time_unit === this.TIME_UNIT.TIME_DAY) {
         this.startTime = moment(this.$searchQuery.start_date)
           .add(1, 'days')
           .format('YYYY-MM-DD')
-      } else if (this.$searchQuery.time_unit === 4) {
+      } else if (this.$searchQuery.time_unit === this.TIME_UNIT.TIME_MONTH) {
         this.startTime = moment(this.startTime)
           .add(1, 'months')
           .format('YYYY-MM-DD')
@@ -159,9 +160,9 @@ export default {
       //       .subtract(weekOfday - 1, 'days')
       //       .format('YYYY-MM-DD') // 周一日期
 
-      if (this.$searchQuery.time_unit === 3) {
+      if (this.$searchQuery.time_unit === this.TIME_UNIT.TIME_DAY) {
         this.startTime = moment().format('YYYY-MM-DD')
-      } else if (this.$searchQuery.time_unit === 4) {
+      } else if (this.$searchQuery.time_unit === this.TIME_UNIT.TIME_MONTH) {
         this.startTime = moment()
           .startOf('month')
           .format('YYYY-MM-DD')

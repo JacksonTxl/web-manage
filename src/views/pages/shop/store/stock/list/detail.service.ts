@@ -22,6 +22,7 @@ export class DetailService implements Controller {
   productList() {
     return this.stockApi.productList().pipe(
       tap((res: any) => {
+        res.list.unshift({ id: -1, product_name: '全部商品' })
         this.productList$.commit(() => res.list)
       })
     )

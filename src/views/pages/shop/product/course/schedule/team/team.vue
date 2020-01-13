@@ -39,6 +39,7 @@ import ScheduleTeamAddCourse from '@/views/biz-modals/schedule/team/add-course'
 import ScheduleTeamCopySchedule from '@/views/biz-modals/schedule/team/copy-schedule'
 import ScheduleTeamReserveInfo from '@/views/biz-modals/schedule/team/reserve-info'
 import { TeamService } from './team.service'
+import { TIME_UNIT } from '@/constants/course/team'
 export default {
   name: 'TeamSchedule',
   modals: {
@@ -68,7 +69,7 @@ export default {
     Calendar
   },
   data() {
-    return {}
+    return { TIME_UNIT }
   },
   computed: {
     startDate() {
@@ -139,11 +140,15 @@ export default {
             },
             // 添加课表打开新增课表弹窗
             add: () => {
-              this.addOrEditCourse()
+              setTimeout(() => {
+                this.addOrEditCourse()
+              }, 500)
             },
             // 编辑课表打开编辑课表弹窗
             edit: res => {
-              this.addOrEditCourse(res)
+              setTimeout(() => {
+                this.addOrEditCourse(res)
+              }, 500)
             }
           }
         })
@@ -159,19 +164,20 @@ export default {
         },
         on: {
           success: res => {
-            console.log(res, '新建成功')
-            this.$modalRouter.push({
-              name: 'schedule-batch-course-rank-preview',
-              props: {
-                dataTable: res.info,
-                type: 'team'
-              },
-              on: {
-                success: res => {
-                  console.log('新增课表')
+            setTimeout(() => {
+              this.$modalRouter.push({
+                name: 'schedule-batch-course-rank-preview',
+                props: {
+                  dataTable: res.info,
+                  type: 'team'
+                },
+                on: {
+                  success: res => {
+                    console.log('新增课表')
+                  }
                 }
-              }
-            })
+              })
+            }, 500)
           }
         }
       })
@@ -203,7 +209,7 @@ export default {
     $route(newValue, oldValue) {
       this.service.scheduleService.getList(this.$searchQuery)
       this.$refs.calendar.getWeeks(
-        this.$searchQuery.time_unit === 2 ? 'week' : ''
+        this.$searchQuery.time_unit === this.TIME_UNIT.TIME_WEEK ? 'week' : ''
       )
     }
   }
