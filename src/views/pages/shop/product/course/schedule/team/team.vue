@@ -139,11 +139,15 @@ export default {
             },
             // 添加课表打开新增课表弹窗
             add: () => {
-              this.addOrEditCourse()
+              setTimeout(() => {
+                this.addOrEditCourse()
+              }, 500)
             },
             // 编辑课表打开编辑课表弹窗
             edit: res => {
-              this.addOrEditCourse(res)
+              setTimeout(() => {
+                this.addOrEditCourse(res)
+              }, 500)
             }
           }
         })
@@ -159,19 +163,20 @@ export default {
         },
         on: {
           success: res => {
-            console.log(res, '新建成功')
-            this.$modalRouter.push({
-              name: 'schedule-batch-course-rank-preview',
-              props: {
-                dataTable: res.info,
-                type: 'team'
-              },
-              on: {
-                success: res => {
-                  console.log('新增课表')
+            setTimeout(() => {
+              this.$modalRouter.push({
+                name: 'schedule-batch-course-rank-preview',
+                props: {
+                  dataTable: res.info,
+                  type: 'team'
+                },
+                on: {
+                  success: res => {
+                    console.log('新增课表')
+                  }
                 }
-              }
-            })
+              })
+            }, 500)
           }
         }
       })

@@ -5,10 +5,11 @@
     width="1060px"
   >
     <template slot="footer">
-      <a-tooltip placement="topRight">
-        <template slot="title">
-          <span>关闭后课程排期不再保留</span>
-        </template>
+      <a-tooltip
+        placement="topRight"
+        title="关闭后课程排期不再保留"
+        overlayClassName="modal-schedule-batch-course-rank-preview-tooltip"
+      >
         <st-button @click="show = false">
           关闭
         </st-button>
@@ -63,7 +64,7 @@
               v-model="record.course_id_label"
               style="width: 100px"
               labelInValue
-              @change="e => handleChange(e, index, 'course_id')"
+              @change="e => handleChange(e, index, 'course_id', record)"
             >
               <a-select-option v-for="course in courseOptions" :key="course.id">
                 {{ type === 'team' ? course.course_name : course.name }}
@@ -81,8 +82,9 @@
               format="YYYY-MM-DD HH:mm"
               placeholder="请选择时间"
               style="width: 156px"
+              :allowClear="false"
               :value="customRender.data | formatDate"
-              @change="e => handleChangeTime(e, index, 'start_time')"
+              @change="e => handleChangeTime(e, index, 'start_time', record)"
             />
             <div :class="customRender.valid ? 'color_red' : ''" v-else>
               {{ customRender.data }}
@@ -95,7 +97,7 @@
               :placeholder="`请选择${$c('coach')}`"
               v-model="record.coach_id_label"
               labelInValue
-              @change="e => handleChange(e, index, 'coach_id')"
+              @change="e => handleChange(e, index, 'coach_id', record)"
               style="width: 100px"
             >
               <a-select-option v-for="coach in coachOptions" :key="coach.id">
@@ -110,7 +112,7 @@
           <template
             slot="court_id"
             v-if="type === 'team'"
-            slot-scope="customRender, record"
+            slot-scope="customRender, record, index"
           >
             <a-cascader
               v-if="record.isEdit"
@@ -118,7 +120,7 @@
               v-model="record.site_id"
               :options="courtOptions"
               labelInValue
-              @change="e => handleChanges(e, record.key, 'court_site_id')"
+              @change="e => handleChanges(e, index, record)"
               :fieldNames="{ label: 'name', value: 'id', children: 'children' }"
             />
             <div
@@ -135,24 +137,24 @@
               }}
             </div>
           </template>
-          <template slot="limit_num" slot-scope="customRender, record">
+          <template slot="limit_num" slot-scope="customRender, record, index">
             <st-input-number
               v-if="record.isEdit"
               v-model="customRender.data"
               style="width:100px"
-              @change="customRender.valid === 0"
+              @change="changeRed(index, record)"
             ></st-input-number>
             <div :class="customRender.valid ? 'color_red' : ''" v-else>
               {{ customRender.data }}
             </div>
           </template>
-          <template slot="course_fee" slot-scope="customRender, record">
+          <template slot="course_fee" slot-scope="customRender, record, index">
             <st-input-number
               v-if="record.isEdit"
               v-model="customRender.data"
               :float="true"
               style="width:100px"
-              @change="customRender.valid === 0"
+              @change="changeRed(index, record)"
             ></st-input-number>
             <div :class="customRender.valid ? 'color_red' : ''" v-else>
               {{ customRender.data }}
@@ -162,7 +164,7 @@
             <a @click="onEditCourse(record.isEdit, index)" class="mg-r16">
               {{ record.isEdit ? '保存' : '修改' }}
             </a>
-            <a @click="onDelCourse(index)">
+            <a @click="onDelCourse(index, record)">
               删除
             </a>
           </template>
@@ -181,13 +183,15 @@ import { columns } from './course-rank-preview.config'
 import { TeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/team/service#/common.service'
 import { PersonalTeamScheduleCommonService } from '@/views/pages/shop/product/course/schedule/personal-team/service#/common.service'
 import { cloneDeep } from 'lodash-es'
+import { MessageService } from '@/services/message.service'
 export default {
   serviceInject() {
     return {
       courseRankPreviewService: CourseRankPreviewService,
       teamScheduleCommonService: TeamScheduleCommonService,
       personalTeamScheduleCommonService: PersonalTeamScheduleCommonService,
-      userService: UserService
+      userService: UserService,
+      messageService: MessageService
     }
   },
   rxState() {
@@ -241,14 +245,18 @@ export default {
     // 课程标签切换触发
     handleSizeChange(e) {
       this.courseType = e.target.value
-      if (e.target.value === 'part') {
-        this.courseSchedule = this.courseScheduleOld.filter(item => {
-          if (item.is_valid) {
-            return {
-              ...item
-            }
+      let partData = this.courseScheduleOld.filter((item, index) => {
+        if (item.is_valid) {
+          return {
+            ...item
           }
-        })
+        }
+      })
+      if (this.courseScheduleOld.length === partData.length) {
+        return
+      }
+      if (e.target.value === 'part') {
+        this.courseSchedule = partData
       } else {
         this.courseSchedule = cloneDeep(this.courseScheduleOld)
       }
@@ -256,7 +264,7 @@ export default {
     // 确定排期，开始验证
     save() {
       let params = []
-      params = this.courseSchedule.map(item => {
+      params = this.courseScheduleOld.map(item => {
         return {
           course_id: item.course_id.data,
           coach_id: item.coach_id.data,
@@ -282,6 +290,7 @@ export default {
               }
             }
           })
+          this.messageService.warn({ content: '存在冲突无法提交' })
           res.course_schedule = data
           this.processing(res)
         }
@@ -292,31 +301,44 @@ export default {
       let functiomName = this.type === 'team' ? 'teamBatch' : 'smallBatch'
       this.courseRankPreviewService[functiomName](data).subscribe(res => {
         this.$emit('success', res)
+        this.messageService.warn({ content: '排课成功' })
         this.show = false
       })
     },
     // 排期课程删除
-    onDelCourse(data) {
+    onDelCourse(data, item) {
       this.courseSchedule.splice(data, 1)
+      this.courseScheduleOld.splice(item.index, 1)
     },
     onEditCourse(data, index) {
       this.courseSchedule[index].isEdit = !data
     },
     // 处理选择教练与课程
-    handleChange(e, index, type) {
+    handleChange(e, index, type, item) {
       this.courseSchedule[index][type].name = e.label.replace(/[\r\n]/g, '')
       this.courseSchedule[index][type].data = e.key
-      this.courseSchedule[index][type].valid = 0
+      this.changeRed(index, item)
     },
-    handleChanges(e, key) {
-      console.log(e, key)
+    // 处理场地的
+    handleChanges(e, i, item) {
+      this.changeRed(i, item)
     },
-    handleChangeTime(e, i, type) {
+    // 处理时间的
+    handleChangeTime(e, i, type, item) {
       let d = moment(e).format('d') == 0 ? 7 : moment(e).format('d')
       this.courseSchedule[i].week_day.data = d
-      this.courseSchedule[i].week_day.valid = 0
       this.courseSchedule[i][type].data = moment(e).format('YYYY-MM-DD HH:mm')
-      this.courseSchedule[i][type].valid = 0
+      this.changeRed(i, item)
+    },
+    changeRed(i, item) {
+      this.courseSchedule[i].court_id.valid = 0
+      this.courseSchedule[i].court_site_id.valid = 0
+      this.courseSchedule[i].start_time.valid = 0
+      this.courseSchedule[i].week_day.valid = 0
+      this.courseSchedule[i].coach_id.valid = 0
+      this.courseSchedule[i].limit_num.valid = 0
+      this.courseSchedule[i].course_fee.valid = 0
+      this.courseScheduleOld[item.index] = item
     },
     // 显示数据处理
     processing(data) {
@@ -334,7 +356,8 @@ export default {
           coach_id_label: {
             key: item.coach_id.data,
             label: item.coach_id.name
-          }
+          },
+          index
         }
       })
       this.courseScheduleOld = cloneDeep(this.courseSchedule)
