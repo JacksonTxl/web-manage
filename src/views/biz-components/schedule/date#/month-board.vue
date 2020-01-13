@@ -1,11 +1,7 @@
 <template>
   <div :class="basic()">
     <ul :class="bHeader()">
-      <li
-        :class="bHeader('header-item')"
-        v-for="(week, key) in weekList"
-        :key="key"
-      >
+      <li :class="bHeader('item')" v-for="(week, key) in weekList" :key="key">
         {{ week }}
       </li>
     </ul>
