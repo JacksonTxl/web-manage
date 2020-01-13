@@ -29,6 +29,8 @@ const localApiEnvHostTarget = {
   prod: 'https://pro.styd.cn'
 }[env.LOCAL_API_ENV]
 
+const YapiHost = 'https://doc.styd.cn'
+
 module.exports = {
   pages: {
     app: {
@@ -77,6 +79,10 @@ module.exports = {
     proxy: {
       '/_api': {
         target: localApiEnvHostTarget,
+        changeOrigin: true
+      },
+      '/mock': {
+        target: YapiHost,
         changeOrigin: true
       }
     },
