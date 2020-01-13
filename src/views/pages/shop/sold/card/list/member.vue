@@ -316,9 +316,6 @@ export default {
       this.setSearchData()
     }
   },
-  updated() {
-    console.log(this.conditions)
-  },
   methods: {
     disabledSelect(record) {
       if (record.card_status !== 1) {

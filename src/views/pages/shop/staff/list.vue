@@ -307,9 +307,6 @@ export default {
       return [{ value: '-1', label: '全部员工状态' }, ...this.workStatusList$]
     }
   },
-  mounted() {
-    console.log(this.$searchQuery)
-  },
   methods: {
     getShopName(shop) {
       return shop

@@ -18,7 +18,7 @@ export class ListService implements Controller {
     join: 'shop:staff:staff|join',
     add: 'shop:staff:staff|add',
     import: 'shop:staff:staff|import',
-    export: 'shop:staff:staff|export'
+    export: 'shop:staff:staff|export' // 现在没有权限
   })
   constructor(
     private staffApi: ShopStaffApi,
