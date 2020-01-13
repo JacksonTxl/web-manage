@@ -65,13 +65,19 @@ export default {
   },
   methods: {
     onSubmit() {
-      let isError = this.skuList.some(
-        item => !item.stock_amount || item.stock_amount === '0'
-      )
-      if (isError) {
+      let isEmpty = this.skuList.some(item => !item.stock_amount)
+      let isZero = this.skuList.some(item => item.stock_amount === '0')
+      if (isEmpty) {
         this.notificationService.error({
           title: '保存失败',
-          content: '请正确填写入库数'
+          content: '入库数不能为空'
+        })
+        return
+      }
+      if (isZero) {
+        this.notificationService.error({
+          title: '保存失败',
+          content: '入库数不能为0'
         })
         return
       }
