@@ -12,7 +12,7 @@
           </st-button>
         </div>
         <st-t4>全局设置</st-t4>
-        <st-form class="mg-t24" labelWidth="56px" labelGutter="16px">
+        <st-form class="mg-t24" labelWidth="88px" labelGutter="16px">
           <st-form-item label="合同标题">
             <a-textarea
               v-model="info.contract_title"
@@ -103,6 +103,30 @@
             <st-switch v-model="info.is_member_card"></st-switch>
           </st-form-item> -->
           <st-form-item
+            label="家长姓名"
+            :class="bSider('form-item', { switch: true })"
+          >
+            <st-switch v-model="info.is_parent_name"></st-switch>
+          </st-form-item>
+          <st-form-item
+            label="家长手机号"
+            :class="bSider('form-item', { switch: true })"
+          >
+            <st-switch v-model="info.is_parent_mobile"></st-switch>
+          </st-form-item>
+          <st-form-item
+            label="家长身份"
+            :class="bSider('form-item', { switch: true })"
+          >
+            <st-switch v-model="info.is_parent_rule"></st-switch>
+          </st-form-item>
+          <st-form-item
+            label="家长身份证号"
+            :class="bSider('form-item', { switch: true })"
+          >
+            <st-switch v-model="info.is_parent_id_card"></st-switch>
+          </st-form-item>
+          <st-form-item
             label="性别"
             :class="bSider('form-item', { switch: true })"
           >
@@ -141,6 +165,7 @@
                 name: 'contract-constitution',
                 props: {
                   id: info.id,
+                  type: info.template_title,
                   lawContent
                 },
                 on: {

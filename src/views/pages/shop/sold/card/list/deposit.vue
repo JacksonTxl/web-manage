@@ -47,6 +47,22 @@
               {{ text | enumFilter('sold_common.is_valid') }}
             </st-text>
           </template>
+          <template slot="member_name" slot-scope="text, record">
+            <template v-if="record.is_minors">
+              {{ record.member_name }}(未成年)
+            </template>
+            <template v-else>
+              {{ record.member_name }}
+            </template>
+          </template>
+          <template slot="mobile" slot-scope="text, record">
+            <template v-if="record.is_minors">
+              {{ record.parent_mobile }}({{ record.parent_user_role }})
+            </template>
+            <template v-else>
+              {{ record.mobile }}
+            </template>
+          </template>
           <template slot="end_time" slot-scope="text">
             {{ text }}
           </template>

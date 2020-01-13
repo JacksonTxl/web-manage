@@ -43,6 +43,12 @@
         <template slot="pay_status" slot-scope="text">
           {{ text | enumFilter('finance.pay_status') }}
         </template>
+        <template slot="member_mobile" slot-scope="text, record">
+          <span v-if="record.is_minors">
+            {{ record.parent_mobile }}({{ record.parent_user_role }})
+          </span>
+          <span v-else>{{ record.member_mobile }}</span>
+        </template>
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
             <!--  -->
@@ -308,7 +314,7 @@ export default {
           name = 'deposit'
           break
         case 6:
-          name = 'member'
+          name = 'small_course_order/detail'
           break
         case 7:
           name = 'advance'

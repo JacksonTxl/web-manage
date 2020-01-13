@@ -228,6 +228,10 @@ export default {
           personal_course: {
             value: 0,
             name: '私教课'
+          },
+          small_course: {
+            value: 0,
+            name: '小班课'
           }
         },
         order_type: {
@@ -263,11 +267,15 @@ export default {
           },
           operator: {
             value: 0,
-            name: '销售'
+            name: '操作人'
           },
           custom: {
             value: 0,
             name: '自定义'
+          },
+          leader: {
+            value: 0,
+            name: '负责人'
           }
         },
         notify_time: '',
@@ -326,6 +334,11 @@ export default {
           ? 1
           : 0
       }
+      if (this.info.course_type.small_course) {
+        course_type.small_course = this.params.course_type.small_course.value
+          ? 1
+          : 0
+      }
       if (this.info.order_type.advance) {
         order_type.advance = this.params.order_type.advance.value ? 1 : 0
       }
@@ -350,6 +363,9 @@ export default {
       }
       if (this.info.receiver.seller) {
         receiver.seller = this.params.receiver.seller.value ? 1 : 0
+      }
+      if (this.info.receiver.leader) {
+        receiver.leader = this.params.receiver.leader.value ? 1 : 0
       }
       if (this.info.receiver.operator) {
         receiver.operator = this.params.receiver.operator.value ? 1 : 0

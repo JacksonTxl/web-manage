@@ -1,22 +1,5 @@
 <template>
   <st-panel initial app :class="basic()">
-    <!-- <st-input-search
-      v-model="$searchQuery.product_name"
-      @search="onSearch"
-      placeholder="请输入商品名查找"
-      :class="basic('search')"
-    />
-    <st-tabs
-      :class="basic('tab')"
-      :activeKey="$searchQuery.product_type"
-      @change="onTabSearch"
-    >
-      <st-tab-pane
-        v-for="item in productTypes"
-        :tab="item.label"
-        :key="item.value"
-      ></st-tab-pane>
-    </st-tabs> -->
     <st-table
       :page="page"
       :class="basic('table')"
@@ -52,6 +35,7 @@ import SoldDealSaleCourse from '@/views/biz-modals/sold/deal/sale-course'
 import SoldDealSaleDepositCard from '@/views/biz-modals/sold/deal/sale-deposit-card'
 import SoldDealSaleMemberCard from '@/views/biz-modals/sold/deal/sale-member-card'
 import SoldDealSalePersonalCourse from '@/views/biz-modals/sold/deal/sale-personal-course'
+import SoldDealSaleSmallCourse from '@/views/biz-modals/sold/deal/sale-small-course'
 export default {
   name: 'PageShopSoldLease',
   mixins: [tableMixin],
@@ -66,7 +50,8 @@ export default {
     SoldDealSaleCourse,
     SoldDealSaleDepositCard,
     SoldDealSaleMemberCard,
-    SoldDealSalePersonalCourse
+    SoldDealSalePersonalCourse,
+    SoldDealSaleSmallCourse
   },
   props: {
     product_type: {
@@ -126,6 +111,9 @@ export default {
           break
         case this.PRODUCT_TYPE.CABINET:
           this.onCabinet(record)
+          break
+        case this.PRODUCT_TYPE.SMALL_COURSE:
+          this.onSmallCourse(record)
           break
       }
     },
@@ -311,16 +299,20 @@ export default {
         }
       })
     },
-    // onTabSearch(val) {
-    //   this.$router.push({
-    //     query: {
-    //       ...this.$searchQuery,
-    //       product_name: '',
-    //       current_page: 1,
-    //       product_type: val
-    //     }
-    //   })
-    // },
+    // 小班课签单
+    onSmallCourse(record) {
+      this.$modalRouter.push({
+        name: 'sold-deal-sale-small-course',
+        props: {
+          id: `${record.id}`
+        },
+        on: {
+          success: result => {
+            this.saleCallBack(result, 'small_course_order/detail')
+          }
+        }
+      })
+    },
     onTableChange(pagination) {
       this.$searchQuery.current_page = pagination.current
       this.$searchQuery.size = pagination.pageSize

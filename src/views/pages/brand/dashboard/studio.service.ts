@@ -80,7 +80,11 @@ export class StudioService implements Controller {
           { name: '储值卡', value: res.info.deposit_card_amount },
           { name: '团体课', value: res.info.team_course_amount },
           { name: '私教课', value: res.info.personal_course_amount },
-          { name: '课程包', value: res.info.package_course_amount }
+          { name: '课程包', value: res.info.package_course_amount },
+          {
+            name: this.userService.c('small_course'),
+            value: res.info.small_course_amount
+          }
         ])
       })
     )

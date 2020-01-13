@@ -53,7 +53,31 @@
               <span class="info-text">31010319900101000</span>
             </div>
           </a-col>
-          <a-col :span="24" v-if="info.is_member_address">
+          <a-col :span="8" v-if="info.is_parent_name">
+            <div class="info-item">
+              <label class="info-label">家长姓名：</label>
+              <span class="info-text">papa</span>
+            </div>
+          </a-col>
+          <a-col :span="8" v-if="info.is_parent_mobile">
+            <div class="info-item">
+              <label class="info-label">家长联系方式：</label>
+              <span class="info-text">13900000000</span>
+            </div>
+          </a-col>
+          <a-col :span="8" v-if="info.is_parent_rule">
+            <div class="info-item">
+              <label class="info-label">家长身份：</label>
+              <span class="info-text">爸爸</span>
+            </div>
+          </a-col>
+          <a-col :span="12" v-if="info.is_parent_id_card">
+            <div class="info-item">
+              <label class="info-label">家长身份证号：</label>
+              <span class="info-text">31010319900101000</span>
+            </div>
+          </a-col>
+          <a-col :span="12" v-if="info.is_member_address">
             <div class="info-item">
               <label class="info-label">家庭住址：</label>
               <span class="info-text">上海市黄浦区南京西路X号</span>
@@ -77,6 +101,13 @@
           </tr>
           <tr v-if="showSomeTh">
             <th>商品名称</th>
+            <th>小计</th>
+          </tr>
+          <tr v-if="showSmallCourseTh">
+            <th>商品名称</th>
+            <th>购买课时</th>
+            <th>价格</th>
+            <th>优惠</th>
             <th>小计</th>
           </tr>
         </thead>
@@ -115,6 +146,13 @@
           </tr>
           <tr v-if="info.contract_type === CONTRACT_TYPE.MONEY">
             <td>定金200元</td>
+            <td>9600.00元</td>
+          </tr>
+          <tr v-if="info.contract_type === CONTRACT_TYPE.SMALL_COURSE">
+            <td>{{ $c('small_course') }}</td>
+            <td>8</td>
+            <td>10000.00元</td>
+            <td>400.00元</td>
             <td>9600.00元</td>
           </tr>
         </tbody>
@@ -258,6 +296,14 @@ export default {
     showSomeTh() {
       switch (this.info.contract_type) {
         case CONTRACT_TYPE.MONEY:
+          return true
+        default:
+          return false
+      }
+    },
+    showSmallCourseTh() {
+      switch (this.info.contract_type) {
+        case CONTRACT_TYPE.SMALL_COURSE:
           return true
         default:
           return false

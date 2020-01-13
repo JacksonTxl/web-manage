@@ -35,7 +35,7 @@
         <a-select
           class="mg-l8"
           showSearch
-          v-if="showTable === 'all'"
+          v-if="showTable"
           :placeholder="`请选择${$c('coach')}`"
           optionFilterProp="children"
           style="width: 200px"
@@ -130,7 +130,7 @@ export default {
   computed: {
     columns,
     showTable() {
-      return this.$searchQuery.showTable || 'all'
+      return this.$route.path.includes('stat/course/summary')
     },
     exportParams() {
       const type = 'shop/personal/course'
@@ -161,7 +161,7 @@ export default {
         type: '/total',
         ...query
       }
-      if (this.showTable === 'all') {
+      if (this.showTable) {
         query.coach_id = this.coach_id
       }
       return query

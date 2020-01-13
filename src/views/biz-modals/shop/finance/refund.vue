@@ -184,6 +184,7 @@ export default {
       info: this.refundService.info$,
       refundChannels: this.refundService.refundChannels$,
       refundReasons: this.refundService.refundReasons$,
+      refundReasonsSmallCourse: this.refundService.refundReasonsSmallCourse$,
       loading: this.refundService.loading$
     }
   },
@@ -217,6 +218,10 @@ export default {
     },
     refundReasonsChange() {
       let arr = this.refundReasons
+      // 小班课的退款原因
+      if (this.product_type === this.ORDER_PRODUCT_TYPE.SMALL_COURSE_TYPE) {
+        arr = this.refundReasonsSmallCourse
+      }
       // 定金去掉第一个退款原因
       if (this.product_type === this.ORDER_PRODUCT_TYPE.EARNEST) {
         arr.shift()

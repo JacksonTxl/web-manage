@@ -28,7 +28,15 @@
             <st-info-item label="卡成员" v-if="isFamilyCard">
               {{ info.card_member }}
             </st-info-item>
-            <st-info-item label="手机号">{{ info.mobile }}</st-info-item>
+            <template v-if="info.is_minors === PERSON_TYPE.CHILD">
+              <st-info-item label="家长手机号">
+                {{ info.parent_mobile }}
+              </st-info-item>
+              <st-info-item label="家长姓名">
+                {{ info.parent_name }}
+              </st-info-item>
+            </template>
+            <st-info-item label="手机号" v-else>{{ info.mobile }}</st-info-item>
             <st-info-item label="订单号">{{ info.order_id }}</st-info-item>
             <st-info-item label="订单状态">
               {{ info.order_status }}
@@ -400,6 +408,7 @@ import { timer } from 'rxjs'
 import { ruleOptions } from './upgrade-member.config'
 import autoContractBtn from '@/views/biz-components/contract/auto-contract-btn.vue'
 import moment from 'moment'
+import { PERSON_TYPE } from '@/constants/course/small-course'
 export default {
   name: 'ModalSoldUpgradeMemberCard',
   bem: {
@@ -431,6 +440,7 @@ export default {
     const form = this.$stForm.create()
     const decorators = form.decorators(ruleOptions)
     return {
+      PERSON_TYPE,
       form,
       decorators,
       show: false,
