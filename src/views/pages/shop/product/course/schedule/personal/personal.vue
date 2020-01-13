@@ -118,7 +118,7 @@ export default {
   },
   watch: {
     $route(newValue, oldValue) {
-      this.service.scheduleService.getList(this.$searchQuery)
+      this.personalScheduleReserveService.getList(this.$searchQuery)
       this.$refs.calendar.getWeeks(
         this.$searchQuery.time_unit === 2 ? 'week' : ''
       )
