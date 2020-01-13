@@ -20,7 +20,17 @@
     <div :class="basic('content')">
       <div :class="basic('content-batch')">
         <!-- NOTE: 导出 -->
-        <!-- <st-button type="primary" class="mg-r8" v-if="auth.export">批量导出</st-button> -->
+        <st-button
+          v-if="auth.export"
+          type="primary"
+          class="mg-r8 mg-b16"
+          v-export-excel="{
+            type: 'sold/card/deposit',
+            query: { conditions: $searchQuery }
+          }"
+        >
+          全部导出
+        </st-button>
       </div>
       <st-total
         :indexs="totalColumns"

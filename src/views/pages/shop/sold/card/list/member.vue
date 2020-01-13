@@ -33,8 +33,17 @@
     </st-search-panel>
     <div :class="basic('content')">
       <div :class="basic('content-batch')" class="mg-b16">
-        <!-- NOTE: 导出 -->
-        <!-- <st-button type="primary" class="mg-r8" v-if="auth.export">批量导出</st-button> -->
+        <st-button
+          v-if="auth.export"
+          type="primary"
+          class="mg-r8"
+          v-export-excel="{
+            type: 'sold/card/member',
+            query: { conditions: conditions }
+          }"
+        >
+          全部导出
+        </st-button>
         <template
           v-if="selectedRowKeys.length >= 1 && diffSelectedRows.length === 0"
         >
@@ -299,6 +308,13 @@ export default {
     }
   },
   computed: {
+    conditions() {
+      let conditions = {
+        ...this.$searchQuery,
+        is_valid: this.$searchQuery.card_status
+      }
+      return conditions
+    },
     columns,
     totalColumns,
     // 列表选择的卡是否一致
