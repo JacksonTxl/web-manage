@@ -54,7 +54,7 @@
                 slot="member"
                 showSearch
                 placeholder="搜索会员名"
-                style="width:140px"
+                style="width:149px"
                 :defaultActiveFirstOption="false"
                 :dropdownMatchSelectWidth="false"
                 :showArrow="false"

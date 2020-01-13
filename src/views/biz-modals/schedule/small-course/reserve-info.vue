@@ -4,7 +4,7 @@
     title="预约详情"
     @ok="save"
     v-model="show"
-    width="710px"
+    width="755px"
   >
     <a-row>
       <a-col :lg="16">
@@ -73,7 +73,7 @@
                 slot="member"
                 showSearch
                 placeholder="搜索会员名"
-                style="width: 120px"
+                style="width: 149px"
                 :defaultActiveFirstOption="false"
                 :dropdownMatchSelectWidth="false"
                 :showArrow="false"
