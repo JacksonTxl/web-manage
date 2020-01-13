@@ -35,7 +35,8 @@ export const columns = (vm: any) => [
   },
   {
     title: '性别',
-    dataIndex: 'sex'
+    dataIndex: 'sex',
+    scopedSlots: { customRender: 'sex' }
   },
   {
     title: '实收单价（元）',

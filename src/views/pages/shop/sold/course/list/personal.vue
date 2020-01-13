@@ -80,6 +80,9 @@
               {{ text | enumFilter('sold_common.course_status') }}
             </st-text>
           </template>
+          <template slot="sex" slot-scope="text">
+            {{ text | enumFilter('staff.sex') }}
+          </template>
           <template slot="end_time" slot-scope="text">
             {{ moment(text).format('YYYY-MM-DD HH:mm') }}
           </template>

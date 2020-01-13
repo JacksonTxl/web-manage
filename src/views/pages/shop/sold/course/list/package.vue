@@ -98,6 +98,19 @@
               {{ text | enumFilter('sold_common.course_status') }}
             </st-text>
           </template>
+          <template slot="buy_course_num" slot-scope="text, record">
+            {{ text }}/{{ record.team_course_init }}/{{
+              record.personal_course_init
+            }}
+          </template>
+          <template slot="remain_course_num" slot-scope="text, record">
+            {{ text }}/{{ record.team_course_remain }}/{{
+              record.personal_course_remain
+            }}
+          </template>
+          <template slot="sex" slot-scope="text">
+            {{ text | enumFilter('staff.sex') }}
+          </template>
           <template slot="package_type" slot-scope="text">
             {{ text | enumFilter('package_course.package_type') }}
           </template>
