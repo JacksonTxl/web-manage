@@ -40,6 +40,8 @@ import { columns } from './notice.config'
 import { NoticeService } from './notice.service'
 import tableMixin from '@/mixins/table.mixin'
 import CommonNotifyInfo from '@/views/biz-modals/common/notify/info'
+import CommonNotifyActivity from '@/views/biz-modals/common/notify/activity'
+import { InfoService } from '@/views/biz-modals/common/notify/info.service.ts'
 
 export default {
   name: 'NotifyNotice',
@@ -48,11 +50,13 @@ export default {
     b: 'page-notify-Notice'
   },
   modals: {
-    CommonNotifyInfo
+    CommonNotifyInfo,
+    CommonNotifyActivity
   },
   serviceInject() {
     return {
-      service: NoticeService
+      service: NoticeService,
+      infoService: InfoService
     }
   },
   rxState() {
@@ -69,17 +73,34 @@ export default {
   },
   methods: {
     onClickDetail(record) {
-      const { id, notify_type } = this.record
-      this.service
+      const { id, notify_type } = record
+      this.infoService
         .getAnnouncementInfo({ id, notify_type: notify_type.id })
         .subscribe(res => {
+          const info = res.info
           const link = res.info.image_link
-          if (this.image_link.includes('http')) {
-            window.open(this.res.info.image_link)
+          if (link.length > 0) {
+            // 有链接链接弹窗
+            window.open(link)
+          } else if (
+            info.image_key.length > 0 &&
+            info.notify_type !== '系统公告'
+          ) {
+            // 有图片没连接出现图片
+            const list = info.image_key.map(item => {
+              return {
+                image_key: item,
+                announcement_link: ''
+              }
+            })
+            this.$modalRouter.push({
+              name: 'common-notify-activity',
+              props: { list }
+            })
           } else {
-            this.this.$modalRouter.push({
-              name: 'common-notify-info',
-              props: { info }
+            // 常规公告 系统公告都弹详情
+            this.$modalRouter.push({
+              name: 'common-notify-info'
             })
           }
         })

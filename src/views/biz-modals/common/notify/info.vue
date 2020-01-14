@@ -62,12 +62,6 @@ export default {
     onCancel() {
       this.$emit('cancel')
     }
-  },
-  created() {
-    const { id, notify_type } = this.record
-    this.service
-      .getAnnouncementInfo({ id, notify_type: notify_type.id })
-      .subscribe()
   }
 }
 </script>

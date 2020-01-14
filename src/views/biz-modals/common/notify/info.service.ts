@@ -7,7 +7,6 @@ import { NotifyApi } from '@/api/v1/notify'
 @Injectable()
 export class InfoService {
   info$ = new State([{}])
-  brand$ = this.userService.brand$
   constructor(private api: NotifyApi, private userService: UserService) {}
   getAnnouncementInfo(query: any) {
     return this.api.getAnnouncementInfo(query).pipe(
