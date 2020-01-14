@@ -93,8 +93,28 @@ export const ruleOptions = (vm: any) => {
         }
       ]
     },
-    'activity_rule.per_times': {},
-    'activity_rule.total_times': {},
+    'activity_rule.per_times': {
+      rules: [
+        {
+          validator: (field: any, value: any, values: any) => {
+            if (values.activity_rule.draw_times_type === 1 && !value) {
+              return '请填写抽奖次数'
+            }
+          }
+        }
+      ]
+    },
+    'activity_rule.total_times': {
+      rules: [
+        {
+          validator: (field: any, value: any, values: any) => {
+            if (values.activity_rule.draw_times_type === 2 && !value) {
+              return '请填写抽奖次数'
+            }
+          }
+        }
+      ]
+    },
     'activity_rule.prize_times': {},
     'activity_lucky.lucky_name': {
       initialValue: '未中奖',

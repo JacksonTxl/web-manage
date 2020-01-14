@@ -15,10 +15,16 @@
         type="primary"
         :class="search('btn--in')"
         @click="moreIn()"
+        :disabled="!selectedRowKeys.length"
       >
         批量入库
       </st-button>
-      <st-button type="primary" @click="moreOut()" v-if="auth.retrieval">
+      <st-button
+        type="primary"
+        @click="moreOut()"
+        v-if="auth.retrieval"
+        :disabled="!selectedRowKeys.length"
+      >
         批量出库
       </st-button>
     </div>

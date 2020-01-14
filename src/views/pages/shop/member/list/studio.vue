@@ -47,6 +47,17 @@
       >
         添加用户
       </st-button>
+      <st-button
+        v-if="auth.export"
+        type="primary"
+        class="mg-r8"
+        v-export-excel="{
+          type: 'member',
+          query: { conditions: conditions }
+        }"
+      >
+        全部导出
+      </st-button>
       <!-- NOTE: 导入 -->
       <!-- <st-button class="shop-member-list-button" v-if="auth.import">导入用户</st-button> -->
       <st-button
@@ -103,7 +114,6 @@
         </st-button>
       </a-popover>
       <!-- NOTE: 导出 -->
-      <!-- <st-button v-if="auth.export" :disabled='isSelectedDisabled' class="shop-member-list-button">批量导出</st-button> -->
     </div>
     <st-table
       :columns="columns"
@@ -291,7 +301,18 @@ export default {
     }
   },
   computed: {
-    columns
+    columns,
+    conditions() {
+      let conditions = {
+        ...this.$searchQuery,
+        search: this.$searchQuery.keyword,
+        source: this.$searchQuery.register_way,
+        register_end_time: this.$searchQuery.register_stop_time,
+        member_start_time: this.$searchQuery.be_member_start_time,
+        member_end_time: this.$searchQuery.be_member_stop_time
+      }
+      return conditions
+    }
   },
   mounted() {
     this.sourceRegisters()

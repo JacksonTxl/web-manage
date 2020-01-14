@@ -54,14 +54,10 @@
       page-mode="client"
     ></st-table>
     <div slot="footer">
-      <!-- TODO: 合计弹窗导出暂时不做 下个迭代提醒后端 -->
       <st-button
         type="primary"
-        v-if="auth$.export && type !== 'total'"
-        v-export-excel="{
-          type: 'shop/team/course',
-          query: query
-        }"
+        v-if="auth$.export"
+        v-export-excel="exportParams"
       >
         全部导出
       </st-button>
@@ -123,7 +119,13 @@ export default {
   computed: {
     columns,
     showTable() {
-      return this.$route.path.includes('stat/course/summary')
+      return this.$route.path.includes('shop/course/summary') ? 'all' : 'coach'
+    },
+    exportParams() {
+      const type = 'shop/team/course'
+      return this.type === 'total'
+        ? { type: `${type}/total`, query: this.totalQuery }
+        : { type, query: this.query }
     },
     totalQuery() {
       let query = cloneDeep(this.$searchQuery)

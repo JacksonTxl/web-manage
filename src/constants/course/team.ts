@@ -19,3 +19,22 @@ export enum SHOP_SETTING {
    */
   SPECIFIED_STORE = 2
 }
+
+export enum TIME_UNIT {
+  /**
+   * 今天
+   */
+  TIME_TODAY = 1,
+  /**
+   * 周
+   */
+  TIME_WEEK = 2,
+  /**
+   * 日
+   */
+  TIME_DAY = 3,
+  /**
+   * 月
+   */
+  TIME_MONTH = 4
+}

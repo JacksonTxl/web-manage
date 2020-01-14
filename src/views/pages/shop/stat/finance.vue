@@ -19,7 +19,7 @@
 
     <st-total
       class="mg-t16"
-      :indexs="columns"
+      :indexs="totalColumns"
       :dataSource="total$"
       hasTitle
     ></st-total>
@@ -28,7 +28,7 @@
       class="mg-t12"
       :scroll="{ x: 1800 }"
       @change="onTableChange"
-      :loading="loading$.getOrderShopList"
+      :loading="loading$.getFinanceShopList"
       :columns="columns"
       :dataSource="list$"
       rowKey="id"
@@ -38,7 +38,7 @@
 <script>
 import { FinanceService } from './finance.service'
 import tableMixin from '@/mixins/table.mixin'
-import { columns } from './finance.config.ts'
+import { columns, totalColumns } from './finance.config.ts'
 export default {
   mixins: [tableMixin],
   bem: {
@@ -57,7 +57,8 @@ export default {
     return {}
   },
   computed: {
-    columns
+    columns,
+    totalColumns
   },
   methods: {
     recentChange(searchFieldsValue) {

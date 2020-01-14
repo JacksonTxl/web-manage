@@ -56,3 +56,4 @@ export const fieldNav = [
   'transaction_member',
   'customer_price'
 ]
+export const fieldInfo = ['amount', 'count', 'count', 'price']

@@ -66,13 +66,12 @@ import { detailColumns } from './detail.config.ts'
 import { DetailService } from './detail.service'
 import tableMixin from '@/mixins/table.mixin'
 import moment from 'moment'
-import { UserService } from '@/services/user.service'
 export default {
   bem: {
     detail: 'page-shop-store-stock-list-detail'
   },
   serviceInject() {
-    return { detailService: DetailService, userService: UserService }
+    return { detailService: DetailService }
   },
   rxState() {
     return {
@@ -80,7 +79,9 @@ export default {
       loading: this.detailService.loading$,
       page: this.detailService.page$,
       productList: this.detailService.productList$,
-      stockFlow: this.userService.getOptions$('cloud_store.stock_flow')
+      stockFlow: this.userService.getOptions$('cloud_store.stock_flow', {
+        addAll: '全部类型'
+      })
     }
   },
   mixins: [tableMixin],
@@ -88,7 +89,6 @@ export default {
     return { detailColumns, chooseGood: -1, stockType: -1 }
   },
   methods: {
-    onChange(e) {},
     // 日期选择
     onChooseDate(e) {
       this.$router.push({

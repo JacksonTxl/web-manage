@@ -77,18 +77,18 @@ export default {
   computed: {
     showData() {
       let templateData = []
-      for (let item in this.dataSource) {
-        this.indexs.forEach(ele => {
-          if (ele.dataIndex === item) {
-            templateData.push({
-              label: ele.titleTotal || ele.title,
-              value: this.dataSource[item],
-              unit: ele.unit || '',
-              slotName: ele.scopedSlots ? ele.scopedSlots.customRender : ''
-            })
-          }
+      // for (let item in this.dataSource) {
+      this.indexs.forEach(ele => {
+        // if (ele.dataIndex === item) {
+        templateData.push({
+          label: ele.titleTotal || ele.title,
+          value: this.dataSource[ele.dataIndex],
+          unit: ele.unit || '',
+          slotName: ele.scopedSlots ? ele.scopedSlots.customRender : ''
         })
-      }
+        // }
+      })
+      // }
       return templateData
     },
     timestamp() {

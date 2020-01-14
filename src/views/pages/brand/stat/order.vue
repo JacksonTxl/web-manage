@@ -52,7 +52,7 @@
       <st-total
         class="mg-t16"
         :class="b('total')"
-        :indexs="columns"
+        :indexs="totalColumns"
         :dataSource="total"
         hasTitle
       ></st-total>
@@ -78,7 +78,7 @@ import shopSelect from '@/views/biz-components/shop-select'
 import BrandStatOrderFacetBar from '@/views/biz-components/stat/brand-stat-order-facet-bar'
 import { OrderService } from './order.service'
 import tableMixin from '@/mixins/table.mixin'
-import { columns } from './order.config'
+import { columns, totalColumns } from './order.config'
 export default {
   name: 'BrandStatInfoOrder',
   mixins: [tableMixin],
@@ -120,7 +120,8 @@ export default {
     this.getChart()
   },
   computed: {
-    columns
+    columns,
+    totalColumns
   },
   methods: {
     onChangeChartShop(event) {
