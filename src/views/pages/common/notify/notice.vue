@@ -69,10 +69,20 @@ export default {
   },
   methods: {
     onClickDetail(record) {
-      this.$modalRouter.push({
-        name: 'common-notify-info',
-        props: { record }
-      })
+      const { id, notify_type } = this.record
+      this.service
+        .getAnnouncementInfo({ id, notify_type: notify_type.id })
+        .subscribe(res => {
+          const link = res.info.image_link
+          if (this.image_link.includes('http')) {
+            window.open(this.res.info.image_link)
+          } else {
+            this.this.$modalRouter.push({
+              name: 'common-notify-info',
+              props: { info }
+            })
+          }
+        })
     }
   }
 }
