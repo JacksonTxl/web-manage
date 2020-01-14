@@ -82,7 +82,7 @@ export default {
           if (link.length > 0) {
             // 有链接链接弹窗
             window.open(link)
-          } else if (info.image_key.length > 0 && info.notify_type.id === 2) {
+          } else if (info.image_key.length > 0 && notify_type.id === 2) {
             // 有图片没连接出现图片
             const list = info.image_key.map(item => {
               return {
