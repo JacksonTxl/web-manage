@@ -93,7 +93,11 @@ export default {
     // 管理私教排期
     onClickSettingSchdule() {
       let requestParam = cloneDeep(this.$searchQuery)
-      if (this.$searchQuery.start_date === this.$searchQuery.end_date) {
+      // 判断如果是日或月的时候取本周
+      if (
+        this.$searchQuery.start_date === this.$searchQuery.end_date ||
+        this.$searchQuery.time_unit == this.TIME_UNIT.TIME_MONTH
+      ) {
         let weekOfday = moment(
           this.$searchQuery.start_date,
           'YYYY-MM-DD'
