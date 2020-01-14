@@ -188,12 +188,13 @@ export default {
         ? moment(this.$searchQuery.start_time)
         : null
       const end = this.$searchQuery.end_time
-        ? moment(this.$searchQuery.start_time)
+        ? moment(this.$searchQuery.end_time)
         : null
-      this.date = [start, end]
+      this.$set(this, 'date', [start, end])
+      console.log(this.date)
     },
     onReset() {
-      this.init()
+      this.$set(this, 'date', [moment(), moment()])
       this.onSearchReset()
     },
     onPrint(id) {
