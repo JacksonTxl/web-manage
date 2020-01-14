@@ -38,7 +38,7 @@
             format="YYYY-MM-DD HH:mm"
           />
         </st-form-item>
-        <st-form-item label="排课限制" required>
+        <st-form-item label="排课限制">
           最多排
           <st-input-number
             placeholder="不填则默认排满"
