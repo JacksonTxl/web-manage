@@ -14,16 +14,6 @@ export const columns = () => [
     scopedSlots: { customRender: 'is_valid' }
   },
   {
-    title: '剩余储值（元）',
-    dataIndex: 'now_amount',
-    scopedSlots: { customRender: 'now_amount' }
-  },
-  {
-    title: '储值金额（元）',
-    dataIndex: 'init_amount',
-    scopedSlots: { customRender: 'init_amount' }
-  },
-  {
     title: '姓名',
     dataIndex: 'member_name',
     scopedSlots: { customRender: 'member_name' }
@@ -39,6 +29,24 @@ export const columns = () => [
     scopedSlots: { customRender: 'mobile' }
   },
   {
+    title: '剩余储值（元）',
+    dataIndex: 'now_amount',
+    scopedSlots: { customRender: 'now_amount' }
+  },
+  {
+    title: '剩余本金（元）',
+    dataIndex: 'now_non_discount_amount'
+  },
+  {
+    title: '剩余赠送（元）',
+    dataIndex: 'now_discount_amount'
+  },
+  {
+    title: '储值金额（元）',
+    dataIndex: 'init_amount',
+    scopedSlots: { customRender: 'init_amount' }
+  },
+  {
     title: '到期日期',
     dataIndex: 'end_time',
     scopedSlots: { customRender: 'end_time' }
@@ -49,12 +57,14 @@ export const columns = () => [
     scopedSlots: { customRender: 'buy_time' }
   },
   {
-    title: '剩余本金（元）',
-    dataIndex: 'now_non_discount_amount'
+    title: '销售人员',
+    dataIndex: 'staff_name',
+    scopedSlots: { customRender: 'staff_name' }
   },
   {
-    title: '剩余赠送（元）',
-    dataIndex: 'now_discount_amount'
+    title: '合同编号',
+    dataIndex: 'contract_number',
+    scopedSlots: { customRender: 'contract_number' }
   },
   {
     title: '合同类型',
@@ -95,16 +105,6 @@ export const columns = () => [
   {
     title: '消费赠送（元）',
     dataIndex: 'consume_discount'
-  },
-  {
-    title: '销售人员',
-    dataIndex: 'staff_name',
-    scopedSlots: { customRender: 'staff_name' }
-  },
-  {
-    title: '合同编号',
-    dataIndex: 'contract_number',
-    scopedSlots: { customRender: 'contract_number' }
   },
   {
     title: '操作',

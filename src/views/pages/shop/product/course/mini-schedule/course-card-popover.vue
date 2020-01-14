@@ -6,12 +6,13 @@
       v-model="showFlag"
       placement="bottom"
       v-if="cardItem.conflict"
+      trigger="click"
     >
       <template slot="content">
         <st-table
           :pagination="false"
           :columns="columns"
-          :scroll="{ x: 680, y: 380 }"
+          :scroll="{ x: 680, y: 330 }"
           :dataSource="cardItem.conflictList"
           rowKey="id"
         ></st-table>

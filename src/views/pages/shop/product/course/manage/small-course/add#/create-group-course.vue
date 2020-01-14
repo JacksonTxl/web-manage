@@ -24,11 +24,8 @@
             v-decorator="decorators.scope_application"
             placeholder="请选择适用范围"
           >
-            <a-select-option :value="-1" v-if="rangeList.length === 0">
-              <span class="color-text-light">尚未设置,</span>
-              <router-link to="/brand/setting/app/course/small-course-range">
-                去设置
-              </router-link>
+            <a-select-option disabled :value="-1" v-if="rangeList.length === 0">
+              <span class="color-text-light">尚未设置,请去品牌设置</span>
             </a-select-option>
             <a-select-option
               v-else
