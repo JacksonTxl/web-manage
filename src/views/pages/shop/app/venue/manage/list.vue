@@ -61,11 +61,7 @@
           >
             编辑
           </a>
-          <!-- TODO: -->
-          <a
-            href="javascript:;"
-            v-if="record.auth['shop:product:venues_site|del']"
-          >
+          <a v-if="record.auth['shop:product:venues_site|del']">
             <st-popconfirm
               :title="'一旦删除则无法恢复，确认删除？'"
               @confirm="onDelete(record)"
@@ -77,8 +73,11 @@
             @click="onSwitch(record)"
             v-if="record.auth['shop:product:venues_site|switch']"
           >
-            // TODO:
-            {{ record.site_status === SITE_STATUS.OFF ? '启用' : '停用' }}
+            {{
+              record.site_status
+                | siteFilter
+                | enumFilter('venues_reserve.venues_site_status')
+            }}
           </a>
           <a
             @click="onSetting(record)"
@@ -133,12 +132,20 @@ export default {
       SITE_STATUS
     }
   },
+  filters: {
+    siteFilter(val) {
+      return val === 1 ? 2 : 1
+    }
+  },
   computed: {
     venuesId() {
       return +this.$searchQuery.id
     }
   },
   methods: {
+    getList() {
+      this.listService.getList({ venues_id: this.venuesId }).subscribe()
+    },
     addSites() {
       this.$modalRouter.push({
         name: 'shop-app-venue-add-site',
@@ -147,21 +154,19 @@ export default {
         },
         on: {
           success: () => {
-            const venues_id = this.venuesId
-            this.listService.getList({ venues_id }).subscribe()
+            this.getList()
           }
         }
       })
     },
     delAll() {
-      const venues_id = this.venuesId
       const data = {
-        venues_id,
+        venues_id: this.venuesId,
         site_ids: this.selectedRowKeys
       }
       this.listService.delSites(data).subscribe(() => {
         this.onSelectionReset()
-        this.listService.getList({ venues_id }).subscribe()
+        this.getList()
       })
     },
     onEdit(site) {
@@ -173,35 +178,27 @@ export default {
         },
         on: {
           success: () => {
-            const venues_id = this.venuesId
-            this.listService.getList({ venues_id }).subscribe()
+            this.getList()
           }
         }
       })
     },
     onDelete(site) {
-      const venues_id = this.venuesId
       const data = {
-        venues_id,
+        venues_id: this.venuesId,
         site_ids: [site.id]
       }
       this.listService.delSites(data).subscribe(() => {
-        this.listService.getList({ venues_id }).subscribe()
+        this.getList()
       })
     },
     onSwitch(site) {
-      const venues_id = this.venuesId
       const data = {
-        site_status:
-          // TODO: 改成0，1
-          site.site_status === SITE_STATUS.ON
-            ? SITE_STATUS.OFF
-            : SITE_STATUS.ON,
+        site_status: site.site_status === 1 ? 2 : 1,
         site_id: site.id
       }
       this.listService.switchSite(data).subscribe(() => {
-        // TODO: 调用次数太多
-        this.listService.getList({ venues_id }).subscribe()
+        this.getList()
       })
     },
     onSetting(site) {
@@ -215,8 +212,7 @@ export default {
         },
         on: {
           success: () => {
-            const venues_id = this.venuesId
-            this.listService.getList({ venues_id }).subscribe()
+            this.getList()
           }
         }
       })

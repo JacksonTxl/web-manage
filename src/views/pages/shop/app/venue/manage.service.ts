@@ -38,8 +38,7 @@ export class ManageService implements Controller {
   switchVenue(params: SwitchParams) {
     return this.venueApi.switchVenue(params)
   }
-  // TODO:
-  setPerTime(value: number) {
+  SET_PER_TIME(value: number) {
     this.perTime$.commit(() => value)
   }
   @Effect()

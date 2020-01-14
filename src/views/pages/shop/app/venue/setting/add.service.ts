@@ -9,8 +9,7 @@ export class AddService {
   loading$ = new State({})
   info$ = new State({})
   sites$ = new State([])
-  // TODO:
-  harfEnums$ = this.userService.getOptions$('venues_reserve.reserve_half_time')
+  halfEnums$ = this.userService.getOptions$('venues_reserve.reserve_half_time')
   oneEnums$ = this.userService.getOptions$('venues_reserve.reserve_one_time')
   timeEnums$ = this.userService.getOptions$('venues_reserve.time_limit_type')
   cyclicEnums$ = this.userService.getOptions$('venues_reserve.cyclic_type')

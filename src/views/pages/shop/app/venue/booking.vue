@@ -148,6 +148,7 @@ import { ruleOptions, columns } from './booking.config'
 import SoldDealGatheringTip from '@/views/biz-modals/sold/deal/gathering-tip'
 import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
 import { PatternService } from '@/services/pattern.service'
+import { debounce } from 'lodash-es'
 export default {
   name: 'PageShopAppVenueBooking',
   bem: {
@@ -235,16 +236,14 @@ export default {
     this.pickDate(this.calendarData[0], 0)
   },
   watch: {
-    reduce_price(val) {
-      // TODO:
+    reduce_price: debounce(function(val) {
       this.calcPrice()
-    }
+    }, 500)
   },
   methods: {
     onNextPage() {
       if (!this.hasNext) return
       this.query.page++
-      // TODO:
       this.bookingService.getBookingList(this.query).subscribe(res => {
         this.bookingList = this.bookingList.concat(res.list)
         this.siteX = this.siteX.concat(res.site_x)
