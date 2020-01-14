@@ -52,7 +52,10 @@ export default {
           return
         }
         const arr = gradient.prices.filter(
-          item => !item.transfer_num || !item.min_sale || !item.sell_price
+          item =>
+            !item.transfer_num ||
+            !item.min_sale ||
+            (!item.sell_price && item.sell_price != 0)
         )
         if (arr.length > 0) {
           validFlag = true
