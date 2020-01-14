@@ -1220,7 +1220,8 @@ export const routeMapConfig = {
     routeConfig.meta.title = '{{$c("small_course")}}'
     routeConfig.queryOptions = {
       coach_id: { type: Number, default: -1 },
-      course_id: { type: Number, default: -1 }
+      course_id: { type: Number, default: -1 },
+      time_unit: { type: Number, default: 2 }
     }
   },
   'shop-product-course-schedule-small-course-small-course-table'(
@@ -1229,7 +1230,8 @@ export const routeMapConfig = {
     routeConfig.meta.title = '{{$c("small_course")}}'
     routeConfig.queryOptions = {
       coach_id: { type: Number, default: -1 },
-      course_id: { type: Number, default: -1 }
+      course_id: { type: Number, default: -1 },
+      time_unit: { type: Number, default: 2 }
     }
   },
   'shop-product-course-mini-schedule-inbatch-add'(routeConfig: RouteConfig) {

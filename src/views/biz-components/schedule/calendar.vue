@@ -23,7 +23,7 @@
           <a-radio-button :value="TIME_UNIT.TIME_WEEK">
             周
           </a-radio-button>
-          <a-radio-button :value="TIME_UNIT.TIME_MONTH">
+          <a-radio-button :value="TIME_UNIT.TIME_MONTH" v-if="!smallCourseType">
             月
           </a-radio-button>
         </a-radio-group>
@@ -215,6 +215,10 @@ export default {
     cardList: {
       type: Array,
       default: () => []
+    },
+    smallCourseType: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -273,7 +277,7 @@ export default {
         }
         this.$searchQuery.time_unit = evt.target.value
       } else {
-        this.pageBtnFocusState = evt.target.value
+        this.pageBtnFocusState = evt.target.valuevalue
       }
     },
     onClickAdd() {
