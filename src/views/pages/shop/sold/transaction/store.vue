@@ -40,7 +40,7 @@
           <li v-for="(item, index) in storeProductList" :key="index">
             <img
               :class="basic('product-img')"
-              :src="item.img"
+              :src="item.img | imgFilter({ w: 194, h: 172 })"
               @error="productImg(index)"
               alt=""
             />
