@@ -53,7 +53,7 @@
         class="mg-r8"
         v-export-excel="{
           type: 'member',
-          query: { conditions: $searchQuery }
+          query: { conditions: conditions }
         }"
       >
         全部导出
@@ -298,7 +298,18 @@ export default {
     }
   },
   computed: {
-    columns
+    columns,
+    conditions() {
+      let conditions = {
+        ...this.$searchQuery,
+        search: this.$searchQuery.keyword,
+        source: this.$searchQuery.register_way,
+        register_end_time: this.$searchQuery.register_stop_time,
+        member_start_time: this.$searchQuery.be_member_start_time,
+        member_end_time: this.$searchQuery.be_member_stop_time
+      }
+      return conditions
+    }
   },
   mounted() {
     this.sourceRegisters()
