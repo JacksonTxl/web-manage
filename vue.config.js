@@ -29,6 +29,13 @@ const localApiEnvHostTarget = {
   prod: 'https://pro.styd.cn'
 }[env.LOCAL_API_ENV]
 
+const LOCAL_WS_HOST = {
+  dev: 'wss://api-saas-dev.styd.cn',
+  test: 'wss://api-saas-test.styd.cn',
+  pre: 'wss://api-saas-pre.styd.cn',
+  prod: 'wss://api-saas.styd.cn'
+}[env.LOCAL_API_ENV]
+
 const YapiHost = 'https://doc.styd.cn'
 
 module.exports = {
@@ -194,6 +201,7 @@ module.exports = {
           BASE_URL: JSON.stringify('/'),
           NODE_ENV: JSON.stringify(env.NODE_ENV),
           LOCAL_API_ENV: JSON.stringify(env.LOCAL_API_ENV),
+          LOCAL_WS_HOST: JSON.stringify(LOCAL_WS_HOST),
           PAGE_ENV: JSON.stringify(env.PAGE_ENV)
         }
       })
