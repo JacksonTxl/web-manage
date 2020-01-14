@@ -14,7 +14,7 @@
           <img src="~@/assets/img/notify_logo.png" alt="" />
         </span>
         <span :class="b('item-type')" class="mg-r8">
-          {{ info$.notify_type }}
+          {{ info$.notify_type.name }}
         </span>
         <span :class="b('item-time')">{{ info$.send_time }}</span>
       </div>
