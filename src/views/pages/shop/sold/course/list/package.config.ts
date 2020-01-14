@@ -126,7 +126,7 @@ export const totalColumns = () => [
     dataIndex: 'personal_course_remain'
   },
   {
-    title: '购买课时（节）',
+    title: '购买总课时（节）',
     dataIndex: 'buy_course_num'
   },
   {
