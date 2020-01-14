@@ -50,7 +50,7 @@
 
     <st-total
       :class="bPage('total')"
-      :indexs="columns"
+      :indexs="totalColumns"
       :dataSource="total$"
       hasTitle
     >
@@ -185,7 +185,7 @@ import ShopStatPersonalCourse from '@/views/biz-modals/shop/stat/personal-course
 import ShopStatPersonalConsume from '@/views/biz-modals/shop/stat/personal-consume'
 import ShopStatTeamCourse from '@/views/biz-modals/shop/stat/team-course'
 import ShopStatTeamConsume from '@/views/biz-modals/shop/stat/team-consume'
-import { columns } from './coach.config.ts'
+import { columns, totalColumns } from './coach.config.ts'
 export default {
   mixins: [tableMixin],
   bem: {
@@ -218,6 +218,7 @@ export default {
   },
   computed: {
     columns,
+    totalColumns,
     smallCourseText(vm) {
       return `${vm.$c('small_course')}消课价值（元)`
     },

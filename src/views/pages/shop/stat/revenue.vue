@@ -51,7 +51,7 @@
       <!-- :rowSelection="{ selectedRowKeys, onChange: onSelectionChange }" -->
       <st-total
         :class="bPage('total')"
-        :indexs="columns"
+        :indexs="totalColumns"
         :dataSource="total$"
         hasTitle
       ></st-total>
@@ -70,7 +70,7 @@
 <script>
 import { RevenueService } from './revenue.service'
 import tableMixin from '@/mixins/table.mixin'
-import { columns } from './revenue.config.ts'
+import { columns, totalColumns } from './revenue.config.ts'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 export default {
@@ -109,7 +109,8 @@ export default {
     }
   },
   computed: {
-    columns
+    columns,
+    totalColumns
   },
   components: { swiper, swiperSlide },
   created() {

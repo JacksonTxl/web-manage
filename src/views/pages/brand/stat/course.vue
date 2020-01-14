@@ -82,7 +82,7 @@
       <main :class="bPage('mian')" class="mg-t16">
         <st-total
           :class="bPage('total')"
-          :indexs="columns"
+          :indexs="totalColumns"
           :dataSource="total$"
           hasTitle
         ></st-total>
@@ -106,7 +106,7 @@ import BrandStatisticsCourseRing from '@/views/biz-components/stat/brand-stat-co
 import shopSelect from '@/views/biz-components/shop-select'
 import { CourseService } from './course.service'
 import tableMixin from '@/mixins/table.mixin'
-import { columns } from './course.config'
+import { columns, totalColumns } from './course.config'
 export default {
   name: 'BrandStatCourse',
   mixins: [tableMixin],
@@ -168,6 +168,7 @@ export default {
   },
   computed: {
     columns,
+    totalColumns,
     value() {
       let day = this.$searchQuery.start_date ? 0 : this.$searchQuery.day
       return {
