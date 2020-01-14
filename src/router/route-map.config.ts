@@ -974,8 +974,10 @@ export const routeMapConfig = {
     routeConfig.meta.title = '场地预约'
     routeConfig.meta.tabs = [
       'brand-app-venue-data',
-      'brand-app-venue-basic-setting',
-      'brand-app-venue-notice-tpl'
+      'brand-app-venue-basic-setting'
+      // 后端消息通知功能没上，需要先把这个入口隐藏
+      // ,
+      // 'brand-app-venue-notice-tpl'
     ]
   },
   'brand-app-venue-data'(routeConfig: RouteConfig) {
