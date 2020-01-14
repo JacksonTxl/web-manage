@@ -92,7 +92,7 @@ export class WsNotifyService {
     const args = msg.payload.args
     const content = msg.payload.content
     const config = {
-      title: msg.payload.title,
+      title: args.member_name,
       content: (h: any) => {
         return msg.payload.msg_sub_type !== 8
           ? h('div', { attrs: { class: 'st-ws-notice-description' } }, [

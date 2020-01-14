@@ -183,8 +183,17 @@ export default {
       this.$searchQuery.end_time = end_time
       this.onSearch()
     },
+    init() {
+      const start = this.$searchQuery.start_time
+        ? moment(this.$searchQuery.start_time)
+        : null
+      const end = this.$searchQuery.end_time
+        ? moment(this.$searchQuery.start_time)
+        : null
+      this.date = [start, end]
+    },
     onReset() {
-      this.date = [null, null]
+      this.init()
       this.onSearchNative()
     },
     onPrint(id) {
@@ -192,13 +201,7 @@ export default {
     }
   },
   created() {
-    const start = this.$searchQuery.start_time
-      ? moment(this.$searchQuery.start_time)
-      : null
-    const end = this.$searchQuery.end_time
-      ? moment(this.$searchQuery.start_time)
-      : null
-    this.date = [start, end]
+    this.init()
   }
 }
 </script>
