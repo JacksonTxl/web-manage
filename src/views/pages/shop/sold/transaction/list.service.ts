@@ -66,6 +66,7 @@ export class ListService {
   getStoreProductList(params: TransactionListInput) {
     return this.transactionApi.getStoreProductList(params).pipe(
       tap((res: any) => {
+        res.list.map((item: any) => (item.isError = false))
         this.storeProductList$.commit(() => res.list)
         this.productPage$.commit(() => res.page)
       })

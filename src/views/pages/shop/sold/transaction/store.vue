@@ -40,6 +40,13 @@
           <li v-for="(item, index) in storeProductList" :key="index">
             <img
               :class="basic('product-img')"
+              v-if="item.isError"
+              :src="defaultImg"
+              alt=""
+            />
+            <img
+              v-else
+              :class="basic('product-img')"
               :src="item.img | imgFilter({ w: 194, h: 172 })"
               @error="productImg(index)"
               alt=""
@@ -284,6 +291,7 @@ export default {
       form,
       decorators,
       PRODUCT_TYPE,
+      defaultImg,
       memberSearchText: '', // 搜索会员value
       couponText: '未选择优惠券', // 选择的优惠券名
       couponDropdownVisible: false,
@@ -309,7 +317,7 @@ export default {
   },
   methods: {
     productImg(index) {
-      this.storeProductList[index].img = defaultImg
+      this.storeProductList[index].isError = true
     },
     // 获取商品列表
     getList() {
