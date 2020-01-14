@@ -53,7 +53,7 @@
         class="mg-r8"
         v-export-excel="{
           type: 'member',
-          query: { condtion: $searchQuery }
+          query: { conditions: $searchQuery }
         }"
       >
         全部导出

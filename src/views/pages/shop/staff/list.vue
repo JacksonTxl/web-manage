@@ -16,7 +16,7 @@
           class="mg-r8"
           v-export-excel="{
             type: 'staff',
-            query: { condtion: $searchQuery }
+            query: { conditions: $searchQuery }
           }"
         >
           全部导出
