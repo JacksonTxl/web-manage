@@ -28,7 +28,7 @@
       class="mg-t12"
       :scroll="{ x: 1800 }"
       @change="onTableChange"
-      :loading="loading$.getOrderShopList"
+      :loading="loading$.getFinanceShopList"
       :columns="columns"
       :dataSource="list$"
       rowKey="id"

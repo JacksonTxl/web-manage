@@ -14,21 +14,6 @@ export const columns = (vm: any) => [
     scopedSlots: { customRender: 'course_status' }
   },
   {
-    title: '剩余课时',
-    dataIndex: 'remain_course_num',
-    scopedSlots: { customRender: 'remain_course_num' }
-  },
-  {
-    title: '购买课时',
-    dataIndex: 'init_course_num',
-    scopedSlots: { customRender: 'init_course_num' }
-  },
-  {
-    title: `${vm.$c('coach')}级别`,
-    dataIndex: 'coach_level',
-    scopedSlots: { customRender: 'coach_level' }
-  },
-  {
     title: '姓名',
     dataIndex: 'member_name',
     scopedSlots: { customRender: 'member_name' }
@@ -39,6 +24,21 @@ export const columns = (vm: any) => [
     scopedSlots: { customRender: 'sex' }
   },
   {
+    title: '手机号',
+    dataIndex: 'mobile',
+    scopedSlots: { customRender: 'mobile' }
+  },
+  {
+    title: '剩余课时',
+    dataIndex: 'remain_course_num',
+    scopedSlots: { customRender: 'remain_course_num' }
+  },
+  {
+    title: '购买课时',
+    dataIndex: 'init_course_num',
+    scopedSlots: { customRender: 'init_course_num' }
+  },
+  {
     title: '实收单价（元）',
     dataIndex: 'unit_price'
   },
@@ -47,11 +47,41 @@ export const columns = (vm: any) => [
     dataIndex: 'amortization_amount'
   },
   {
+    title: '到期日期',
+    dataIndex: 'end_time',
+    scopedSlots: { customRender: 'end_time' }
+  },
+  {
+    title: '购买日期',
+    dataIndex: 'buy_time',
+    scopedSlots: { customRender: 'buy_time' }
+  },
+  {
+    title: `上课${vm.$c('coach')}`,
+    dataIndex: 'coach_name',
+    scopedSlots: { customRender: 'coach_name' }
+  },
+  {
+    title: `${vm.$c('coach')}级别`,
+    dataIndex: 'coach_level',
+    scopedSlots: { customRender: 'coach_level' }
+  },
+  {
+    title: '销售人员',
+    dataIndex: 'staff_name',
+    scopedSlots: { customRender: 'staff_name' }
+  },
+  {
+    title: '合同编号',
+    dataIndex: 'contract_number',
+    scopedSlots: { customRender: 'contract_number' }
+  },
+  {
     title: '合同类型',
     dataIndex: 'transfer_type'
   },
   {
-    title: '合同原价',
+    title: '合同原价（元）',
     dataIndex: 'total_price'
   },
   {
@@ -81,36 +111,6 @@ export const columns = (vm: any) => [
   {
     title: '爽约次数',
     dataIndex: 'cancel_times'
-  },
-  {
-    title: '手机号',
-    dataIndex: 'mobile',
-    scopedSlots: { customRender: 'mobile' }
-  },
-  {
-    title: '到期日期',
-    dataIndex: 'end_time',
-    scopedSlots: { customRender: 'end_time' }
-  },
-  {
-    title: '购买日期',
-    dataIndex: 'buy_time',
-    scopedSlots: { customRender: 'buy_time' }
-  },
-  {
-    title: `上课${vm.$c('coach')}`,
-    dataIndex: 'coach_name',
-    scopedSlots: { customRender: 'coach_name' }
-  },
-  {
-    title: '销售人员',
-    dataIndex: 'staff_name',
-    scopedSlots: { customRender: 'staff_name' }
-  },
-  {
-    title: '合同编号',
-    dataIndex: 'contract_number',
-    scopedSlots: { customRender: 'contract_number' }
   },
   {
     title: '操作',
