@@ -2,6 +2,7 @@ import { Injectable } from 'vue-service-app'
 import { State } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { MemberApi } from '@/api/v1/member'
+import { UserService } from '@/services/user.service'
 import { StaffApi } from '@/api/v1/staff'
 import { AddUserParams } from '@/api/v1/member'
 import { anyAll } from '@/operators'
@@ -12,7 +13,14 @@ export class AddService {
   countryInfo$ = new State({})
   nations$ = new State([])
   countryList$ = new State([])
-  constructor(protected memberApi: MemberApi, protected staffApi: StaffApi) {}
+  parent_info$ = new State({})
+  minorsType$ = this.userService.getOptions$('small_course.minors_type')
+  parentType$ = this.userService.getOptions$('small_course.parent_type')
+  constructor(
+    protected memberApi: MemberApi,
+    protected staffApi: StaffApi,
+    private userService: UserService
+  ) {}
 
   getCountryCodes() {
     return this.staffApi.getCountryCodes().pipe(
@@ -35,7 +43,9 @@ export class AddService {
       })
     )
   }
-
+  getParentInfoByPhone(params: any) {
+    return this.memberApi.getParentInfoByPhone(params)
+  }
   addUser(params: AddUserParams) {
     return this.memberApi.addUser(params)
   }

@@ -1,5 +1,5 @@
 <template>
-  <st-panel app :tabs="tabs">
+  <st-panel app :tabs="authTabs$">
     <portal-target
       slot="actions"
       name="SHOP_RECEPTION_ENTRANCE_KEYWORDS_SEARCH"
@@ -17,8 +17,9 @@ export default {
     }
   },
   rxState() {
+    const { authTabs$ } = this.service
     return {
-      // authTabs: this.service.authTabs$
+      authTabs$
     }
   },
   data() {

@@ -97,6 +97,7 @@
                   inviterCoupon.coupon_name ? inviterCoupon.coupon_name : ''
                 "
                 key="3"
+                @close="onEditCoupon('inviter')"
               />
             </div>
           </st-form-item>
@@ -118,6 +119,7 @@
                   inviteeCoupon.coupon_name ? inviteeCoupon.coupon_name : ''
                 "
                 key="3"
+                @close="onEditCoupon('invitee')"
               />
             </div>
           </st-form-item>
@@ -302,6 +304,7 @@ export default {
       this.onValidate('inviter')
       if (this.inviteeIsOk && this.inviterIsOk) {
         let fn = this.isOpen ? 'edit' : 'add'
+        console.log(fn)
         this.settingService[fn]({
           activity_status: this.openStatus ? 1 : 2,
           // 邀请人

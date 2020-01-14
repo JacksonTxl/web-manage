@@ -22,7 +22,17 @@
     <div :class="basic('content')">
       <div :class="basic('content-batch')" class="mg-b16">
         <!-- NOTE: 导出 -->
-        <!-- <st-button v-if="auth.export" type="primary">批量导出</st-button> -->
+        <st-button
+          v-if="auth.export"
+          type="primary"
+          class="mg-r8"
+          v-export-excel="{
+            type: 'sold/course/personal',
+            query: { conditions: $searchQuery }
+          }"
+        >
+          全部导出
+        </st-button>
         <st-button
           type="primary"
           class="mg-r8"
@@ -79,6 +89,22 @@
             >
               {{ text | enumFilter('sold_common.course_status') }}
             </st-text>
+          </template>
+          <template slot="member_name" slot-scope="text, record">
+            <template v-if="record.is_minors">
+              {{ record.member_name }}(未成年)
+            </template>
+            <template v-else>
+              {{ record.member_name }}
+            </template>
+          </template>
+          <template slot="mobile" slot-scope="text, record">
+            <template v-if="record.is_minors">
+              {{ record.parent_mobile }}({{ record.parent_user_role }})
+            </template>
+            <template v-else>
+              {{ record.mobile }}
+            </template>
           </template>
           <template slot="sex" slot-scope="text">
             {{ text | enumFilter('staff.sex') }}

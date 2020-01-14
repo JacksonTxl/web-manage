@@ -5,6 +5,7 @@
         <st-t3 class="mg-y20" v-if="li.course_type === 1">推荐私教课</st-t3>
         <st-t3 class="mg-y20" v-if="li.course_type === 2">推荐团体课</st-t3>
         <st-t3 class="mg-y20" v-if="li.course_type === 3">推荐课程包</st-t3>
+        <st-t3 class="mg-y20" v-if="li.course_type === 4">推荐小班课</st-t3>
         <st-form-item label="模块名称">
           <a-input
             placeholder="请输入模块名称"
@@ -34,6 +35,14 @@
             <a-select-option :value="1">门店全部课程包</a-select-option>
             <a-select-option :value="2">展示门店热销课程包</a-select-option>
             <a-select-option :value="3">展示门店最新课程包</a-select-option>
+          </a-select>
+        </st-form-item>
+        <st-form-item label="展示课程" v-if="li.course_type === 4">
+          <a-select placeholder="请输入展示课程" v-model="li.data_source">
+            <a-select-option :value="1">全部小班课</a-select-option>
+            <a-select-option :value="2">报名尚未开始</a-select-option>
+            <a-select-option :value="3">报名中（已成班）</a-select-option>
+            <a-select-option :value="4">报名中（未成班）</a-select-option>
           </a-select>
         </st-form-item>
       </div>

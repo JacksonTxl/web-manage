@@ -35,8 +35,21 @@
               {{ info.product_name }}
             </st-info-item>
             <st-info-item label="购买会员">
-              {{ info.member_name }} {{ info.member_mobile }}
+              {{ info.member_name }}
             </st-info-item>
+            <template v-if="info.is_minors === PERSON_TYPE.CHILD">
+              <st-info-item label="家长手机号">
+                {{ info.parent_mobile }}
+              </st-info-item>
+              <st-info-item :label="`家长姓名`">
+                {{ info.parent_name }}({{ info.parent_user_role }})
+              </st-info-item>
+            </template>
+            <template v-else>
+              <st-info-item label="手机号">
+                {{ info.member_mobile }}
+              </st-info-item>
+            </template>
             <st-info-item label="下单人">{{ info.operator_name }}</st-info-item>
             <st-info-item label="下单时间">
               {{ info.created_time }}
@@ -90,6 +103,7 @@ import ShopFinanceRefund from '@/views/biz-modals/shop/finance/refund'
 import ShopFinanceSplit from '@/views/biz-modals/shop/finance/split'
 import SoldDealGathering from '@/views/biz-modals/sold/deal/gathering'
 import { ORDER_PRODUCT_TYPE } from '@/constants/finance/order'
+import { PERSON_TYPE } from '@/constants/course/small-course'
 export default {
   name: 'PageShopFinanceOrderInfo',
   bem: {
@@ -115,13 +129,21 @@ export default {
   },
   data() {
     return {
-      ORDER_PRODUCT_TYPE
+      ORDER_PRODUCT_TYPE,
+      PERSON_TYPE
     }
   },
-  mounted() {
-    console.log(this.auth)
+  computed: {
+    infoParents() {
+      let parentsMess = ''
+      if (typeof this.info.parents === 'object') {
+        parentsMess = `${this.info.parents.name} (${this.info.parents.mobile})`
+      } else {
+        parentsMess = this.info.parents
+      }
+      return parentsMess
+    }
   },
-  computed: {},
   methods: {
     // 订单收款modal
     createdOrderPay() {

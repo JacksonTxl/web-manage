@@ -33,8 +33,17 @@
     </st-search-panel>
     <div :class="basic('content')">
       <div :class="basic('content-batch')" class="mg-b16">
-        <!-- NOTE: 导出 -->
-        <!-- <st-button type="primary" class="mg-r8" v-if="auth.export">批量导出</st-button> -->
+        <st-button
+          v-if="auth.export"
+          type="primary"
+          class="mg-r8"
+          v-export-excel="{
+            type: 'sold/card/member',
+            query: { conditions: conditions }
+          }"
+        >
+          全部导出
+        </st-button>
         <template
           v-if="selectedRowKeys.length >= 1 && diffSelectedRows.length === 0"
         >
@@ -137,6 +146,22 @@
             >
               {{ text | enumFilter('sold_common.card_status') }}
             </st-text>
+          </template>
+          <template slot="member_name" slot-scope="text, record">
+            <template v-if="record.is_minors">
+              {{ record.member_name }}(未成年)
+            </template>
+            <template v-else>
+              {{ record.member_name }}
+            </template>
+          </template>
+          <template slot="mobile" slot-scope="text, record">
+            <template v-if="record.is_minors">
+              {{ record.parent_mobile }}({{ record.parent_user_role }})
+            </template>
+            <template v-else>
+              {{ record.mobile }}
+            </template>
           </template>
           <template slot="end_time" slot-scope="text">
             {{ text }}
@@ -283,6 +308,13 @@ export default {
     }
   },
   computed: {
+    conditions() {
+      let conditions = {
+        ...this.$searchQuery,
+        is_valid: this.$searchQuery.card_status
+      }
+      return conditions
+    },
     columns,
     totalColumns,
     // 列表选择的卡是否一致
@@ -503,6 +535,7 @@ export default {
         props: {
           ids: this.selectedRowKeys,
           type: this.selectedRows[0].card_type,
+          unit: this.selectedRows[0].unit,
           searchQuery: cloneDeep(this.$searchQuery)
         },
         on: {

@@ -28,7 +28,7 @@
           class="mg-l8"
           showSearch
           :placeholder="`请选择${$c('coach')}`"
-          v-if="showTable === 'all'"
+          v-if="showTable"
           optionFilterProp="children"
           style="width: 200px"
           v-model="coach_id"
@@ -141,7 +141,7 @@ export default {
         type: '/total',
         ...query
       }
-      if (this.showTable === 'all') {
+      if (this.showTable) {
         query.coach_id = this.coach_id
       }
       return query

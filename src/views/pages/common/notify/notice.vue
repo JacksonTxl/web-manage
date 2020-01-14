@@ -1,7 +1,7 @@
 <template>
   <div :class="b()">
     <st-search-panel @search="onSearch" @reset="onSearchReset">
-      <st-search-panel-item label="通知类型：">
+      <st-search-panel-item label="公告类型：">
         <st-search-radio
           v-model="$searchQuery.notify_type"
           :options="noticeTypeOptions$"

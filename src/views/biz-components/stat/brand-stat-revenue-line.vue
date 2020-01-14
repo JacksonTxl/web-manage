@@ -9,6 +9,7 @@ import { Chart } from '@antv/g2'
 import chartMixin from './mixin'
 
 export default {
+  name: 'BrandStatRevenueLine',
   mixins: [chartMixin],
   props: {
     /**
@@ -28,12 +29,14 @@ export default {
       type: Array,
       default() {
         const member_card = this.$c('member_card')
+        const small_course = this.$c('small_course')
         return [
           member_card,
           '私教课',
           '团体课',
           // '储值卡',
           '课程包',
+          small_course,
           '云店',
           // '定金',
           // '押金',
@@ -48,6 +51,7 @@ export default {
         '#4677F9',
         '#06DB8C',
         '#009DFF',
+        '#00F7e6',
         '#B8F10F',
         '#3F66F6',
         '#FF6466'

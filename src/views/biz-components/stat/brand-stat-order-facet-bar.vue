@@ -12,6 +12,11 @@ import StHelpTooltip from '@/views/components/help-tooltip/help-tooltip'
 import { debounce } from 'lodash-es'
 export default {
   mixins: [chartMixin],
+  data() {
+    return {
+      dataSource: []
+    }
+  },
   props: {
     data: {
       type: Array,
@@ -123,67 +128,21 @@ export default {
           const color = this.colors[facetIndex]
           view.axis('value', false)
 
-          view.guide().region({
-            start: ['0%', '3.4%'], // 辅助框起始位置，值为原始数据值，支持 callback
-            end: ['100%', '13.4%'], // 辅助框结束位置，值为原始数据值，支持 callback
-            style: {
-              lineWidth: 0, // 辅助框的边框宽度
-              fill: '#E9EDF2', // 辅助框填充的颜色
-              fillOpacity: 1, // 辅助框的背景透明度
-              stroke: '#ccc' // 辅助框的边框颜色设置
-            }
-          })
-          view.guide().region({
-            start: ['0%', '20.1%'], // 辅助框起始位置，值为原始数据值，支持 callback
-            end: ['100%', '30.1%'], // 辅助框结束位置，值为原始数据值，支持 callback
-            style: {
-              lineWidth: 0, // 辅助框的边框宽度
-              fill: '#E9EDF2', // 辅助框填充的颜色
-              fillOpacity: 1, // 辅助框的背景透明度
-              stroke: '#ccc' // 辅助框的边框颜色设置
-            }
-          })
-          view.guide().region({
-            start: ['0%', '36.8%'], // 辅助框起始位置，值为原始数据值，支持 callback
-            end: ['100%', '46.8%'], // 辅助框结束位置，值为原始数据值，支持 callback
-            style: {
-              lineWidth: 0, // 辅助框的边框宽度
-              fill: '#E9EDF2', // 辅助框填充的颜色
-              fillOpacity: 1, // 辅助框的背景透明度
-              stroke: '#ccc' // 辅助框的边框颜色设置
-            }
-          })
-          view.guide().region({
-            start: ['0%', '53.5%'], // 辅助框起始位置，值为原始数据值，支持 callback
-            end: ['100%', '63.5%'], // 辅助框结束位置，值为原始数据值，支持 callback
-            style: {
-              lineWidth: 0, // 辅助框的边框宽度
-              fill: '#E9EDF2', // 辅助框填充的颜色
-              fillOpacity: 1, // 辅助框的背景透明度
-              stroke: '#ccc' // 辅助框的边框颜色设置
-            }
-          })
-          view.guide().region({
-            start: ['0%', '70.2%'], // 辅助框起始位置，值为原始数据值，支持 callback
-            end: ['100%', '80.2%'], // 辅助框结束位置，值为原始数据值，支持 callback
-            style: {
-              lineWidth: 0, // 辅助框的边框宽度
-              fill: '#E9EDF2', // 辅助框填充的颜色
-              fillOpacity: 1, // 辅助框的背景透明度
-              stroke: '#ccc' // 辅助框的边框颜色设置
-            }
-          })
-          view.guide().region({
-            start: ['0%', '86.9%'], // 辅助框起始位置，值为原始数据值，支持 callback
-            end: ['100%', '96.9%'], // 辅助框结束位置，值为原始数据值，支持 callback
-            style: {
-              lineWidth: 0, // 辅助框的边框宽度
-              fill: '#E9EDF2', // 辅助框填充的颜色
-              fillOpacity: 1, // 辅助框的背景透明度
-              stroke: '#ccc' // 辅助框的边框颜色设置
-            }
-          })
-
+          const len = this.data.length
+          for (let i = 0; i < len; i++) {
+            const yaxis1 = 2.3 + (100 / len) * i
+            const yaxis2 = 12.3 + (100 / len) * i
+            view.guide().region({
+              start: ['0%', `${yaxis1}%`], // 辅助框起始位置，值为原始数据值，支持 callback
+              end: ['100%', `${yaxis2}%`], // 辅助框结束位置，值为原始数据值，支持 callback
+              style: {
+                lineWidth: 0, // 辅助框的边框宽度
+                fill: '#E9EDF2', // 辅助框填充的颜色
+                fillOpacity: 1, // 辅助框的背景透明度
+                stroke: '#ccc' // 辅助框的边框颜色设置
+              }
+            })
+          }
           view
             .interval()
             .position('group*value')

@@ -3,6 +3,7 @@ import { State } from 'rx-state'
 import { tap } from 'rxjs/operators'
 import { MemberApi, EditFaceParams } from '@/api/v1/member'
 import { AuthService } from '@/services/auth.service'
+import { forkJoin } from 'rxjs'
 
 @Injectable()
 export class InfoService implements Controller {
@@ -43,8 +44,11 @@ export class InfoService implements Controller {
   editFace(id: number, params: EditFaceParams) {
     return this.cardsApi.updateUserFace(id, params)
   }
+  init(id: any) {
+    return forkJoin(this.getBasicInfo(id), this.getHeaderInfo(id))
+  }
   beforeRouteEnter(to: ServiceRoute, from: ServiceRoute) {
     const { id } = to.meta.query
-    return this.getHeaderInfo(id)
+    return this.init(id)
   }
 }

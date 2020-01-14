@@ -3,6 +3,7 @@
     :wrapClassName="b()"
     v-model="show"
     @ok="onOk"
+    @cancel="onCancel"
     width="640px"
     :footer="null"
   >
@@ -54,9 +55,15 @@ export default {
     }
   },
   methods: {
-    onOk() {
+    setRead() {
       this.show = false
       this.$emit('success')
+    },
+    onOk() {
+      this.setRead()
+    },
+    onCancel() {
+      this.setRead()
     }
   }
 }

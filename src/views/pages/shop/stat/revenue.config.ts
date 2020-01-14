@@ -30,6 +30,12 @@ export const columns = (vm: any) => {
       align: 'right'
     },
     {
+      title: `${vm.$c('small_course')}营收(元)`,
+      dataIndex: 'small_course_amount',
+
+      align: 'right'
+    },
+    {
       title: '云店营收(元)',
       dataIndex: 'shop_amount',
       align: 'right'

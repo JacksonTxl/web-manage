@@ -7,19 +7,21 @@
       :cardList="cardList"
       :startDate="startDate"
       fixed
+      ref="calendar"
     >
       <div slot="toolbar-left">
         <st-button
           type="primary"
           class="mg-r12"
+          :loading="loading.getSmallTemplate"
           @click="onClickScheduleInBatch"
           v-if="auth.addBatch"
         >
           批量排期
         </st-button>
-        <st-button @click="onClickCopySchedule" v-if="auth.copy">
+        <!-- <st-button @click="onClickCopySchedule" v-if="auth.copy">
           复制排期
-        </st-button>
+        </st-button> -->
       </div>
     </calendar>
   </div>
@@ -33,31 +35,40 @@ import SchedulePersonalTeamAdd from '@/views/biz-modals/schedule/personal-team/a
 import SchedulePersonalTeamCopy from '@/views/biz-modals/schedule/personal-team/copy'
 import SchedulePersonalTeamReserveInfo from '@/views/biz-modals/schedule/personal-team/reserve-info'
 import { PersonalTeamService } from './personal-team.service'
+import ScheduleBatchCourseManage from '@/views/biz-modals/schedule/batch/course-manage'
+import ScheduleBatchAddEditCourse from '@/views/biz-modals/schedule/batch/add-edit-course'
+import ScheduleBatchCourseRankPreview from '@/views/biz-modals/schedule/batch/course-rank-preview'
+import { TIME_UNIT } from '@/constants/course/team'
 export default {
   name: 'TeamSchedule',
   modals: {
     SchedulePersonalTeamAddInBatch,
     SchedulePersonalTeamAdd,
     SchedulePersonalTeamCopy,
-    SchedulePersonalTeamReserveInfo
+    SchedulePersonalTeamReserveInfo,
+    ScheduleBatchCourseManage,
+    ScheduleBatchAddEditCourse,
+    ScheduleBatchCourseRankPreview
   },
   serviceInject() {
     return {
-      PersonalTeamSchduleService: PersonalTeamScheduleScheduleService,
+      personalTeamSchduleService: PersonalTeamScheduleScheduleService,
       service: PersonalTeamService
     }
   },
   rxState() {
     return {
       auth: this.service.auth$,
-      cardList: this.PersonalTeamSchduleService.courseList$
+      cardList: this.personalTeamSchduleService.courseList$,
+      smallTemplateList: this.personalTeamSchduleService.smallTemplateList$,
+      loading: this.personalTeamSchduleService.loading$
     }
   },
   components: {
     Calendar
   },
   data() {
-    return {}
+    return { TIME_UNIT }
   },
   computed: {
     startDate() {
@@ -96,11 +107,73 @@ export default {
     },
     // 批量排期
     onClickScheduleInBatch() {
+      // this.$modalRouter.push({
+      //   name: 'schedule-personal-team-add-in-batch',
+      //   on: {
+      //     ok: res => {
+      //       this.onScheduleChange()
+      //     }
+      //   }
+      // })
+      this.personalTeamSchduleService.getSmallTemplate().subscribe(res => {
+        // 打开课表管理
+        if (!this.smallTemplateList.length) {
+          this.addOrEditCourse()
+          return
+        }
+        this.$modalRouter.push({
+          name: 'schedule-batch-course-manage',
+          props: {
+            teamTemplateList: this.smallTemplateList,
+            type: 'small'
+          },
+          on: {
+            // 确定时开始删除数据
+            save: res => {
+              this.personalTeamSchduleService
+                .delSmallTemplate({ id: JSON.stringify(res) })
+                .subscribe()
+            },
+            // 添加课表打开新增课表弹窗
+            add: () => {
+              setTimeout(() => {
+                this.addOrEditCourse()
+              }, 500)
+            },
+            // 编辑课表打开编辑课表弹窗
+            edit: res => {
+              setTimeout(() => {
+                this.addOrEditCourse(res)
+              }, 500)
+            }
+          }
+        })
+      })
+    },
+    // 添加和编辑团课
+    addOrEditCourse(id = undefined) {
       this.$modalRouter.push({
-        name: 'schedule-personal-team-add-in-batch',
+        name: 'schedule-batch-add-edit-course',
+        props: {
+          id,
+          type: 'small'
+        },
         on: {
-          ok: res => {
-            this.onScheduleChange()
+          success: res => {
+            setTimeout(() => {
+              this.$modalRouter.push({
+                name: 'schedule-batch-course-rank-preview',
+                props: {
+                  dataTable: res.info,
+                  type: 'small'
+                },
+                on: {
+                  success: res => {
+                    console.log('新增课表')
+                  }
+                }
+              })
+            }, 500)
           }
         }
       })
@@ -126,6 +199,14 @@ export default {
     // 刷新页面
     onScheduleChange() {
       this.$router.push({ query: this.$searchQuery })
+    }
+  },
+  watch: {
+    $route(newValue, oldValue) {
+      this.service.scheduleService.getList(this.$searchQuery)
+      this.$refs.calendar.getWeeks(
+        this.$searchQuery.time_unit === this.TIME_UNIT.TIME_WEEK ? 'week' : ''
+      )
     }
   }
 }

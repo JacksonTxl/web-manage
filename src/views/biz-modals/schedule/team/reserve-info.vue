@@ -54,14 +54,14 @@
                 slot="member"
                 showSearch
                 placeholder="搜索会员名"
-                style="width:140px"
+                style="width:149px"
                 :defaultActiveFirstOption="false"
                 :dropdownMatchSelectWidth="false"
                 :showArrow="false"
                 :filterOption="false"
                 @search="onSearch"
                 @change="onChange"
-                :notFoundContent="null"
+                notFoundContent="无搜索结果"
               >
                 <a-select-option
                   v-for="member in memberOptions"
@@ -70,11 +70,7 @@
                   <div class="st-form-table__add-option">
                     <span
                       class="item-name"
-                      v-html="keywordFilter(member.member_name)"
-                    ></span>
-                    <span
-                      class="item-phone"
-                      v-html="keywordFilter(member.mobile)"
+                      v-html="keywordFilter(member)"
                     ></span>
                   </div>
                 </a-select-option>
@@ -311,12 +307,21 @@ export default {
     }
   },
   methods: {
-    keywordFilter(str) {
-      if (!this.keyword) return str
-      str = str.replace(
-        new RegExp(this.keyword),
-        `<span class="color-primary">${this.keyword}</span>`
-      )
+    keywordFilter(item) {
+      let str
+      if (item.is_minors === 1) {
+        str = `${item.member_name}(未成年) ${item.parent_mobile}(${
+          item.parent_user_role
+        })`.replace(
+          new RegExp(this.keyword),
+          `<span class="color-primary">${this.keyword}</span>`
+        )
+      } else {
+        str = `${item.member_name} ${item.mobile}`.replace(
+          new RegExp(this.keyword),
+          `<span class="color-primary">${this.keyword}</span>`
+        )
+      }
       return str
     },
     onClickCancelCourse() {

@@ -5,7 +5,7 @@
     width="60%"
     v-model="show"
     @ok="onSubmit"
-    :title="`${$c('member_card')}合同章程设置`"
+    :title="`${type}设置`"
   >
     <a-textarea
       :class="bModal('textarea')"
@@ -25,6 +25,10 @@ export default {
   props: {
     id: {
       type: Number,
+      required: true
+    },
+    type: {
+      type: String,
       required: true
     },
     lawContent: {
@@ -49,7 +53,8 @@ export default {
   },
   rxState() {
     return {
-      loading: this.constitutionService.loading$
+      loading: this.constitutionService.loading$,
+      productType: this.constitutionService.productType$
     }
   },
   created() {

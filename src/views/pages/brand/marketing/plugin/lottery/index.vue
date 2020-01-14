@@ -82,15 +82,24 @@
         </span>
         <div slot="action" slot-scope="text, record">
           <st-table-actions>
-            <router-link
+            <!-- <router-link
               v-if="record.activity_status !== ACTIVITY_STATUS.ISSTOPED"
               :to="{
                 name: 'brand-marketing-plugin-lottery-info-prize',
                 query: { id: record.id }
               }"
             >
-              数据
-            </router-link>
+              奖品数据
+            </router-link> -->
+            <a
+              v-if="record.activity_status !== ACTIVITY_STATUS.ISSTOPED"
+              v-modal-link="{
+                name: 'brand-marketing-plugin-lottery-table',
+                props: { id: record.id, type: 'Sale', title: '奖品数据' }
+              }"
+            >
+              奖品数据
+            </a>
             <a
               v-if="record.activity_status !== ACTIVITY_STATUS.ISSTOPED"
               @click="onGeneralize(record)"
@@ -112,7 +121,7 @@
             <a @click="onStop(record)">
               {{
                 record.activity_status === ACTIVITY_STATUS.ISSTOPED
-                  ? '数据'
+                  ? '奖品数据'
                   : record.activity_status === ACTIVITY_STATUS.DISABLED
                   ? '结束'
                   : '取消'
@@ -132,9 +141,13 @@ import tableMixin from '@/mixins/table.mixin'
 import { ACTIVITY_STATUS } from '@/constants/marketing/lottery'
 import { TYPE } from '@/constants/marketing/plugin'
 import useShare from '@/hooks/marketing/share.hook'
+import BrandMarketingPluginLotteryTable from '@/views/biz-modals/brand/marketing/lottery-table'
 export default {
   name: 'PluginLotteryIndex',
   mixins: [tableMixin],
+  modals: {
+    BrandMarketingPluginLotteryTable
+  },
   data() {
     return {
       ACTIVITY_STATUS,
@@ -187,11 +200,15 @@ export default {
     // 停止优惠券模板
     onStop(record) {
       if (record.activity_status === this.ACTIVITY_STATUS.ISSTOPED) {
-        this.$router.push({
-          path: '/brand/marketing/plugin/lottery/info/prize',
-          query: {
-            id: record.id
-          }
+        // this.$router.push({
+        //   path: '/brand/marketing/plugin/lottery/info/prize',
+        //   query: {
+        //     id: record.id
+        //   }
+        // })
+        this.$modalRouter.push({
+          name: 'brand-marketing-plugin-lottery-table',
+          props: { id: record.id, title: '奖品数据' }
         })
         return
       }

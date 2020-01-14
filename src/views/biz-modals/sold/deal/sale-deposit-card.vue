@@ -47,63 +47,13 @@
       </a-row>
       <st-form :form="form" labelWidth="88px">
         <div :class="sale('sale')">
-          <st-form-item v-if="searchMemberIsShow" label="购买会员" required>
-            <a-select
-              showSearch
-              allowClear
-              placeholder="输入手机号或会员名搜索"
-              :defaultActiveFirstOption="false"
-              :showArrow="false"
-              :filterOption="false"
-              v-decorator="decorators.memberId"
-              @search="onMemberSearch"
-              @change="onMemberChange"
-              notFoundContent="无搜索结果"
-            >
-              <a-select-option
-                v-for="(item, index) in memberList"
-                :value="item.id"
-                :key="index"
-              >
-                <span
-                  v-html="
-                    `${item.member_name} ${item.mobile}`.replace(
-                      new RegExp(memberSearchText, 'g'),
-                      `\<span class='global-highlight-color'\>${memberSearchText}\<\/span\>`
-                    )
-                  "
-                >
-                  {{ item.member_name }} {{ item.mobile }}
-                </span>
-              </a-select-option>
-            </a-select>
-            <p
-              v-if="
-                !memberList.length &&
-                  memberSearchText !== '' &&
-                  +info.sale_range.type === 1
-              "
-              class="add-text"
-            >
-              查无此会员，
-              <span @click="onAddMember">添加新会员？</span>
-            </p>
-          </st-form-item>
-          <st-form-item v-if="!searchMemberIsShow" label="会员姓名" required>
-            <a-input
-              v-decorator="decorators.memberName"
-              placeholder="请输入会员姓名"
-            ></a-input>
-          </st-form-item>
-          <st-form-item v-if="!searchMemberIsShow" label="手机号" required>
-            <a-input
-              v-decorator="decorators.memberMobile"
-              placeholder="请输入手机号"
-            ></a-input>
-            <p class="add-text">
-              <span @click="onCancelMember">取消添加</span>
-            </p>
-          </st-form-item>
+          <member-search
+            v-if="info.sale_range"
+            :form="form"
+            :memberInfo="memberInfo"
+            :saleRangeType="info.sale_range.type"
+            @change="onMemberChange"
+          ></member-search>
           <st-form-item label="到期时间">
             {{
               moment()
@@ -288,15 +238,16 @@ import { cloneDeep } from 'lodash-es'
 import { timer } from 'rxjs'
 import { PatternService } from '@/services/pattern.service'
 import { ruleOptions } from './sale-cabinet.config'
-import { UserService } from '@/services/user.service'
 import autoContractBtn from '@/views/biz-components/contract/auto-contract-btn.vue'
+import MemberSearch from '@/views/biz-components/member-search/member-search'
 export default {
   name: 'ModalSoldDealSaleMemberCard',
   bem: {
     sale: 'modal-sold-deal-sale'
   },
   components: {
-    autoContractBtn
+    autoContractBtn,
+    MemberSearch
   },
   serviceProviders() {
     return [SaleDepositCardService]
@@ -304,14 +255,12 @@ export default {
   serviceInject() {
     return {
       saleDepositCardService: SaleDepositCardService,
-      userService: UserService,
       pattern: PatternService
     }
   },
   rxState() {
     return {
       loading: this.saleDepositCardService.loading$,
-      memberList: this.saleDepositCardService.memberList$,
       priceInfo: this.saleDepositCardService.priceInfo$,
       info: this.saleDepositCardService.info$,
       couponList: this.saleDepositCardService.couponList$,
@@ -334,9 +283,6 @@ export default {
       form,
       decorators,
       show: false,
-      // 搜索会员
-      memberSearchText: '',
-      searchMemberIsShow: true,
       // 定金
       advanceDropdownVisible: false,
       advanceList: [],
@@ -365,9 +311,6 @@ export default {
   },
   created() {
     this.saleDepositCardService.serviceInit(this.id).subscribe(res => {
-      if (this.memberInfo) {
-        this.onMemberSearch(this.memberInfo.member_name)
-      }
       this.getPrice(this.selectAdvance, +this.reduceAmount)
       this.fetchCouponList()
     })
@@ -379,33 +322,9 @@ export default {
   },
   methods: {
     moment,
-    // 搜索会员
-    onMemberSearch(data) {
-      this.memberSearchText = data
-      if (data === '') {
-        this.saleDepositCardService.memberList$.commit(() => [])
-        this.form.resetFields(['memberId'])
-      } else {
-        this.saleDepositCardService
-          .getMember(data, this.info.sale_range.type)
-          .subscribe(res => {
-            if (!res.list.length) {
-              this.resetAdvance()
-              this.form.resetFields(['memberId'])
-            } else {
-              if (this.memberInfo) {
-                this.form.setFieldsValue({
-                  memberId: this.memberInfo.member_id
-                })
-                this.onMemberChange(this.memberInfo.member_id)
-              }
-            }
-          })
-      }
-    },
     fetchCouponList(memberId) {
       const params = {
-        member_id: memberId || this.form.getFieldValue('memberId'),
+        member_id: memberId || this.form.getFieldValue('member_id'),
         card_id: this.info.product_id
       }
       this.saleDepositCardService.getCouponList(params).subscribe()
@@ -438,16 +357,6 @@ export default {
       this.advanceAmount = ''
       this.selectAdvance = ''
     },
-    // 切换添加会员
-    onAddMember() {
-      this.searchMemberIsShow = false
-      this.form.resetFields(['memberId', 'memberName', 'memberMobile'])
-      this.resetAdvance()
-    },
-    onCancelMember() {
-      this.searchMemberIsShow = true
-      this.form.resetFields(['memberId', 'memberName', 'memberMobile'])
-    },
     onCodeNumber() {
       this.saleDepositCardService
         .getCodeNumber(this.info.contract_type)
@@ -458,7 +367,6 @@ export default {
         })
     },
     onCancel() {
-      this.saleDepositCardService.resetMember()
       this.resetAdvance()
     },
     onSelectAdvanceChange(data) {
@@ -475,7 +383,7 @@ export default {
     // 计算实付金额
     getPrice(advance, reduce) {
       let advanceId = advance === -1 ? '' : advance
-      const memberId = this.form.getFieldValue('memberId')
+      const memberId = this.form.getFieldValue('member_id')
       this.saleDepositCardService.priceAction$.dispatch({
         product_id: this.id,
         product_type: this.info.contract_type,
@@ -489,9 +397,9 @@ export default {
         let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
         this.saleDepositCardService
           .setTransaction({
-            member_id: +values.memberId,
-            member_name: values.memberName,
-            mobile: values.memberMobile,
+            member_id: +values.member_id,
+            member_name: values.member_name,
+            mobile: values.mobile ? values.mobile.phone : undefined,
             deposit_card_id: +this.id,
             contract_number: values.contractNumber,
             advance_id:
@@ -500,7 +408,16 @@ export default {
             sale_id: +values.saleName,
             description: this.description,
             order_amount: this.priceInfo,
-            sale_range: +this.info.sale_range.type
+            sale_range: +this.info.sale_range.type,
+            is_minors: values.is_minors,
+            parent_name: values.parent_name,
+            parent_mobile: values.parent_mobile
+              ? values.parent_mobile.phone
+              : undefined,
+            parent_country_prefix: values.parent_mobile
+              ? values.parent_mobile.code_id
+              : undefined,
+            parent_user_role: values.parent_user_role
           })
           .subscribe(res => {
             this.show = false
@@ -516,9 +433,9 @@ export default {
         let reduce_amount = this.reduceAmount ? +this.reduceAmount : 0
         this.saleDepositCardService
           .setTransactionPay({
-            member_id: +values.memberId,
-            member_name: values.memberName,
-            mobile: values.memberMobile,
+            member_id: +values.member_id,
+            member_name: values.member_name,
+            mobile: values.mobile ? values.mobile.phone : undefined,
             deposit_card_id: +this.id,
             contract_number: values.contractNumber,
             advance_id:
@@ -527,7 +444,16 @@ export default {
             sale_id: +values.saleName,
             description: this.description,
             order_amount: this.priceInfo,
-            sale_range: +this.info.sale_range.type
+            sale_range: +this.info.sale_range.type,
+            is_minors: values.is_minors,
+            parent_name: values.parent_name,
+            parent_mobile: values.parent_mobile
+              ? values.parent_mobile.phone
+              : undefined,
+            parent_country_prefix: values.parent_mobile
+              ? values.parent_mobile.code_id
+              : undefined,
+            parent_user_role: values.parent_user_role
           })
           .subscribe(res => {
             this.show = false

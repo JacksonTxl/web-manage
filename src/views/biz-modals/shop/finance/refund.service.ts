@@ -14,6 +14,9 @@ export class RefundService {
   loading$ = new State({})
   refundChannels$ = this.userService.getOptions$('finance.refund_channel')
   refundReasons$ = this.userService.getOptions$('finance.refund_reason')
+  refundReasonsSmallCourse$ = this.userService.getOptions$(
+    'sold_common.refund_reason_small_course'
+  )
   constructor(private orderApi: OrderApi, private userService: UserService) {}
   getDetail(id: string) {
     return this.orderApi.getDetail(id).pipe(

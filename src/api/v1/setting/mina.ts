@@ -66,6 +66,12 @@ export class SettingMinaApi extends Api {
   getActivityList() {
     return this.http.get('/v1/setting/mina/activity_list')
   }
+  /**
+   * 获取小程序路径列表
+   */
+  getPathList() {
+    return this.http.get('/v1/setting/mina/menu')
+  }
 }
 
 export interface CallbackParams {

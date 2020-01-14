@@ -185,11 +185,20 @@ export default {
     },
     onReset() {
       this.date = [null, null]
-      this.onSearchReset()
+      this.onSearchNative()
     },
     onPrint(id) {
       window.open('/ticket/print?id=' + id, '_blank', 'width=800,height=600')
     }
+  },
+  created() {
+    const start = this.$searchQuery.start_time
+      ? moment(this.$searchQuery.start_time)
+      : null
+    const end = this.$searchQuery.end_time
+      ? moment(this.$searchQuery.start_time)
+      : null
+    this.date = [start, end]
   }
 }
 </script>

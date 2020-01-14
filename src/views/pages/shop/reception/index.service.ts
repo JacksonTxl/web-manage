@@ -1,3 +1,4 @@
+import { UserService } from '@/services/user.service'
 import { Injectable, Controller } from 'vue-service-app'
 import { State, Effect, Action } from 'rx-state'
 import {
@@ -28,6 +29,7 @@ export class IndexService implements Controller {
   coachList$ = new State([])
   entranceOptionList$ = new State([])
   cabinetList$ = new State([])
+  parent_types$ = this.userService.getOptions$('small_course.parent_type')
   auth$ = this.authService.authMap$({
     today_order: 'shop:front_end:module|today_order',
     today_reserve: 'shop:front_end:module|today_reserve',
@@ -61,6 +63,7 @@ export class IndexService implements Controller {
   })
   constructor(
     private authService: AuthService,
+    private userService: UserService,
     private frontApi: FrontApi,
     private memberApi: MemberApi
   ) {
