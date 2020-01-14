@@ -4,6 +4,7 @@
     title="公告详情"
     v-model="show"
     width="728px"
+    @cancel="onCancel"
     :footer="null"
   >
     <div :class="b('title-fixed')">
@@ -55,6 +56,11 @@ export default {
     return {
       show: false,
       notifyConfig: {}
+    }
+  },
+  methods: {
+    onCancel() {
+      this.$emit('cancel')
     }
   },
   created() {
