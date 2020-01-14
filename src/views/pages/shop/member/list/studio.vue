@@ -152,7 +152,10 @@
           >
             详情
           </a>
-          <a @click="edit(record)">
+          <a
+            v-if="record.auth['shop:member:member|edit']"
+            @click="edit(record)"
+          >
             编辑
           </a>
           <a
