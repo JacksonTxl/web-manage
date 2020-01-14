@@ -50,6 +50,7 @@ export default {
           delay: 5000,
           disableOnInteraction: false
         },
+        loop: true,
         spaceBetween: 30,
         centeredSlides: true
       }
