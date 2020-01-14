@@ -184,6 +184,9 @@ export default {
     },
     getMatchRule(menu) {
       let { icon } = menu
+      if (!icon) {
+        return /^The menu config is error\.The icon field of the menu api should not be empty!/
+      }
       /**
        * 对一些特殊的 icon 做处理，比如 dashboard 用的是 home, 建立起菜单 icon 与路由的映射关系
        */
