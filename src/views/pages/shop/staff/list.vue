@@ -12,6 +12,7 @@
           添加员工
         </st-button>
         <st-button
+          v-if="auth.export"
           type="primary"
           class="mg-r8"
           v-export-excel="{
@@ -289,6 +290,9 @@ export default {
       workStatusList$: this.service.workStatusList$,
       auth: this.service.auth$
     }
+  },
+  mounted() {
+    console.log(this.auth)
   },
   data() {
     return {

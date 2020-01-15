@@ -20,9 +20,9 @@
         >
           批量排期
         </st-button>
-        <!-- <st-button @click="onClickCopySchedule" v-if="auth.copy">
+        <st-button @click="onClickCopySchedule" v-if="auth.copy">
           复制排期
-        </st-button> -->
+        </st-button>
       </div>
     </calendar>
   </div>
@@ -90,6 +90,9 @@ export default {
           ok: res => {
             console.log('ok')
             this.onScheduleChange()
+          },
+          onClickBatch: () => {
+            this.onClickScheduleInBatch()
           }
         }
       })
