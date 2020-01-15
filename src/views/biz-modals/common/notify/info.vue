@@ -14,7 +14,7 @@
           <img src="~@/assets/img/notify_logo.png" alt="" />
         </span>
         <span :class="b('item-type')" class="mg-r8">
-          {{ info$.notify_type }}
+          {{ info$.notify_type.name }}
         </span>
         <span :class="b('item-time')">{{ info$.send_time }}</span>
       </div>
@@ -62,12 +62,6 @@ export default {
     onCancel() {
       this.$emit('cancel')
     }
-  },
-  created() {
-    const { id, notify_type } = this.record
-    this.service
-      .getAnnouncementInfo({ id, notify_type: notify_type.id })
-      .subscribe()
   }
 }
 </script>

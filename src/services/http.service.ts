@@ -7,7 +7,7 @@ import { Injectable, ServiceRouter } from 'vue-service-app'
 import { I18NService } from './i18n.service'
 import { TokenService } from './token.service'
 import { AppConfig } from '@/constants/config'
-import { NotificationService } from './notification.service'
+import { MessageService } from './message.service'
 import { NProgressService } from './nprogress.service'
 // @ts-ignore
 import VueModalRouter from 'vue-modal-router'
@@ -50,7 +50,7 @@ export class HttpService {
     private i18n: I18NService,
     private tokenService: TokenService,
     private router: ServiceRouter,
-    private notification: NotificationService,
+    private messageService: MessageService,
     private appConfig: AppConfig,
     private nprogress: NProgressService,
     private modalRouter: VueModalRouter
@@ -194,7 +194,7 @@ export class HttpService {
       source$.pipe(
         catchError((err: AjaxError) => {
           const serverResponse: StResponse = err.response
-          this.notification.close('ajaxError')
+          // this.messageService.close('ajaxError')
           const errMsg = (serverResponse && serverResponse.msg) || err.message
           // const errUrl = err.request ? err.request.url : ''
           this.nprogress.SET_TEXT(`${errMsg}`)
@@ -205,47 +205,35 @@ export class HttpService {
               if (ignoreCodes.includes(serverResponse.code)) {
                 break
               }
-              this.notification.warn({
-                title: this.i18n.t('http.400'),
-                key: 'ajaxError',
-                content: errMsg
+              this.messageService.warn({
+                content: this.i18n.t('http.400') + '：' + errMsg
               })
               break
             case 401:
-              this.notification.warn({
-                title: this.i18n.t('http.401'),
-                key: 'ajaxError',
-                content: errMsg
+              this.messageService.warn({
+                content: this.i18n.t('http.401') + '：' + errMsg
               })
               // @ts-ignore
               location.href = '/account/login'
               break
             case 403:
-              this.notification.warn({
-                title: this.i18n.t('http.403'),
-                key: 'ajaxError',
-                content: errMsg
+              this.messageService.warn({
+                content: this.i18n.t('http.403') + '：' + errMsg
               })
               break
             case 404:
-              this.notification.error({
-                title: this.i18n.t('http.404'),
-                key: 'ajaxError',
-                content: errMsg
+              this.messageService.error({
+                content: this.i18n.t('http.404') + '：' + errMsg
               })
               break
             case 500:
-              this.notification.error({
-                title: this.i18n.t('http.500'),
-                key: 'ajaxError',
+              this.messageService.error({
                 content: errMsg
               })
               break
             default:
-              this.notification.error({
-                title: this.i18n.t('http.other'),
-                key: 'ajaxError',
-                content: errMsg
+              this.messageService.error({
+                content: this.i18n.t('http.other') + '：' + errMsg
               })
               break
           }
