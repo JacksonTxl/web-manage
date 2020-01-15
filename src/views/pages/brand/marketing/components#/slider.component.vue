@@ -69,18 +69,9 @@
               :list="[]"
               :sizeLimit="5"
               placeholder="添加活动图片"
+              description="大小不超过5M，建议尺寸16:9"
               :numLimit="5"
-            >
-              <a-icon
-                type="plus-circle"
-                theme="filled"
-                :style="{ fontSize: '36px', color: '#9BACB9' }"
-              />
-              <div class="st-image-upload__placeholder">添加活动图片</div>
-              <span :class="slider('uploadtip')">
-                大小不超过5M，建议尺寸16:9
-              </span>
-            </st-image-upload>
+            ></st-image-upload>
             <div :class="slider('uploadtip-input')">
               <st-form-item labelWidth="28px" label="链接">
                 <a-cascader

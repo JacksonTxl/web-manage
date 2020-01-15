@@ -3,6 +3,7 @@
     <div
       class="st-image-upload__item st-preview-item"
       v-for="(item, index) in fileList"
+      :style="sizeStyle"
       :key="index"
     >
       <img
@@ -11,12 +12,19 @@
           (item[imageUrl] || item[imageKey]) | imgFilter(computedFilterOptions)
         "
         :data-src="(item[imageUrl] || item[imageKey]) | imgFilter"
-        :style="sizeStyle"
+        width="100%"
+        height="100%"
       />
       <slot name="item-extra" :item="item" :index="index"></slot>
       <div class="st-image-upload__actions">
         <slot name="actions" :item="item" :index="index">
-          <span class="action" @click="onDel(index)">重新上传</span>
+          <span class="action action--re-upload" @click="onDel(index)">
+            <input type="file" accept @change="onReUpload($event)" />
+            重新上传
+          </span>
+          <!-- <span class="action" @click="onDel(index)">
+            删除
+          </span> -->
         </slot>
       </div>
     </div>
@@ -25,19 +33,18 @@
       listType="picture-card"
       :showUploadList="false"
       :customRequest="upload"
-      :multiple="multiple"
       class="st-image-upload__btn"
       :style="sizeStyle"
     >
       <a-spin :spinning="isLoading" :tip="progress + '%'">
         <slot>
-          <st-icon
-            type="plus-circle"
-            style="font-size: 32px;color: #9BACB9;"
-          ></st-icon>
+          <st-icon type="plus-circle" size="32px" color="#9BACB9"></st-icon>
           <div class="st-image-upload__placeholder">{{ placeholder }}</div>
-          <div class="st-image-upload__description mg-t8">
-            <slot name="description"></slot>
+          <div
+            v-if="description || $slots.description"
+            class="st-image-upload__description"
+          >
+            <slot name="description">{{ description }}</slot>
           </div>
         </slot>
       </a-spin>
@@ -211,9 +218,6 @@ export default {
     isUploadBtnInvisible() {
       return this.numLimit === 1 && this.fileList.length
     },
-    multiple() {
-      return this.numLimit > 1
-    },
     sizeStyle() {
       return `width: ${this.width};  height: ${this.height}`
     },
@@ -241,6 +245,15 @@ export default {
     }
   },
   methods: {
+    onReUpload(e) {
+      console.log(e)
+      if (!e.target.files || !e.target.files.length) {
+        return
+      }
+      this.upload({
+        file: e.target.files[0]
+      })
+    },
     upload(data) {
       const fileCheckRet = this.fileCheck(data)
       if (!fileCheckRet.isValid) {

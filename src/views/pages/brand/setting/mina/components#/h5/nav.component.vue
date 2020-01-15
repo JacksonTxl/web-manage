@@ -21,7 +21,10 @@
                   :sizeLimit="2"
                   :props="options"
                   placeholder="上传照片"
-                  :numLimit="1"
+                  :cropperModal="{
+                    title: '常态',
+                    cropper: { aspectRatio: 1 / 1 }
+                  }"
                 ></st-image-upload>
               </a-col>
               <a-col :span="12">
@@ -33,7 +36,10 @@
                   :props="options_selected"
                   :sizeLimit="2"
                   placeholder="上传照片"
-                  :numLimit="1"
+                  :cropperModal="{
+                    title: '选中态',
+                    cropper: { aspectRatio: 1 / 1 }
+                  }"
                 ></st-image-upload>
               </a-col>
             </a-row>
