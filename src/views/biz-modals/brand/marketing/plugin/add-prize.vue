@@ -75,7 +75,7 @@
       <st-form-item label="奖品数量" required>
         <st-input-number
           :min="1"
-          :max="99999"
+          :max="999999"
           :step="1"
           :precision="0"
           placeholder="请输入奖品数量"

@@ -2,9 +2,15 @@
   <div :class="basic()">
     <st-panel-layout :class="basic('main')">
       <div :class="basic('effect')">
-        <st-t2>
-          营销效果
-        </st-t2>
+        <div :class="basic('effect-updata')">
+          <st-t2>
+            <div>
+              营销效果
+              <st-help-tooltip id="MDYXCJ001" />
+            </div>
+          </st-t2>
+          <st-refresh-btn :action="refresh"></st-refresh-btn>
+        </div>
         <section>
           <ul v-if="num">
             <li>
@@ -142,6 +148,9 @@ export default {
     },
     goToPlugin(route) {
       this.$router.push({ name: route })
+    },
+    refresh() {
+      return this.pluginService.getMarktingNumInfo()
     }
   }
 }

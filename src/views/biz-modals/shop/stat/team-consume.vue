@@ -58,7 +58,7 @@
     <div slot="footer">
       <st-button
         type="primary"
-        v-if="auth$.export && type !== 'total'"
+        v-if="auth$.export"
         v-export-excel="exportParams"
       >
         全部导出
@@ -121,10 +121,10 @@ export default {
   computed: {
     columns,
     showTable() {
-      return this.$route.path.includes('stat/course/summary')
+      return this.$route.path.includes('shop/course/summary') ? 'all' : 'coach'
     },
     exportParams() {
-      const type = 'shop/team/course'
+      const type = 'shop/team/course/checkin'
       return this.type === 'total'
         ? { type: `${type}/total`, query: this.totalQuery }
         : { type, query: this.query }

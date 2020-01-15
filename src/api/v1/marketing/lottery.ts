@@ -17,6 +17,7 @@ export interface AddParams {
   activity_rule: object
   activity_prizes: object
   activity_lucky: object
+  prize_sort: Array<number>
 }
 export interface EditParams {
   wheel_bg: number
@@ -25,6 +26,7 @@ export interface EditParams {
   activity_prizes: object
   activity_lucky: object
   activity_id: string
+  prize_sort: Array<number>
 }
 export class LotteryApi extends Api {
   // 奖品列表

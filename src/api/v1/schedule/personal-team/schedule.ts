@@ -77,6 +77,56 @@ export class PersonalTeamScheduleScheduleApi extends Api {
   del(id: string) {
     return this.http.delete(`/v1/schedule/personal_team/shop/${id}`)
   }
+  /**
+   * 获取私教小团课周课表管理列表
+   */
+  getSmallTemplate() {
+    return this.http.get('/v1/schedule/personal_team/shop/template')
+  }
+  /**
+   * 团课周课表管理列表删除
+   */
+  delSmallTemplate(query: any) {
+    return this.http.delete('/v1/schedule/personal_team/shop/template', {
+      query
+    })
+  }
+  /**
+   * 团课编辑获取详情
+   */
+  getSmallInfo(id: number) {
+    return this.http.get(`/v1/schedule/personal_team/shop/template/${id}`)
+  }
+  /**
+   * 新建团课
+   */
+  addSmallDetail(params: AddCourseInput) {
+    return this.http.post(`/v1/schedule/personal_team/shop/template`, {
+      params
+    })
+  }
+  /**
+   * 编辑团课
+   */
+  editSmallDetail(id: number, params: AddCourseInput) {
+    return this.http.put(`/v1/schedule/personal_team/shop/template/${id}`, {
+      params
+    })
+  }
+  /**
+   * 团课批量排期验证
+   */
+  validSmallBatch(params: { course_schedule: AddCourseQuery }) {
+    return this.http.post('/v1/schedule/personal_team/shop/batch/valid', {
+      params
+    })
+  }
+  /**
+   * 团课批量排期确定
+   */
+  smallBatch(params: { course_schedule: AddCourseQuery }) {
+    return this.http.post('/v1/schedule/personal_team/shop/batch', { params })
+  }
 }
 /**
  * 获取私教小团课排期列表
@@ -151,4 +201,28 @@ export interface CopyScheduleInput {
   copy_end_time: string // 复制结束时间
   apply_start_time: string // 应用开始时间
   apply_end_time: string // 应用结束时间
+}
+/**
+ * 上课课表安排数据
+ */
+export interface AddCourseQuery {
+  week_day?: number // 星期
+  limit_num?: number // 人数
+  people_number?: number // 人数
+  course_id: number // 课程ID
+  court_id: number // 场地id
+  court_site_id: number // 座位模版Id
+  coach_id: number // 教练ID
+  start_time: string // 开始时间
+  course_fee: number // 课时费
+}
+/**
+ * 新增和编辑课表request数据
+ */
+export interface AddCourseInput {
+  template_name: string
+  max_number: number
+  start_time: string
+  end_time: string
+  schedule_info: AddCourseQuery
 }

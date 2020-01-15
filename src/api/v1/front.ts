@@ -74,6 +74,12 @@ export class FrontApi extends Api {
     return this.http.get(`/v1/front/entrance`, { query })
   }
   /**
+   * 入离场记录
+   */
+  getEntranceLogList(query: GetEntranceListInput) {
+    return this.http.get(`/v1/front/entrance/stat`, { query })
+  }
+  /**
    * 单个离场
    */
   setEntranceLeave(id: string) {

@@ -16,6 +16,10 @@
             :sizeLimit="1"
             placeholder="上传照片"
             :numLimit="1"
+            :cropperModal="{
+              title: '功能图片',
+              cropper: { aspectRatio: 1 / 1 }
+            }"
           ></st-image-upload>
           <div :class="action('box-title')">
             <a-input

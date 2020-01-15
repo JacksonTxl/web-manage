@@ -1,19 +1,11 @@
 export const ruleOptions = (vm: any) => {
   return {
     shop_id: {},
-    start_time: {
+    date: {
       rules: [
         {
           required: true,
-          message: '请输入放假开始时间'
-        }
-      ]
-    },
-    end_time: {
-      rules: [
-        {
-          required: true,
-          message: '请输入放假结束时间'
+          message: '请选择放假时间'
         }
       ]
     }

@@ -10,6 +10,7 @@ export class PackageService implements Controller {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
+  total$ = new State({})
   auth$ = this.authService.authMap$({
     export: 'shop:sold:sold_package_course|export',
     course_range: 'shop:sold:sold_package_course|batch_change_course_range'
@@ -32,6 +33,7 @@ export class PackageService implements Controller {
         res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }

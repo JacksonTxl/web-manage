@@ -4,8 +4,19 @@
     padding: 72px 180px;
     width: 800px;
     margin: 40px auto;
+    position: relative;
+  }
+  &__skip {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    .c(@primary-color);
+    cursor: pointer;
   }
   &__back {
     .mg-r(8px);
+  }
+  .fz12 {
+    .fz(12px);
   }
 }
