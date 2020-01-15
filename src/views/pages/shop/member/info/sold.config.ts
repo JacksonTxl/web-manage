@@ -24,7 +24,8 @@ export const classrecord = (vm: any) => {
     },
     {
       title: '预约状态',
-      dataIndex: 'reserve_status'
+      dataIndex: 'reserve_status',
+      scopedSlots: { customRender: 'reserve_status' }
     },
     {
       title: '签到状态',

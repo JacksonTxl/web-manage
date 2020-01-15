@@ -14,6 +14,12 @@
           <div slot="reserve_type" slot-scope="text, record">
             {{ record.reserve_type.name }}
           </div>
+          <div slot="reserve_status" slot-scope="text, record">
+            {{
+              record.mina_reserve_status
+                | enumFilter('small_course.reserve_status')
+            }}
+          </div>
           <div slot="is_checkin" slot-scope="text, record">
             <div>
               <span
@@ -92,13 +98,49 @@
               </a>
               <a
                 v-if="
-                  record.auth[
-                    'shop:reserve:small_class_course_reserve|checkin'
-                  ] && record.reserve_type.id === 5
+                  record.auth['shop:reserve:small_class_course_reserve|checkin']
                 "
                 @click="isCheckin(record)"
               >
                 签到
+              </a>
+              <a
+                @click="message(record.id)"
+                v-if="
+                  record.auth[
+                    'shop:reserve:small_class_course_reserve|get_supplement'
+                  ]
+                "
+              >
+                查看补课
+              </a>
+              <a
+                @click="leave(record.id)"
+                v-if="
+                  record.auth['shop:reserve:small_class_course_reserve|leave']
+                "
+              >
+                请假
+              </a>
+              <a
+                @click="checkSign(record.id)"
+                v-if="
+                  record.auth[
+                    'shop:reserve:small_class_course_reserve|supplement_checkin'
+                  ]
+                "
+              >
+                补签到
+              </a>
+              <a
+                @click="remedialCourse(record.id)"
+                v-if="
+                  record.auth[
+                    'shop:reserve:small_class_course_reserve|supplement'
+                  ]
+                "
+              >
+                补课
               </a>
             </st-table-actions>
           </div>
@@ -130,6 +172,9 @@ import formDate from './sold#/form-date.vue'
 import { SoldService } from './sold.service'
 import { classrecord, admission } from './sold.config.ts'
 import tableMixin from '@/mixins/table.mixin'
+import ScheduleSmallCourseReservedCourse from '@/views/biz-modals/schedule/small-course/reserved-course'
+import ScheduleSmallCourseRemedialCourse from '@/views/biz-modals/schedule/small-course/remedial-course'
+import ScheduleSmallCourseRemedialInfo from '@/views/biz-modals/schedule/small-course/remedial-info'
 export default {
   mixins: [tableMixin],
   serviceInject() {
@@ -146,6 +191,11 @@ export default {
       auth: this.soldService.auth$
     }
   },
+  modals: {
+    ScheduleSmallCourseReservedCourse,
+    ScheduleSmallCourseRemedialCourse,
+    ScheduleSmallCourseRemedialInfo
+  },
   computed: {
     classrecord,
     admission
@@ -153,17 +203,17 @@ export default {
   components: {
     formDate
   },
-  filters: {
-    isCheckin(value) {
-      if (value.mina_checkin_status === 0) {
-        return 'member-info-sold__is_checkin_no'
-      } else if (value.mina_checkin_status === 1) {
-        return 'member-info-sold__is_checkin_yes'
-      } else {
-        return ''
-      }
-    }
-  },
+  // filters: {
+  //   isCheckin(value) {
+  //     if (value.mina_checkin_status === 0) {
+  //       return 'member-info-sold__is_checkin_no'
+  //     } else if (value.mina_checkin_status === 1) {
+  //       return 'member-info-sold__is_checkin_yes'
+  //     } else {
+  //       return ''
+  //     }
+  //   }
+  // },
   data() {
     return {
       form: {
@@ -239,6 +289,51 @@ export default {
           page: e.current
         })
         .subscribe()
+    },
+    // 查看补课
+    message(id) {
+      this.soldService.message(id).subscribe(res => {
+        this.$modalRouter.push({
+          name: 'schedule-small-course-remedial-info',
+          props: {
+            info: res.info
+          }
+        })
+        this.show = false
+      })
+    },
+    // 补签到
+    checkSign(id) {
+      this.soldService.checkSign(id).subscribe(this.getReserveInfo)
+    },
+    // 取消预约
+    del(id) {
+      this.soldService.del(id).subscribe(this.getReserveInfo)
+    },
+    // 请假
+    leave(id) {
+      this.soldService.leave(id).subscribe(this.getReserveInfo)
+    },
+    // 补课回显
+    remedialCourse(reserve_id) {
+      this.soldService.courseInfo(reserve_id).subscribe(res => {
+        this.$modalRouter.push({
+          name: 'schedule-small-course-remedial-course',
+          props: {
+            info: res.info,
+            id: res.info.schedule_id
+          },
+          on: {
+            ok: () => {
+              this.$router.reload()
+            }
+          }
+        })
+      })
+      this.show = false
+    },
+    getReserveInfo() {
+      this.$router.reload()
     }
   },
   watch: {
