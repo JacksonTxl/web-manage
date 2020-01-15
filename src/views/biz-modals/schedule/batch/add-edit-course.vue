@@ -88,7 +88,7 @@
                         placeholder="请选择星期"
                         style="width: 86px"
                         v-model="item.week_day"
-                        @change="verifyData"
+                        @change="verifyData(true)"
                       >
                         <a-select-option
                           v-for="week in weekDay"
@@ -103,7 +103,7 @@
                         placeholder="请选择课程"
                         style="width: 112px"
                         v-model="item.course_id"
-                        @change="verifyData"
+                        @change="verifyData(true)"
                       >
                         <a-select-option
                           v-for="course in courseOptions"
@@ -121,7 +121,7 @@
                         placeholder="选择时间"
                         format="HH:mm"
                         v-model="item.start_time"
-                        @change="verifyData"
+                        @change="verifyData(true)"
                       />
                     </td>
                     <td>
@@ -129,7 +129,7 @@
                         :placeholder="`请选择上课${$c('coach')}`"
                         style="width: 112px"
                         v-model="item.coach_id"
-                        @change="verifyData"
+                        @change="verifyData(true)"
                       >
                         <a-select-option
                           v-for="coach in coachOptions"
@@ -156,7 +156,7 @@
                       <st-input-number
                         style="width: 90px"
                         v-model="item.people_number"
-                        @input="verifyData"
+                        @input="verifyData(true)"
                       >
                         <span slot="addonAfter">人</span>
                       </st-input-number>
@@ -166,7 +166,7 @@
                         :float="true"
                         style="width: 110px"
                         v-model="item.course_fee"
-                        @input="verifyData"
+                        @input="verifyData(true)"
                       >
                         <span slot="addonAfter">元/节</span>
                       </st-input-number>
@@ -357,7 +357,12 @@ export default {
       })
     },
     // 表格提交数据校验
-    verifyData() {
+    verifyData(isInput) {
+      if (isInput) {
+        this.tableTips = ''
+        this.tableErr = false
+        return
+      }
       if (!this.scheduleInfo.length) {
         this.tableTips = '请添加上课安排'
         this.tableErr = true
