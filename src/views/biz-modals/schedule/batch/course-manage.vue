@@ -32,7 +32,7 @@
               <td>{{ item.created_time }}</td>
               <td>{{ item.template_name }}</td>
               <td>{{ item.course_type_name }}</td>
-              <td>{{ item.max_number }}</td>
+              <td>{{ item.max_number ? item.max_number : '--' }}</td>
               <td>{{ item.operator_name }}</td>
               <td>
                 <template>
