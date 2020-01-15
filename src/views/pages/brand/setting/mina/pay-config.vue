@@ -143,10 +143,16 @@ export default {
         key_pem: key
       })
     },
+    trim(str) {
+      return str.replace(/(^\s*)|(\s*$)/g, '')
+    },
     save() {
       let self = this
       this.form.validateFields((err, values) => {
         if (!err) {
+          values.mch_name = this.trim(values.mch_name)
+          values.mch_id = this.trim(values.mch_id)
+          values.key = this.trim(values.key)
           self.payConfigService.saveMch(values).subscribe(() => {
             self.$router.push({
               path: '/brand/setting/mina/auth-callback?type=payConfig'
