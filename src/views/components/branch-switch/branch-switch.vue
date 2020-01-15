@@ -1,7 +1,9 @@
 <template>
   <div
     class="st-branch-switch"
-    v-if="appConfig.HOST_IS_DEV || appConfig.HOST_IS_TEST"
+    v-if="
+      appConfig.HOST_IS_DEV || appConfig.HOST_IS_TEST || appConfig.HOST_IS_PRE
+    "
   >
     <span>
       分支:{{ appConfig.GIT_BRANCH }}

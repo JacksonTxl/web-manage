@@ -451,6 +451,62 @@ export class MemberApi extends Api {
   getParentInfoByPhone(query: any) {
     return this.http.get(`/v1/member/get_member_by_mobile`, { query })
   }
+  /**
+   *
+   * @param params
+   * 添加预约
+   */
+  add(params: any) {
+    return this.http.post('/v1/schedule/small_course/shop/reserve', { params })
+  }
+  /**
+   *
+   * @param id
+   * 取消预约
+   */
+  del(id: any) {
+    return this.http.put(`/v1/schedule/small_course/shop/cancel/${id}`)
+  }
+  /**
+   *
+   * @param params
+   * 小班课签到消费
+   */
+  check(id: any) {
+    return this.http.put(`/v1/schedule/small_course/shop/check/${id}`)
+  }
+  /**
+   *
+   * @param id
+   * 获取预约详情
+   */
+  getInfo(id: string) {
+    return this.http.get(`/v1/schedule/small_course/shop/${id}`)
+  }
+  /**
+   * 补签到
+   */
+  checkSign(id: string) {
+    return this.http.put(`/v1/schedule/small_course/shop/make_up/check/${id}`)
+  }
+  /**
+   * 补课回显
+   */
+  courseInfo(id: string) {
+    return this.http.get(`/v1/schedule/small_course/shop/make_up/info?id=${id}`)
+  }
+  /**
+   * 请假
+   */
+  leave(id: string) {
+    return this.http.put(`/v1/schedule/small_course/shop/leave/${id}`)
+  }
+  /**
+   * 查看补课
+   */
+  msg(id: string) {
+    return this.http.get(`/v1/schedule/small_course/shop/make_up/msg?id=${id}`)
+  }
 }
 export interface EditFaceParams {
   image_face: object
