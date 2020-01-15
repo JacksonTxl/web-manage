@@ -302,7 +302,7 @@ export default {
       let functionName = this.type === 'team' ? 'teamBatch' : 'smallBatch'
       this.courseRankPreviewService[functionName](data).subscribe(res => {
         this.$emit('success', res)
-        this.messageService.warn({ content: '排课成功' })
+        this.messageService.success({ content: '排课成功' })
         this.show = false
       })
     },
