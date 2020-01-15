@@ -64,6 +64,7 @@
           <st-form-item label="家长姓名" v-show="isShowParent" required>
             <a-input
               placeholder="支持中英文,不超过15个字"
+              :disabled="isEditParent"
               v-decorator="rules.parent_username"
             >
               <a-select
@@ -505,6 +506,7 @@ export default {
     getParentInfo(e) {
       setTimeout(() => {
         this.form.validateFields(['parent_mobile']).then(values => {
+          console.log(values.parent_mobile)
           this.getParentInfoByPhone(values.parent_mobile)
         })
       })
@@ -606,7 +608,6 @@ export default {
     },
     setEditInfo(obj) {
       this.isShowParent = !!obj.is_minors
-      console.log(!!obj.is_minors)
       const cascader = []
       if (obj.province_id) {
         cascader.push(obj.province_id)
@@ -669,6 +670,7 @@ export default {
       setTimeout(() => {
         this.setEditInfo(this.info)
         this.form.validateFields()
+        this.getParentInfo()
       })
     })
   }

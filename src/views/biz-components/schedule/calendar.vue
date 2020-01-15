@@ -373,6 +373,15 @@ export default {
       }
     },
     onClickGetWeek() {
+      if (this.$searchQuery.start_date == this.$searchQuery.end_date) {
+        let weekOfday = moment().format('E')
+        this.currentWeek.start_date = moment()
+          .subtract(weekOfday + 7 - 1, 'days')
+          .format('YYYY-MM-DD')
+        this.currentWeek.end_data = moment()
+          .subtract(weekOfday, 'days')
+          .format('YYYY-MM-DD')
+      }
       this.$router.push({
         query: { ...this.currentWeek, time_unit: this.TIME_UNIT.TIME_WEEK }
       })
@@ -402,6 +411,7 @@ export default {
   },
   created() {
     this.currentWeek = cloneDeep(this.$searchQuery)
+    console.log('created', this.currentWeek, this.$searchQuery)
     this.start = this.startDate
     if (this.isDay) {
       this.getWeeks()

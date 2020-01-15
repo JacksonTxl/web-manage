@@ -76,7 +76,7 @@
                   <div
                     :class="b('schedule__card')"
                     v-for="(cardItem, index) in filterDate[i][item.week]"
-                    :key="index"
+                    :key="cardItem.schedule_ids"
                   >
                     <course-card-popover
                       :cardItem="cardItem"
@@ -103,8 +103,8 @@
             <div :class="b('schedule__tips')" v-if="pickerList.length">
               即：上课时间为
               <span class="schedule__tips-date">
-                {{ pickerList[i][0].format('YYYY/MM/DD').valueOf() }}~{{
-                  pickerList[i][1].format('YYYY/MM/DD').valueOf()
+                {{ pickerList[i][0].format('YYYY/MM/DD') }}~{{
+                  pickerList[i][1].format('YYYY/MM/DD')
                 }}
               </span>
               <span class="schedule__tips-time">{{ tipsText[i] }}</span>
@@ -140,7 +140,7 @@
               <div
                 :class="b('schedule__item-custom')"
                 v-for="(item, index) in customizeScheduleList"
-                :key="index"
+                :key="item.id"
               >
                 <div class="eidt-current-course-btns">
                   <a @click="onEditCustomSchedule(item, index)">
@@ -415,33 +415,29 @@ export default {
         this.select_cycle_type = 1
       }
       if (!list.length && type === 0) {
-        console.log('无数据无类型')
         this.initScheduleDate()
         this.initScheduleCourse()
         return
       }
       if (list.length && this.cycle_type === 1) {
-        console.log('周期有数据')
         this.scheduleList = list
         this.dealScheduleDate(this.scheduleList)
         this.filterDateList(this.scheduleList)
       } else if (!list.length && this.cycle_type === 1) {
-        console.log('周期无数据')
         this.initScheduleDate()
         this.initScheduleCourse()
       } else if (this.cycle_type === 2 && list.length) {
-        console.log('自主有数据')
         this.initScheduleCourse()
         this.customizeScheduleList = list
       }
     },
-    onChangeRangePicker(date, dateString, PickerIndex) {
+    onChangeRangePicker(date, dateString, pickerIndex) {
       if (!this.courseId) {
         return
       }
       let pickerFlag = false
       this.pickerList.forEach((item, index) => {
-        if (PickerIndex === index) {
+        if (pickerIndex === index) {
           return
         } else {
           if (
@@ -457,22 +453,22 @@ export default {
       if (!pickerFlag) {
         if (
           this.cycle_type === 1 &&
-          this.scheduleList[PickerIndex].course_time.length > 0
+          this.scheduleList[pickerIndex].course_time.length > 0
         ) {
           this.$confirm({
             title: '提示',
             content: `修改后会清空当前周期下的已有小班课排期，请确认修改`,
             onCancel: () => {
-              const oldDate = this.pickerList[PickerIndex]
-              this.pickerList.splice(PickerIndex, 1, oldDate)
+              const oldDate = this.pickerList[pickerIndex]
+              this.pickerList.splice(pickerIndex, 1, oldDate)
             },
             onOk: () => {
-              this.onDeleteCourseScheduleCycle([date[0], date[1]], PickerIndex)
+              this.onDeleteCourseScheduleCycle([date[0], date[1]], pickerIndex)
             }
           })
         } else {
           this.picker_end_date = date[1].format('YYYY-MM-DD')
-          this.pickerList.splice(PickerIndex, 1, date)
+          this.pickerList.splice(pickerIndex, 1, date)
         }
       }
     },
@@ -528,7 +524,6 @@ export default {
     dealCourtSiteName(courtName, CourtSiteName) {
       return CourtSiteName ? courtName + ' / ' + CourtSiteName : courtName
     },
-    // 增加课程
     createCourseWeek(courseItem, cycleIndex) {
       let courseWeek = {}
       courseWeek.week = courseItem.week
@@ -538,8 +533,6 @@ export default {
       this.filterDateList(this.scheduleList)
     },
     pushCourseInfo(cycleIndex, conflict, info, list) {
-      console.log('增加周期性课程排期')
-      console.log(info)
       let courseItem = cloneDeep(info)
       courseItem.court_site_id = info.court_site_id || 0
       courseItem.conflict = conflict
@@ -564,7 +557,6 @@ export default {
       const courseInfo = cloneDeep(info)
       this.customizeScheduleList.push(courseInfo)
     },
-    // 编辑课程
     onEditCourseSchedule(item, cycleIndex, positionIndex) {
       const cycle = this.pickerList[cycleIndex]
       const cycle_type = this.cycle_type
@@ -612,7 +604,6 @@ export default {
       })
     },
     onDeleteCourseSchedule(item, cycleIndex, positionIndex) {
-      console.log('删除周期的单个排期')
       let params = {}
       params = item
       params.del_type = DELETE_TYPE.SINGLE
@@ -629,7 +620,6 @@ export default {
         })
       })
     },
-    // 删除周期单个批次内容
     onDeleteCourseScheduleCycle(dateList, cycleIndex) {
       let params = {}
       const cycleDate = this.pickerList[cycleIndex]
@@ -645,20 +635,21 @@ export default {
         ][1].format('YYYY-MM-DD')
         this.filterDateList(this.scheduleList)
         this.resetCourseNumTips('single', cycleIndex)
-        console.log('修改成功')
       })
     },
-    // 顶部删除周期整个批次
+    onDealDeleteResult(cycleIndex) {
+      this.scheduleList.splice(cycleIndex, 1)
+      this.pickerList.splice(cycleIndex, 1)
+      this.picker_end_date = this.pickerList[
+        this.pickerList.length - 1
+      ][1].format('YYYY-MM-DD')
+    },
     onDeleteCycleSchedule(cycleIndex) {
       if (this.scheduleList.length <= 1) {
         return
       }
       if (this.scheduleList[cycleIndex].course_time.length <= 0) {
-        this.scheduleList.splice(cycleIndex, 1)
-        this.pickerList.splice(cycleIndex, 1)
-        this.picker_end_date = this.pickerList[
-          this.pickerList.length - 1
-        ][1].format('YYYY-MM-DD')
+        this.onDealDeleteResult(cycleIndex)
         return
       } else {
         this.$confirm({
@@ -675,24 +666,18 @@ export default {
             this.smallCourseScheduleService
               .cancelCycle(params)
               .subscribe(res => {
-                this.scheduleList.splice(cycleIndex, 1)
-                this.pickerList.splice(cycleIndex, 1)
-                this.picker_end_date = this.pickerList[
-                  this.pickerList.length - 1
-                ][1].format('YYYY-MM-DD')
+                this.onDealDeleteResult(cycleIndex)
               })
             this.resetCourseNumTips('single', cycleIndex)
           }
         })
       }
     },
-    // 自主约课单个删除
     onDeleteCustomSchedule(item, index) {
       this.smallCourseScheduleService.cancelCustom(item.id).subscribe(res => {
         this.customizeScheduleList.splice(index, 1)
       })
     },
-    // 取消删除所有未发布
     onDeleteScheduleAll() {
       let hasCoursesFlag = false
       if (this.cycle_type === 2 && this.customizeScheduleList > 0) {
@@ -750,7 +735,6 @@ export default {
         this.tipsCourseNum.splice(index, 1)
       }
     },
-    // 新增周期排课
     addScheduleWeek() {
       this.pickerList.push([
         moment(this.picker_end_date).add(1, 'days'),

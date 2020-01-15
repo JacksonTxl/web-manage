@@ -163,7 +163,11 @@ export class AppConfig {
     config_link: 'https://assets-cli.udesk.cn/im_client/js/udeskApi.js'
   }
   get WEB_SOCKET_DOMAIN() {
-    if (this.HOST_IS_LOCAL || this.HOST_IS_DEV) {
+    if (this.HOST_IS_LOCAL) {
+      return process.env.LOCAL_WS_HOST + '/ws'
+    }
+
+    if (this.HOST_IS_DEV) {
       return 'wss://api-saas-dev.styd.cn/ws'
     }
 

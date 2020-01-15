@@ -49,10 +49,8 @@ export const columns = () => {
 export const totalColumns = () => {
   return [
     {
-      title: '金额（元）',
       titleTotal: '流水总金额（元）',
-      dataIndex: 'price',
-      sorter: true
+      dataIndex: 'price'
     }
   ]
 }

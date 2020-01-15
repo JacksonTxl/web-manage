@@ -36,7 +36,6 @@ export const columns = (vm: any) => {
     },
     {
       dataIndex: 'personal_checkin_amount',
-      titleTotal: '私教消课价值（元)',
       slots: { title: 'personalTitle' },
       scopedSlots: { customRender: 'personal_checkin_amount' },
       align: 'right'
@@ -64,7 +63,6 @@ export const columns = (vm: any) => {
     },
     {
       dataIndex: 'team_checkin_amount',
-      titleTotal: '团课消课价值（元）',
       slots: { title: 'teamTitle' },
       scopedSlots: { customRender: 'team_checkin_amount' },
       align: 'right'
@@ -87,10 +85,53 @@ export const columns = (vm: any) => {
     },
     {
       dataIndex: 'small_checkin_amount',
-      titleTotal: `${vm.$c('small_course')}消课价值（元)`,
       slots: { title: 'smallTitle' },
       scopedSlots: { customRender: 'small_checkin_amount' },
       align: 'right'
+    }
+  ]
+}
+export const totalColumns = (vm: any) => {
+  return [
+    {
+      title: '上课节数（私）',
+      dataIndex: 'personal_course_num',
+      scopedSlots: { customRender: 'personal_course_num' }
+    },
+    {
+      title: '预约人数（私)',
+      dataIndex: 'personal_reserved_num'
+    },
+    {
+      title: '签到人数（私）',
+      dataIndex: 'personal_checkin_num'
+    },
+    {
+      title: '私教消课价值（元)',
+      dataIndex: 'personal_checkin_amount',
+      scopedSlots: { customRender: 'personal_checkin_amount' }
+    },
+    {
+      title: '上课节数（团）',
+      dataIndex: 'team_course_num',
+      scopedSlots: { customRender: 'team_course_num' }
+    },
+    {
+      title: '可约人数（团）',
+      dataIndex: 'team_can_reserve_num'
+    },
+    {
+      title: '预约人数（团）',
+      dataIndex: 'team_reserved_num'
+    },
+    {
+      title: '签到人数（团）',
+      dataIndex: 'team_checkin_num'
+    },
+    {
+      title: '团课消课价值（元）',
+      dataIndex: 'team_checkin_amount',
+      scopedSlots: { customRender: 'team_checkin_amount' }
     }
   ]
 }

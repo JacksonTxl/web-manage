@@ -1608,8 +1608,21 @@ export const routeMapConfig = {
   },
   'shop-stat-sell'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '销售报表'
+    routeConfig.meta.tabs = ['shop-stat-sell-summary', 'shop-stat-sell-staff']
+  },
+  'shop-stat-sell-summary'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '汇总'
+    routeConfig.meta.auth = 'shop:stat:saler_reports|list_summary'
     routeConfig.queryOptions = {
-      showTable: { type: String, default: 'all' },
+      recently_day: { type: Number, default: 7 },
+      current_page: { type: Number, default: 1 },
+      size: { type: Number, default: 20 }
+    }
+  },
+  'shop-stat-sell-staff'(routeConfig: RouteConfig) {
+    routeConfig.meta.title = '员工'
+    routeConfig.meta.auth = 'shop:stat:saler_reports|list_staff'
+    routeConfig.queryOptions = {
       recently_day: { type: Number, default: 7 },
       current_page: { type: Number, default: 1 },
       size: { type: Number, default: 20 },
@@ -1617,6 +1630,7 @@ export const routeMapConfig = {
       staff_id: { type: Number, default: -1 }
     }
   },
+
   'shop-stat-finance'(routeConfig: RouteConfig) {
     routeConfig.meta.title = '收银报表'
     routeConfig.queryOptions = {
