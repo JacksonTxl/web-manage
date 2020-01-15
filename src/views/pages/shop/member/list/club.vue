@@ -119,7 +119,7 @@
       <st-button
         v-if="auth.tag"
         class="shop-member-list-button"
-        :disabled="!selectedRows.length"
+        :disabled="!selectedRowKeys.length"
         v-modal-link="{
           name: 'shop-add-lable',
           props: {
@@ -133,7 +133,7 @@
       <st-button
         v-if="auth.unbindSalesman"
         class="shop-member-list-button"
-        :disabled="!selectedRows.length"
+        :disabled="!selectedRowKeys.length"
         @click="dropSalerSea(selectedRowKeys)"
       >
         抛入销售公海
@@ -141,7 +141,7 @@
       <st-button
         v-if="auth.unbindCoach"
         class="shop-member-list-button"
-        :disabled="!selectedRows.length"
+        :disabled="!selectedRowKeys.length"
         @click="dropCoachSea(selectedRowKeys)"
       >
         抛入教练公海
@@ -180,7 +180,7 @@
         <st-button
           v-if="auth.bindCoach && auth.bindSalesman"
           class="shop-member-list-button"
-          :disabled="selectedRows.length > 0 ? false : true"
+          :disabled="selectedRowKeys.length > 0 ? false : true"
         >
           分配员工
         </st-button>
