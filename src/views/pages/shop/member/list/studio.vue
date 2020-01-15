@@ -52,7 +52,7 @@
         type="primary"
         class="mg-r8"
         v-export-excel="{
-          type: 'member',
+          type: 'studio_member',
           query: { conditions: conditions }
         }"
       >
