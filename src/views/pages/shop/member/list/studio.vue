@@ -52,7 +52,7 @@
         type="primary"
         class="mg-r8"
         v-export-excel="{
-          type: 'member',
+          type: 'studio_member',
           query: { conditions: conditions }
         }"
       >
@@ -63,7 +63,7 @@
       <st-button
         v-if="auth.tag"
         class="shop-member-list-button"
-        :disabled="!selectedRows.length"
+        :disabled="!selectedRowKeys.length"
         v-modal-link="{
           name: 'shop-add-lable',
           props: {
@@ -108,7 +108,7 @@
         <st-button
           v-if="auth.bindCoach && auth.bindSalesman"
           class="shop-member-list-button"
-          :disabled="selectedRows.length > 0 ? false : true"
+          :disabled="selectedRowKeys.length > 0 ? false : true"
         >
           分配员工
         </st-button>

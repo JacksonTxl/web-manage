@@ -219,7 +219,7 @@ export class CardsApi extends Api {
    * 获取拼团支持门店列表
    */
   getGroupShelfList(query: ListPageInput, id: number) {
-    return this.http.get(`v1/plugin/group_buy/shop/${id}`, { query })
+    return this.http.get(`/v1/plugin/group_buy/shop/${id}`, { query })
   }
 }
 export interface CardsInput {
