@@ -184,7 +184,7 @@ export default {
   },
   data() {
     return {
-      start: moment().format('YYYY-MM-DD'),
+      start: '',
       currentWeek: '',
       weeks: [],
       pageBtnFocusState: 'calendar',
@@ -242,6 +242,7 @@ export default {
   watch: {
     $route(newValue, oldValue) {
       // this.isDay = this.$searchQuery.start_date === this.$searchQuery.end_date
+      this.start = this.$searchQuery.start_date
       this.getWeeks()
     }
   },
@@ -321,27 +322,25 @@ export default {
     },
     onClickGetCurrent() {
       this.weeks = []
-      this.weeks.push({ week: 0, date: this.$searchQuery.start_date })
+      this.weeks.push({ week: 0, date: this.start })
       this.$searchQuery.time_unit = this.TIME_UNIT.TIME_DAY
-      let current = moment().format('YYYY-MM-DD')
+      // let current = moment().format('YYYY-MM-DD')
       this.getWeeks()
       this.$router.push({
         query: {
-          start_date: current,
-          end_date: current,
+          start_date: this.start,
+          end_date: this.start,
           time_unit: this.TIME_UNIT.TIME_DAY
         }
       })
     },
     onClickGetMonth() {
-      const startDate = moment()
+      const startDate = moment(this.start)
         .startOf('month')
         .format('YYYY-MM-DD')
-      const endDate = moment()
+      const endDate = moment(this.start)
         .endOf('month')
         .format('YYYY-MM-DD')
-      console.log(startDate, 'startDate')
-      console.log(endDate, 'endDate')
       this.getWeeks()
       this.$router.push({
         query: {
@@ -352,6 +351,7 @@ export default {
       })
     },
     getWeeks(val) {
+      console.log('start', this.start)
       if (val !== 'week' && this.isDay) {
         this.weeks = []
         this.weeks.push({ week: 0, date: this.$searchQuery.start_date })
@@ -373,15 +373,13 @@ export default {
       }
     },
     onClickGetWeek() {
-      if (this.$searchQuery.start_date == this.$searchQuery.end_date) {
-        let weekOfday = moment().format('E')
-        this.currentWeek.start_date = moment()
-          .subtract(weekOfday + 7 - 1, 'days')
-          .format('YYYY-MM-DD')
-        this.currentWeek.end_data = moment()
-          .subtract(weekOfday, 'days')
-          .format('YYYY-MM-DD')
-      }
+      let weekOfday = moment(this.start).format('E')
+      this.currentWeek.start_date = moment(this.start)
+        .subtract(weekOfday - 1, 'days')
+        .format('YYYY-MM-DD')
+      this.currentWeek.end_date = moment(this.start)
+        .add(7 - weekOfday, 'days')
+        .format('YYYY-MM-DD')
       this.$router.push({
         query: { ...this.currentWeek, time_unit: this.TIME_UNIT.TIME_WEEK }
       })
@@ -412,7 +410,7 @@ export default {
   created() {
     this.currentWeek = cloneDeep(this.$searchQuery)
     console.log('created', this.currentWeek, this.$searchQuery)
-    this.start = this.startDate
+    this.start = this.startDate || moment().format('YYYY-MM-DD')
     if (this.isDay) {
       this.getWeeks()
     } else {
