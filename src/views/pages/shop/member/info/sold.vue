@@ -81,6 +81,25 @@
               >
                 签到
               </a>
+              <a
+                v-if="
+                  record.auth['shop:reserve:small_class_course_reserve|del'] &&
+                    record.reserve_type.id === 5
+                "
+                @click="reserveStatus(record)"
+              >
+                取消预约
+              </a>
+              <a
+                v-if="
+                  record.auth[
+                    'shop:reserve:small_class_course_reserve|checkin'
+                  ] && record.reserve_type.id === 5
+                "
+                @click="isCheckin(record)"
+              >
+                签到
+              </a>
             </st-table-actions>
           </div>
         </st-table>

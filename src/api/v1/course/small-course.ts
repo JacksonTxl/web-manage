@@ -26,7 +26,7 @@ export class CourseGroupApi extends Api {
    * 获取小班课范围列表
    */
   getCourseGroupRangeList() {
-    return this.http.get('/v1/setting/course/scope')
+    return this.http.get('/v1/course/small/scope')
   }
   getCourseStaffList(params: any) {
     return this.http.get('/v1/course/small/shop/staff', { params })
