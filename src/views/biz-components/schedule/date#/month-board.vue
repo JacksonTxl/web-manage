@@ -56,7 +56,7 @@
                 >
                   <div
                     :class="
-                      course.schedule_status > 2
+                      course.schedule_status <= 2
                         ? [
                             popoverBox('item-point'),
                             popoverBox('item-point--active')
@@ -85,7 +85,7 @@
                 >
                   <div
                     :class="
-                      course.schedule_status > 2
+                      course.schedule_status <= 2
                         ? [dayContent('point--active'), dayContent('point')]
                         : dayContent('point')
                     "
