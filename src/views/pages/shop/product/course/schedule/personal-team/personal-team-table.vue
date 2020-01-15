@@ -246,7 +246,7 @@ export default {
                 },
                 on: {
                   success: res => {
-                    console.log('新增课表')
+                    this.onScheduleChange()
                   }
                 }
               })

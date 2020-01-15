@@ -291,6 +291,7 @@ export default {
             }
           })
           this.messageService.warn({ content: '存在冲突无法提交' })
+          this.dataTable.amount = res.amount
           res.course_schedule = data
           this.processing(res)
         }
@@ -308,7 +309,15 @@ export default {
     // 排期课程删除
     onDelCourse(data, item) {
       this.courseSchedule.splice(data, 1)
-      this.courseScheduleOld.splice(item.index, 1)
+      this.courseScheduleOld = this.courseScheduleOld.filter(res => {
+        if (res.index !== item.index) {
+          return {
+            ...res
+          }
+        }
+      })
+      console.log(this.courseSchedule, 'show')
+      console.log(this.courseScheduleOld, 'old')
     },
     onEditCourse(data, index) {
       this.courseSchedule[index].isEdit = !data
@@ -355,7 +364,13 @@ export default {
       this.courseSchedule[i].coach_id.valid = 0
       this.courseSchedule[i].limit_num.valid = 0
       this.courseSchedule[i].course_fee.valid = 0
-      this.courseScheduleOld[item.index] = item
+      for (let x = 0; x < this.courseScheduleOld.length; x++) {
+        let res = this.courseScheduleOld[x]
+        if (res.index === item.index) {
+          this.courseScheduleOld[x] = item
+          return
+        }
+      }
     },
     // 显示数据处理
     processing(data) {
