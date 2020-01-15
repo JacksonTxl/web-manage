@@ -65,7 +65,7 @@ export class CourseService {
         percent: checkInCourse.team_checkin_percentage
       },
       {
-        name: `${this.userService.c('small_course')}销课`,
+        name: `${this.userService.c('small_course')}消课`,
         value: checkInCourse.small_checkin_num,
         percent: checkInCourse.small_checkin_percentage
       }
