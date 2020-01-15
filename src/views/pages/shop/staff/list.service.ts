@@ -17,7 +17,8 @@ export class ListService implements Controller {
   auth$ = this.authService.authMap$({
     join: 'shop:staff:staff|join',
     add: 'shop:staff:staff|add',
-    import: 'shop:staff:staff|import'
+    import: 'shop:staff:staff|import',
+    export: 'shop:staff:staff|export' // 现在没有权限
   })
   constructor(
     private staffApi: ShopStaffApi,

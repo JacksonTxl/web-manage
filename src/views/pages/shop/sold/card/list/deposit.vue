@@ -20,8 +20,24 @@
     <div :class="basic('content')">
       <div :class="basic('content-batch')">
         <!-- NOTE: 导出 -->
-        <!-- <st-button type="primary" class="mg-r8" v-if="auth.export">批量导出</st-button> -->
+        <st-button
+          v-if="auth.export"
+          type="primary"
+          class="mg-r8 mg-b16"
+          v-export-excel="{
+            type: 'sold/card/deposit',
+            query: { conditions: $searchQuery }
+          }"
+        >
+          全部导出
+        </st-button>
       </div>
+      <st-total
+        :indexs="totalColumns"
+        :dataSource="total"
+        hasTitle
+        class="mg-b16"
+      ></st-total>
       <div>
         <!--
           NOTE: 本期没有按钮不做
@@ -35,8 +51,11 @@
           :loading="loading.getList"
           :columns="columns"
           :dataSource="list"
-          :scroll="{ x: 1800 }"
+          :scroll="{ x: 3500 }"
         >
+          <template slot="sex" slot-scope="text">
+            {{ text | enumFilter('staff.sex') }}
+          </template>
           <template slot="is_valid" slot-scope="text">
             <st-text
               :status="{
@@ -109,7 +128,7 @@ import moment from 'moment'
 import { cloneDeep, filter } from 'lodash-es'
 import { DepositService } from './deposit.service'
 import tableMixin from '@/mixins/table.mixin'
-import { columns } from './deposit.config'
+import { columns, totalColumns } from './deposit.config'
 import SoldCardRefund from '@/views/biz-modals/sold/card/refund'
 import SoldCardTransfer from '@/views/biz-modals/sold/card/transfer'
 export default {
@@ -133,11 +152,13 @@ export default {
       loading: this.depositService.loading$,
       page: this.depositService.page$,
       isValids: this.depositService.isValids$,
-      auth: this.depositService.auth$
+      auth: this.depositService.auth$,
+      total: this.depositService.total$
     }
   },
   computed: {
-    columns
+    columns,
+    totalColumns
   },
   data() {
     return {

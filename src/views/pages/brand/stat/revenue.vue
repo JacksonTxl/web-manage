@@ -95,7 +95,7 @@
       <st-total
         class="mg-t16"
         :class="b('total')"
-        :indexs="columns"
+        :indexs="totalColumns"
         :dataSource="total"
         hasTitle
       ></st-total>
@@ -122,7 +122,7 @@ import BrandStatisticsRevenueLine from '@/views/biz-components/stat/brand-stat-r
 import BrandStatisticsRevenueRing from '@/views/biz-components/stat/brand-stat-revenue-ring'
 import { RevenueService } from './revenue.service'
 import tableMixin from '@/mixins/table.mixin'
-import { columns } from './revenue.config'
+import { columns, totalColumns } from './revenue.config'
 import { swiper, swiperSlide } from 'vue-awesome-swiper'
 import 'swiper/dist/css/swiper.css'
 export default {
@@ -179,7 +179,8 @@ export default {
     this.getDataToday()
   },
   computed: {
-    columns
+    columns,
+    totalColumns
   },
   methods: {
     onChangeChartShop(event) {

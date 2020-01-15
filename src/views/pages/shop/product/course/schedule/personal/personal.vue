@@ -8,6 +8,7 @@
       :cardList="cardList"
       :startDate="startDate"
       fixed
+      ref="calendar"
     >
       <div slot="toolbar-left">
         <st-button
@@ -31,6 +32,7 @@ import SchedulePersonalAddReserve from '@/views/biz-modals/schedule/personal/add
 import SchedulePersonalReserveInfo from '@/views/biz-modals/schedule/personal/reserve-info'
 import { cloneDeep } from 'lodash-es'
 import { PersonalService } from './personal.service'
+import { TIME_UNIT } from '@/constants/course/team'
 export default {
   name: 'TeamSchedule',
   serviceInject() {
@@ -62,6 +64,11 @@ export default {
       return start === end
     }
   },
+  data() {
+    return {
+      TIME_UNIT
+    }
+  },
   methods: {
     onAddReserve(date) {
       this.$modalRouter.push({
@@ -86,7 +93,11 @@ export default {
     // 管理私教排期
     onClickSettingSchdule() {
       let requestParam = cloneDeep(this.$searchQuery)
-      if (this.$searchQuery.start_date === this.$searchQuery.end_date) {
+      // 判断如果是日或月的时候取本周
+      if (
+        this.$searchQuery.start_date === this.$searchQuery.end_date ||
+        this.$searchQuery.time_unit == this.TIME_UNIT.TIME_MONTH
+      ) {
         let weekOfday = moment(
           this.$searchQuery.start_date,
           'YYYY-MM-DD'
@@ -113,6 +124,14 @@ export default {
     // 刷新页面
     onScheduleChange() {
       this.$router.push({ query: this.$searchQuery })
+    }
+  },
+  watch: {
+    $route(newValue, oldValue) {
+      this.personalScheduleReserveService.getList(this.$searchQuery)
+      this.$refs.calendar.getWeeks(
+        this.$searchQuery.time_unit === this.TIME_UNIT.TIME_WEEK ? 'week' : ''
+      )
     }
   }
 }

@@ -249,7 +249,6 @@ export default {
         })
     },
     handleChange(value, key, column) {
-      console.log(value)
       const newData = [...this.data]
       const target = newData.filter(item => key === item.key)[0]
       if (target) {

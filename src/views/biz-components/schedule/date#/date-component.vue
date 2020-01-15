@@ -15,11 +15,13 @@
   </div>
 </template>
 <script>
+import { TIME_UNIT } from '@/constants/course/team'
 export default {
   name: 'date',
   data() {
     return {
-      startTime: moment().format('YYYY-MM-DD')
+      startTime: moment().format('YYYY-MM-DD'),
+      TIME_UNIT
     }
   },
   props: {
@@ -30,20 +32,25 @@ export default {
   },
   created() {
     let weekOfday = moment(this.start).format('E')
-    this.startTime = this.isDay
-      ? moment(this.start).format('YYYY-MM-DD')
-      : moment(this.start)
-          .subtract(weekOfday - 1, 'days')
-          .format('YYYY-MM-DD')
+    if (this.$searchQuery.time_unit === this.TIME_UNIT.TIME_DAY) {
+      this.startTime = moment(this.start).format('YYYY-MM-DD')
+    } else if (this.$searchQuery.time_unit === this.TIME_UNIT.TIME_MONTH) {
+      this.startTime = this.$searchQuery.start_date
+    } else {
+      this.startTime = moment(this.start)
+        .subtract(weekOfday - 1, 'days')
+        .format('YYYY-MM-DD')
+    }
   },
   watch: {
     start(n, o) {
       let weekOfday = moment(n).format('E')
-      this.startTime = this.isDay
-        ? moment(this.start).format('YYYY-MM-DD')
-        : moment(this.start)
-            .subtract(weekOfday - 1, 'days')
-            .format('YYYY-MM-DD')
+      this.startTime =
+        this.$searchQuery.time_unit !== this.TIME_UNIT.TIME_WEEK
+          ? moment(this.start).format('YYYY-MM-DD')
+          : moment(this.start)
+              .subtract(weekOfday - 1, 'days')
+              .format('YYYY-MM-DD')
     }
   },
   computed: {
@@ -62,6 +69,18 @@ export default {
       return this.$searchQuery.start_date
     },
     endTime() {
+      if (this.$searchQuery.time_unit === this.TIME_UNIT.TIME_DAY) {
+        return moment(this.startTime).format('YYYY-MM-DD')
+      } else if (this.$searchQuery.time_unit === this.TIME_UNIT.TIME_MONTH) {
+        return moment(this.startTime)
+          .endOf('month')
+          .add(1, 'days')
+          .format('YYYY-MM-DD')
+      } else {
+        return moment(this.startTime)
+          .add(6, 'days')
+          .format('YYYY-MM-DD')
+      }
       return this.isDay
         ? moment(this.startTime).format('YYYY-MM-DD')
         : moment(this.startTime)
@@ -71,6 +90,7 @@ export default {
     rangeTime() {
       let start = moment(this.startTime).format('LL')
       let end = moment(this.endTime).format('LL')
+      console.log(this.startTime, start, '这是开始时间')
       return this.isDay
         ? moment(this.$searchQuery.start_date).format('LL')
         : `${start} ~ ${end}`
@@ -78,35 +98,83 @@ export default {
   },
   methods: {
     onClickPre() {
-      this.startTime = this.isDay
-        ? moment(this.$searchQuery.start_date)
-            .subtract(1, 'days')
-            .format('YYYY-MM-DD')
-        : moment(this.startTime)
-            .subtract(7, 'days')
-            .format('YYYY-MM-DD')
-      this.$emit('pre', { start_date: this.startTime, end_date: this.endTime })
+      // this.startTime = this.isDay
+      //   ? moment(this.$searchQuery.start_date)
+      //       .subtract(1, 'days')
+      //       .format('YYYY-MM-DD')
+      //   : moment(this.startTime)
+      //       .subtract(7, 'days')
+      //       .format('YYYY-MM-DD')
+
+      if (this.$searchQuery.time_unit === this.TIME_UNIT.TIME_DAY) {
+        this.startTime = moment(this.$searchQuery.start_date)
+          .subtract(1, 'days')
+          .format('YYYY-MM-DD')
+      } else if (this.$searchQuery.time_unit === this.TIME_UNIT.TIME_MONTH) {
+        this.startTime = moment(this.startTime)
+          .subtract(1, 'months')
+          .format('YYYY-MM-DD')
+      } else {
+        this.startTime = moment(this.startTime)
+          .subtract(7, 'days')
+          .format('YYYY-MM-DD')
+      }
+      this.$emit('pre', {
+        start_date: this.startTime,
+        end_date: this.endTime,
+        time_unit: this.$searchQuery.time_unit
+      })
     },
     onClickNext() {
-      this.startTime = this.isDay
-        ? moment(this.$searchQuery.start_date)
-            .add(1, 'days')
-            .format('YYYY-MM-DD')
-        : moment(this.startTime)
-            .add(7, 'days')
-            .format('YYYY-MM-DD')
-      this.$emit('next', { start_date: this.startTime, end_date: this.endTime })
+      // this.startTime = this.isDay
+      //   ? moment(this.$searchQuery.start_date)
+      //       .add(1, 'days')
+      //       .format('YYYY-MM-DD')
+      //   : moment(this.startTime)
+      //       .add(7, 'days')
+      //       .format('YYYY-MM-DD')
+      if (this.$searchQuery.time_unit === this.TIME_UNIT.TIME_DAY) {
+        this.startTime = moment(this.$searchQuery.start_date)
+          .add(1, 'days')
+          .format('YYYY-MM-DD')
+      } else if (this.$searchQuery.time_unit === this.TIME_UNIT.TIME_MONTH) {
+        this.startTime = moment(this.startTime)
+          .add(1, 'months')
+          .format('YYYY-MM-DD')
+      } else {
+        this.startTime = moment(this.startTime)
+          .add(7, 'days')
+          .format('YYYY-MM-DD')
+      }
+      this.$emit('next', {
+        start_date: this.startTime,
+        end_date: this.endTime,
+        time_unit: this.$searchQuery.time_unit
+      })
     },
     onClickToday() {
       let weekOfday = moment().format('E') // 计算今天是这周第几天
-      this.startTime = this.isDay
-        ? moment().format('YYYY-MM-DD')
-        : moment()
-            .subtract(weekOfday - 1, 'days')
-            .format('YYYY-MM-DD') // 周一日期
+      // this.startTime = this.isDay
+      //   ? moment().format('YYYY-MM-DD')
+      //   : moment()
+      //       .subtract(weekOfday - 1, 'days')
+      //       .format('YYYY-MM-DD') // 周一日期
+
+      if (this.$searchQuery.time_unit === this.TIME_UNIT.TIME_DAY) {
+        this.startTime = moment().format('YYYY-MM-DD')
+      } else if (this.$searchQuery.time_unit === this.TIME_UNIT.TIME_MONTH) {
+        this.startTime = moment()
+          .startOf('month')
+          .format('YYYY-MM-DD')
+      } else {
+        this.startTime = moment()
+          .subtract(weekOfday - 1, 'days')
+          .format('YYYY-MM-DD') // 周一日期
+      }
       this.$emit('today', {
         start_date: this.startTime,
-        end_date: this.endTime
+        end_date: this.endTime,
+        time_unit: this.$searchQuery.time_unit
       })
     },
     getMatrix(n) {

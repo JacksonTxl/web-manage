@@ -114,6 +114,17 @@
       >
         添加用户
       </st-button>
+      <st-button
+        type="primary"
+        v-if="auth.export"
+        class="shop-member-list-button"
+        v-export-excel="{
+          type: 'club_member',
+          query: { conditions: conditions }
+        }"
+      >
+        全部导出
+      </st-button>
       <!-- NOTE: 导入 -->
       <!-- <st-button class="shop-member-list-button" v-if="auth.import">导入用户</st-button> -->
       <st-button
@@ -185,8 +196,6 @@
           分配员工
         </st-button>
       </a-popover>
-      <!-- NOTE: 导出 -->
-      <!-- <st-button v-if="auth.export" :disabled='isSelectedDisabled' class="shop-member-list-button">批量导出</st-button> -->
     </div>
     <st-table
       :columns="columns"
@@ -423,7 +432,28 @@ export default {
     }
   },
   computed: {
-    columns
+    columns,
+    conditions() {
+      let conditions = {
+        ...this.$searchQuery,
+        source: this.$searchQuery.register_way,
+        search: this.$searchQuery.keyword
+      }
+      return conditions
+    }
+  },
+  updated() {
+    console.log(this.$searchQuery)
+    // member_level -> member_level 潜在用户1
+    // register_way -> source 小程序 大众点评 美团
+    // keyword    ->search
+    // saleman_protect_remain  -> saleman_protect_remain  天内销售客保到期
+    // coach_protect_remain  -> coach_protect_remain  天内教练客保到期
+    // follow_min -> follow_min  跟进次数最小值
+    // follow_max -> follow_max  跟进次数最大值
+    // follow_salesman_id -> follow_salesman_id 跟进销售
+    // follow_coach_id -> follow_coach_id 跟进教练
+    // follow_status -> follow_status 跟进状态
   },
   created() {},
   mounted() {

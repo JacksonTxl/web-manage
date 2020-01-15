@@ -10,6 +10,7 @@ export class PersonalService implements Controller {
   list$ = new State([])
   page$ = new State({})
   loading$ = new State({})
+  total$ = new State({})
   auth$ = this.authService.authMap$({
     export: 'shop:sold:sold_personal_course|export',
     batch_extension: 'shop:sold:sold_personal_course|batch_extension',
@@ -30,6 +31,7 @@ export class PersonalService implements Controller {
         res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
+        this.total$.commit(() => res.total)
       })
     )
   }

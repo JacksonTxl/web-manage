@@ -141,15 +141,16 @@ export default {
       })
     },
     onClick() {
+      this.$emit('onClickBatch')
       this.show = false
-      this.$modalRouter.push({
-        name: 'schedule-team-add-course-batch',
-        on: {
-          ok: res => {
-            this.onScheduleChange()
-          }
-        }
-      })
+      // this.$modalRouter.push({
+      //   name: 'schedule-team-add-course-batch',
+      //   on: {
+      //     ok: res => {
+      //       this.onScheduleChange()
+      //     }
+      //   }
+      // })
     },
     onScheduleChange() {
       this.$router.push({ query: this.$searchQuery })

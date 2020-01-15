@@ -115,26 +115,18 @@
             :help="shopCoverImageValidateText"
           >
             <st-image-upload
-              :cropperModal="cropperModal"
               :sizeLimit="5"
               :list="fileList"
               @change="fileChange"
               width="240px"
               height="135px"
-            >
-              <a-icon
-                type="plus-circle"
-                theme="filled"
-                :style="{
-                  fontSize: '32px',
-                  verticalAlign: 'super',
-                  marginRight: '8px',
-                  color: '#9BACB9'
-                }"
-              />
-              <div class="page-upload-text">上传门店照片</div>
-              <div class="page-upload-text">大小不超过5M，建议尺寸16:9</div>
-            </st-image-upload>
+              placeholder="上传门店照片"
+              description="大小不超过5M，建议尺寸16:9"
+              :cropperModal="{
+                title: '门店图片裁切',
+                cropper: { aspectRatio: 16 / 9 }
+              }"
+            ></st-image-upload>
           </st-form-item>
         </a-col>
       </a-row>
@@ -277,8 +269,7 @@ export default {
         8: 'energy'
       },
       fileList: [],
-      shopCoverImageValidateText: '',
-      cropperModal: {}
+      shopCoverImageValidateText: ''
     }
   },
   beforeCreate() {

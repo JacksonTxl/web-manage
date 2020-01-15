@@ -11,6 +11,13 @@
       :sizeLimit="2"
       @change="onImageChange"
     ></st-image-upload>
+    <p class="mg-t8">多张上传</p>
+    <st-image-upload
+      :list="list1"
+      :sizeLimit="2"
+      :numLimit="9"
+      @change="onImageChange"
+    ></st-image-upload>
     {{ list1 }}
     <p class="mg-t8">自定义文字</p>
     <st-image-upload

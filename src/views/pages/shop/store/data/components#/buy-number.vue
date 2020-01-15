@@ -40,7 +40,8 @@ export default {
   },
   props: {
     flag: {
-      type: Boolean
+      type: Boolean,
+      default: true
     },
     data: {
       type: Object,

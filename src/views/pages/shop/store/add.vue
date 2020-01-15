@@ -118,7 +118,10 @@
               <a-checkbox-group v-decorator="decorators.delivery_type">
                 <a-checkbox
                   :value="item.value"
-                  :disabled="isChoose && item.value === 1"
+                  :disabled="
+                    (isChoose && item.value === 1) ||
+                      (isDisabledCourier && item.value === 2)
+                  "
                   v-for="item in shippingMode"
                   :key="item.value"
                   style="margin-right: 16px"
@@ -403,7 +406,8 @@ export default {
       classList: [],
       tableErr: false,
       tableTips: '',
-      isChoose: false
+      isChoose: false,
+      isDisabledCourier: false
     }
   },
   components: {
@@ -448,6 +452,11 @@ export default {
         }
       } else {
         this.isChoose = false
+      }
+      if (event.indexOf(1) !== -1 && event.indexOf(2) === -1) {
+        this.isDisabledCourier = true
+      } else {
+        this.isDisabledCourier = false
       }
     },
     // 保存

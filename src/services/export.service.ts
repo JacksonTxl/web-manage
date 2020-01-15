@@ -13,6 +13,7 @@ export class ExportService {
   ) {}
   @Effect()
   export(path: string, params: any) {
+    console.log(params)
     return this.excelApi.export(path, params)
   }
 }

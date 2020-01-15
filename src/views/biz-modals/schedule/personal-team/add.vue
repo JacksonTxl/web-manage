@@ -127,10 +127,11 @@ export default {
       })
     },
     addInBatch() {
+      this.$emit('onClickBatch')
       this.show = false
-      this.$modalRouter.push({
-        name: 'schedule-personal-team-add-in-batch'
-      })
+      // this.$modalRouter.push({
+      //   name: 'schedule-personal-team-add-in-batch'
+      // })
     },
     dataFilter(data) {
       data.start_time = data.start_time.format('YYYY-MM-DD HH:mm')

@@ -14,14 +14,17 @@
       <div :class="bToolbar('right')">
         <slot name="toolbar-right"></slot>
         <a-radio-group
-          :value="dataBtnFocusState"
+          :value="$searchQuery.time_unit"
           @change="handleSizeChange($event, 'date')"
         >
-          <a-radio-button value="week" @click="onClickGetWeek">
+          <a-radio-button :value="TIME_UNIT.TIME_DAY">
+            日
+          </a-radio-button>
+          <a-radio-button :value="TIME_UNIT.TIME_WEEK">
             周
           </a-radio-button>
-          <a-radio-button value="day" @click="onClickGetCurrent">
-            日
+          <a-radio-button :value="TIME_UNIT.TIME_MONTH" v-if="!smallCourseType">
+            月
           </a-radio-button>
         </a-radio-group>
         <a-radio-group
@@ -38,9 +41,15 @@
       </div>
     </div>
     <div :class="bSchedule('content')">
-      <div :class="bContent('time-collection')"></div>
+      <div
+        :class="bContent('time-collection')"
+        v-if="$searchQuery.time_unit !== TIME_UNIT.TIME_MONTH"
+      ></div>
 
-      <ul :class="bContent('day-group')" v-if="weeks.length === 1">
+      <ul
+        :class="bContent('day-group')"
+        v-if="$searchQuery.time_unit === TIME_UNIT.TIME_DAY"
+      >
         <li
           class="day"
           :class="currentDay(item)"
@@ -87,7 +96,10 @@
         </li>
       </ul>
 
-      <ul :class="bContent('day-group')" v-else>
+      <ul
+        :class="bContent('day-group')"
+        v-else-if="$searchQuery.time_unit === TIME_UNIT.TIME_WEEK"
+      >
         <li
           class="day"
           :class="[currentDay(item), index === 6 ? 'last' : '']"
@@ -141,6 +153,14 @@
           ></schedule-card>
         </li>
       </ul>
+      <!-- 月度组件 -->
+      <month-board
+        v-if="$searchQuery.time_unit === TIME_UNIT.TIME_MONTH"
+        :courses="cardList"
+        :addTitle="addTitle"
+        @onClickAddBtn="addTeamCourse"
+        @onClickCourse="onClickCourse"
+      />
     </div>
   </div>
 </template>
@@ -150,8 +170,10 @@ import DateComponent from './date#/date-component'
 import AddButton from './date#/add-button'
 import ScheduleUnit from './date#/schedule-unit'
 import ScheduleCard from './date#/schedule-card'
+import MonthBoard from './date#/month-board'
 import moment from 'moment'
 import { cloneDeep } from 'lodash-es'
+import { TIME_UNIT } from '@/constants/course/team'
 
 export default {
   name: 'ScheduleCalendar',
@@ -162,11 +184,11 @@ export default {
   },
   data() {
     return {
-      start: moment().format('YYYY-MM-DD'),
+      start: '',
       currentWeek: '',
       weeks: [],
-      dataBtnFocusState: 'week',
-      pageBtnFocusState: 'calendar'
+      pageBtnFocusState: 'calendar',
+      TIME_UNIT
     }
   },
   props: {
@@ -193,6 +215,10 @@ export default {
     cardList: {
       type: Array,
       default: () => []
+    },
+    smallCourseType: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -215,6 +241,8 @@ export default {
   },
   watch: {
     $route(newValue, oldValue) {
+      // this.isDay = this.$searchQuery.start_date === this.$searchQuery.end_date
+      this.start = this.$searchQuery.start_date
       this.getWeeks()
     }
   },
@@ -241,9 +269,16 @@ export default {
   methods: {
     handleSizeChange(evt, type) {
       if (type === 'date') {
-        this.dataBtnFocusState = evt.target.value
+        if (evt.target.value === this.TIME_UNIT.TIME_DAY) {
+          this.onClickGetCurrent()
+        } else if (evt.target.value === this.TIME_UNIT.TIME_MONTH) {
+          this.onClickGetMonth()
+        } else {
+          this.onClickGetWeek()
+        }
+        this.$searchQuery.time_unit = evt.target.value
       } else {
-        this.pageBtnFocusState = evt.target.value
+        this.pageBtnFocusState = evt.target.valuevalue
       }
     },
     onClickAdd() {
@@ -286,16 +321,37 @@ export default {
       this.$emit('detail', info)
     },
     onClickGetCurrent() {
-      let current = moment().format('YYYY-MM-DD')
+      this.weeks = []
+      this.weeks.push({ week: 0, date: this.start })
+      this.$searchQuery.time_unit = this.TIME_UNIT.TIME_DAY
+      // let current = moment().format('YYYY-MM-DD')
       this.getWeeks()
       this.$router.push({
         query: {
-          start_date: current,
-          end_date: current
+          start_date: this.start,
+          end_date: this.start,
+          time_unit: this.TIME_UNIT.TIME_DAY
+        }
+      })
+    },
+    onClickGetMonth() {
+      const startDate = moment(this.start)
+        .startOf('month')
+        .format('YYYY-MM-DD')
+      const endDate = moment(this.start)
+        .endOf('month')
+        .format('YYYY-MM-DD')
+      this.getWeeks()
+      this.$router.push({
+        query: {
+          start_date: startDate,
+          end_date: endDate,
+          time_unit: this.TIME_UNIT.TIME_MONTH
         }
       })
     },
     getWeeks(val) {
+      console.log('start', this.start)
       if (val !== 'week' && this.isDay) {
         this.weeks = []
         this.weeks.push({ week: 0, date: this.$searchQuery.start_date })
@@ -305,6 +361,7 @@ export default {
             top: this.heightToTop(document.querySelector('#timer-9')) - 232
           })
         })
+        this.dataBtnFocusState = 'day'
         return
       }
       if (val === 'week') {
@@ -312,11 +369,20 @@ export default {
         for (let i = 1; i < 8; i++) {
           this.weeks.push({ week: i, date: this.start })
         }
+        this.dataBtnFocusState = 'week'
       }
     },
-
     onClickGetWeek() {
-      this.$router.push({ query: { ...this.currentWeek } })
+      let weekOfday = moment(this.start).format('E')
+      this.currentWeek.start_date = moment(this.start)
+        .subtract(weekOfday - 1, 'days')
+        .format('YYYY-MM-DD')
+      this.currentWeek.end_date = moment(this.start)
+        .add(7 - weekOfday, 'days')
+        .format('YYYY-MM-DD')
+      this.$router.push({
+        query: { ...this.currentWeek, time_unit: this.TIME_UNIT.TIME_WEEK }
+      })
       this.getWeeks('week')
     },
     onChangeGetDate(date) {
@@ -331,11 +397,20 @@ export default {
         ele = ele.offsetParent
       } while (ele !== root)
       return height
+    },
+    addTeamCourse(e) {
+      console.log('点击新增团体课按钮', e)
+      this.$emit('add', moment(e.fullDate))
+    },
+    onClickCourse(e) {
+      console.log('点击某个课程', e)
+      this.$emit('detail', e)
     }
   },
   created() {
     this.currentWeek = cloneDeep(this.$searchQuery)
-    this.start = this.startDate
+    console.log('created', this.currentWeek, this.$searchQuery)
+    this.start = this.startDate || moment().format('YYYY-MM-DD')
     if (this.isDay) {
       this.getWeeks()
     } else {
@@ -343,16 +418,19 @@ export default {
     }
     this.$nextTick().then(() => {
       // 减去232固定高度
-      window.scrollTo({
-        top: this.heightToTop(document.querySelector('#timer-9')) - 232
-      })
+      if (this.$searchQuery.time_unit !== TIME_UNIT.TIME_MONTH) {
+        window.scrollTo({
+          top: this.heightToTop(document.querySelector('#timer-9')) - 232
+        })
+      }
     })
   },
   components: {
     DateComponent,
     AddButton,
     ScheduleUnit,
-    ScheduleCard
+    ScheduleCard,
+    MonthBoard
   }
 }
 </script>

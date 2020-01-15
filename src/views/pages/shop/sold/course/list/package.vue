@@ -29,7 +29,17 @@
     <div :class="basic('content')">
       <div :class="basic('content-batch')" class="mg-b16">
         <!-- NOTE: 导出 -->
-        <!-- <st-button v-if="auth.export" type="primary">批量导出</st-button> -->
+        <st-button
+          v-if="auth.export"
+          type="primary"
+          class="mg-r8"
+          v-export-excel="{
+            type: 'sold/course/package',
+            query: { conditions: $searchQuery }
+          }"
+        >
+          全部导出
+        </st-button>
         <template
           v-if="selectedRowKeys.length >= 1 && diffSelectedRows.length === 0"
         >
@@ -60,6 +70,12 @@
           </st-help-tooltip>
         </template>
       </div>
+      <st-total
+        :indexs="totalColumns"
+        :dataSource="total"
+        hasTitle
+        class="mg-b16"
+      ></st-total>
       <div>
         <st-table
           :page="page"
@@ -77,7 +93,7 @@
             })
           }"
           @change="onTableChange"
-          :scroll="{ x: 1800 }"
+          :scroll="{ x: 3500 }"
           :columns="columns"
           :dataSource="list"
         >
@@ -107,6 +123,19 @@
             <template v-else>
               {{ record.mobile }}
             </template>
+          </template>
+          <template slot="buy_course_num" slot-scope="text, record">
+            {{ text }}/{{ record.team_course_init }}/{{
+              record.personal_course_init
+            }}
+          </template>
+          <template slot="remain_course_num" slot-scope="text, record">
+            {{ text }}/{{ record.team_course_remain }}/{{
+              record.personal_course_remain
+            }}
+          </template>
+          <template slot="sex" slot-scope="text">
+            {{ text | enumFilter('staff.sex') }}
           </template>
           <template slot="package_type" slot-scope="text">
             {{ text | enumFilter('package_course.package_type') }}
@@ -173,7 +202,7 @@ import moment from 'moment'
 import { cloneDeep, filter } from 'lodash-es'
 import { PackageService } from './package.service'
 import tableMixin from '@/mixins/table.mixin'
-import { columns } from './package.config'
+import { columns, totalColumns } from './package.config'
 import SoldCourseFreeze from '@/views/biz-modals/sold/course/freeze'
 import SoldCourseRefund from '@/views/biz-modals/sold/course/refund'
 import SoldCourseSurplus from '@/views/biz-modals/sold/course/surplus'
@@ -206,7 +235,8 @@ export default {
       page: this.packageService.page$,
       courseStatus: this.packageService.courseStatus$,
       packageTypes: this.packageService.packageTypes$,
-      auth: this.packageService.auth$
+      auth: this.packageService.auth$,
+      total: this.packageService.total$
     }
   },
   data() {
@@ -224,7 +254,8 @@ export default {
     this.setSearchData()
   },
   computed: {
-    columns
+    columns,
+    totalColumns
   },
   methods: {
     disabledSelect(record) {
