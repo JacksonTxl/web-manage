@@ -30,7 +30,11 @@
       :columns="columns"
       :dataSource="list$"
       rowKey="id"
-    />
+    >
+      <template slot="user_name" slot-scope="text">
+        <st-overflow-text maxWidth="84px" :value="text"></st-overflow-text>
+      </template>
+    </st-table>
   </div>
 </template>
 
