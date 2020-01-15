@@ -184,7 +184,7 @@
               </a-form-item>
             </div>
           </st-form-item>
-          <st-form-item required labelGutter="12px">
+          <st-form-item required labelGutter="12px" v-if="isMember">
             <template slot="label">
               剩余价值
               <st-help-tooltip id="TSMC004" />
