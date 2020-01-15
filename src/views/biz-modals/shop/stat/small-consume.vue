@@ -51,6 +51,8 @@
       :rowKey="record => record.id"
       :loading="loading$.getConsumeList"
       :dataSource="consumeList$"
+      :simplePage="true"
+      :page="page$"
       page-mode="client"
     ></st-table>
     <div slot="footer">

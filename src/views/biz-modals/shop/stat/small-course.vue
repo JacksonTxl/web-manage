@@ -51,6 +51,8 @@
       :rowKey="record => record.id"
       :loading="loading$.getCourseList"
       :dataSource="courseList$"
+      :simplePage="true"
+      :page="page$"
       page-mode="client"
     ></st-table>
     <div slot="footer">
