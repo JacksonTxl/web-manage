@@ -7,7 +7,14 @@
       <swiper :options="sliderOptions" ref="swiper">
         <swiper-slide v-for="(item, index) in list" :key="index">
           <div>
-            <a :href="item.announcement_link" target="_blank">
+            <a
+              v-if="item.announcement_link.length > 0"
+              :href="item.announcement_link"
+              target="_blank"
+            >
+              <img :src="item.image_key" alt="" width="728" height="400" />
+            </a>
+            <a v-else>
               <img :src="item.image_key" alt="" width="728" height="400" />
             </a>
           </div>
