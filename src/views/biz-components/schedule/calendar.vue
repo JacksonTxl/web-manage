@@ -418,9 +418,11 @@ export default {
     }
     this.$nextTick().then(() => {
       // 减去232固定高度
-      window.scrollTo({
-        top: this.heightToTop(document.querySelector('#timer-9')) - 232
-      })
+      if (this.$searchQuery.time_unit !== TIME_UNIT.TIME_MONTH) {
+        window.scrollTo({
+          top: this.heightToTop(document.querySelector('#timer-9')) - 232
+        })
+      }
     })
   },
   components: {
