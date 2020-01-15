@@ -11,12 +11,6 @@ export const ruleOptions = (vm: any) => {
             if (value && value > values.end_time) {
               return '开始时间不能大于结束时间'
             }
-            if (
-              value &&
-              vm.moment(vm.smallCourseInfo.course_begin_time) > vm.startTime
-            ) {
-              return '开始时间不能小于开班时间'
-            }
           }
         }
       ]
@@ -28,12 +22,6 @@ export const ruleOptions = (vm: any) => {
           validator: (filed: any, value: any, values: any) => {
             if (value && value < values.start_time) {
               return '结束时间不能小于开始时间'
-            }
-            if (
-              value &&
-              vm.moment(vm.smallCourseInfo.course_end_time) < vm.endTime
-            ) {
-              return '结束时间不能大于课程结束时间'
             }
           }
         }

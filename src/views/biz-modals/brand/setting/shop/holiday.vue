@@ -1,7 +1,7 @@
 <template>
   <st-modal title="门店放假设置" v-model="show" @ok="onSubmit" size="small">
     <st-form :form="form" labelWidth="70px" @submit.prevent="onSubmit">
-      <st-form-item label="放假门店">
+      <st-form-item label="放假门店" type="text">
         {{ shopName }}
         <a
           v-if="isHoliday"
@@ -16,7 +16,7 @@
       <st-form-item v-show="false">
         <input type="hidden" v-decorator="decorators.shop_id" />
       </st-form-item>
-      <st-form-item label="放假时间" required class="mg-b0">
+      <st-form-item label="放假时间" required class="mg-b0" type="text">
         <a-range-picker
           v-decorator="decorators.date"
           :showTime="{ format: appConfig.DATE_FORMAT.time }"

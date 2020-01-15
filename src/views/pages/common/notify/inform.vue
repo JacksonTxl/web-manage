@@ -13,7 +13,7 @@
           :options="noticeTypeLevel2Options"
         />
       </st-search-panel-item>
-      <st-search-panel-item label="通知名单：">
+      <st-search-panel-item label="通知门店：">
         <shop-select
           class="mg-r8"
           style="width: 160px"

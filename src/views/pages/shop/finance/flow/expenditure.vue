@@ -61,7 +61,7 @@
     </div>
     <st-total
       :class="bPage('total')"
-      :indexs="columns"
+      :indexs="totalColumns"
       :dataSource="total$"
       class="pd-x24"
       hasTitle
