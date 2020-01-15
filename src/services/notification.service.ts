@@ -1,4 +1,4 @@
-import { notification } from 'ant-design-vue'
+import notification from '@/views/biz-components/notification/notification-st'
 /**
  * title: 通知提醒标题，必选
  * description: 通知提醒内容，必选
