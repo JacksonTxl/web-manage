@@ -15,7 +15,7 @@
     </st-table-header-section>
     <st-total
       :class="bPage('total')"
-      :indexs="columns"
+      :indexs="totalColumns"
       :dataSource="total$"
       hasTitle
     >
@@ -71,7 +71,7 @@
     <st-table
       class="mg-t12"
       :page="page"
-      :scroll="{ x: 1800 }"
+      :scroll="{ x: 3000 }"
       @change="onTableChange"
       :loading="loading.init"
       :columns="columns"
@@ -150,7 +150,7 @@ import ShopStatTeamCourse from '@/views/biz-modals/shop/stat/team-course'
 import ShopStatTeamConsume from '@/views/biz-modals/shop/stat/team-consume'
 import ShopStatSmallCourse from '@/views/biz-modals/shop/stat/small-course'
 import ShopStatSmallConsume from '@/views/biz-modals/shop/stat/small-consume'
-import { columns } from './summary.config.ts'
+import { columns, totalColumns } from './summary.config.ts'
 export default {
   mixins: [tableMixin],
   bem: {
@@ -181,6 +181,7 @@ export default {
   },
   computed: {
     columns,
+    totalColumns,
     smallCourseText(vm) {
       return `${vm.$c('small_course')}消课价值（元)`
     }

@@ -19,7 +19,7 @@
     </st-table-header-section>
     <st-total
       class="mg-t16"
-      :indexs="columns"
+      :indexs="totalColumns"
       :dataSource="total$"
       hasTitle
     ></st-total>
@@ -38,7 +38,7 @@
 <script>
 import { OrderService } from './order.service'
 import tableMixin from '@/mixins/table.mixin'
-import { columns } from './order.config.ts'
+import { columns, totalColumns } from './order.config.ts'
 export default {
   mixins: [tableMixin],
   bem: {
@@ -59,12 +59,9 @@ export default {
       page$
     }
   },
-  data() {
-    return {}
-  },
-  created() {},
   computed: {
-    columns
+    columns,
+    totalColumns
   },
   methods: {
     recentChange(searchFieldsValue) {
