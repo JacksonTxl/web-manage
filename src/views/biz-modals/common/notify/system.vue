@@ -33,10 +33,16 @@
 
 <script>
 import CommonNotifyInfo from '@/views/biz-modals/common/notify/info'
+import { InfoService } from './info.service'
 export default {
   name: 'ModalNoticeSystem',
   bem: {
     b: 'modal-notice-system'
+  },
+  serviceInject() {
+    return {
+      infoService: InfoService
+    }
   },
   data() {
     return {
@@ -64,21 +70,22 @@ export default {
       this.$emit('success')
     },
     onOk() {
-      this.$modalRouter.push({
-        name: 'common-notify-info',
-        props: {
-          record: {
-            id: this.info.announcement_id,
-            notify_type: { id: 1, name: '系统公告' }
-          }
-        },
-        on: {
-          cancel: () => {
-            this.show = false
-            this.setRead()
-          }
-        }
-      })
+      this.infoService
+        .getAnnouncementInfo({
+          id: this.info.announcement_id,
+          notify_type: 1
+        })
+        .subscribe(res => {
+          this.$modalRouter.push({
+            name: 'common-notify-info',
+            on: {
+              cancel: () => {
+                this.show = false
+                this.setRead()
+              }
+            }
+          })
+        })
     },
     onCancel() {
       this.setRead()
