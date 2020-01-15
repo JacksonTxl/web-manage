@@ -61,7 +61,7 @@ export default {
             this.key = val.fileKey
             this.name = data.file.name
             this.$emit('success', val.fileKey)
-            this.messageService.success({ content: `success: ${val}` })
+            this.messageService.success({ content: '上传成功' })
             this.loading = false
           },
           error: val => {

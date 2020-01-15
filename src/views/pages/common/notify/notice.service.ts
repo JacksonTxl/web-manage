@@ -9,6 +9,7 @@ export class NoticeService {
   loading$ = new State({})
   list$ = new State([])
   page$ = new State({})
+  info$ = new State({})
   noticeTypeOptions$ = new State({})
   constructor(private api: NotifyApi, private notifyService: NotifyService) {}
   @Effect()
@@ -18,6 +19,13 @@ export class NoticeService {
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
         this.notifyService.getNoticePcUnread().subscribe()
+      })
+    )
+  }
+  getAnnouncementInfo(query: any) {
+    return this.api.getAnnouncementInfo(query).pipe(
+      tap(res => {
+        this.info$.commit(() => res.info)
       })
     )
   }

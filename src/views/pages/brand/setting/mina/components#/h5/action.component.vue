@@ -13,7 +13,7 @@
             width="72px"
             height="72px"
             :list="[li]"
-            :sizeLimit="2"
+            :sizeLimit="1"
             placeholder="上传照片"
             :numLimit="1"
           ></st-image-upload>
