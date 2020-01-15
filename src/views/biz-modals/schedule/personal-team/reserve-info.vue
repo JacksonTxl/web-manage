@@ -3,6 +3,7 @@
     class="modal-reserved"
     title="预约详情"
     @ok="save"
+    width="755px"
     :footer="null"
     v-model="show"
   >
@@ -56,14 +57,14 @@
                 slot="member"
                 showSearch
                 placeholder="搜索会员名"
-                style="width: 120px"
+                style="width: 149px"
                 :defaultActiveFirstOption="false"
                 :dropdownMatchSelectWidth="false"
                 :showArrow="false"
                 :filterOption="false"
                 @search="onSearch"
                 @change="onChange"
-                :notFoundContent="null"
+                notFoundContent="无搜索结果"
               >
                 <a-select-option
                   v-for="member in memberOptions"
@@ -240,7 +241,6 @@ export default {
   methods: {
     keywordFilter(item) {
       let str
-      if (!this.keyword) return str
       if (item.is_minors === 1) {
         str = `${item.member_name}(未成年) ${item.parent_mobile}(${
           item.parent_user_role

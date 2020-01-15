@@ -8,6 +8,7 @@
       fixed
       :cardList="cardList"
       :startDate="startDate"
+      :smallCourseType="true"
     >
       <div slot="toolbar-left">
         <st-button

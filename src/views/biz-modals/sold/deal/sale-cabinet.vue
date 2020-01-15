@@ -266,7 +266,6 @@ export default {
   rxState() {
     return {
       loading: this.saleCabinetService.loading$,
-      memberList: this.saleCabinetService.memberList$,
       saleList: this.saleCabinetService.saleList$,
       cabinetList: this.saleCabinetService.cabinetList$,
       info: this.saleCabinetService.info$,
@@ -428,7 +427,6 @@ export default {
       })
     },
     onCancel() {
-      this.saleCabinetService.memberList$.commit(() => [])
       this.resetAdvance()
     },
     onSelectAdvanceChange(data) {

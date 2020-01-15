@@ -52,8 +52,8 @@
         type="primary"
         class="mg-r8"
         v-export-excel="{
-          type: 'member',
-          query: { conditions: $searchQuery }
+          type: 'studio_member',
+          query: { conditions: conditions }
         }"
       >
         全部导出
@@ -63,7 +63,7 @@
       <st-button
         v-if="auth.tag"
         class="shop-member-list-button"
-        :disabled="!selectedRows.length"
+        :disabled="!selectedRowKeys.length"
         v-modal-link="{
           name: 'shop-add-lable',
           props: {
@@ -108,7 +108,7 @@
         <st-button
           v-if="auth.bindCoach && auth.bindSalesman"
           class="shop-member-list-button"
-          :disabled="selectedRows.length > 0 ? false : true"
+          :disabled="selectedRowKeys.length > 0 ? false : true"
         >
           分配员工
         </st-button>
@@ -162,7 +162,10 @@
           >
             详情
           </a>
-          <a @click="edit(record)">
+          <a
+            v-if="record.auth['shop:member:member|edit']"
+            @click="edit(record)"
+          >
             编辑
           </a>
           <a
@@ -298,7 +301,18 @@ export default {
     }
   },
   computed: {
-    columns
+    columns,
+    conditions() {
+      let conditions = {
+        ...this.$searchQuery,
+        search: this.$searchQuery.keyword,
+        source: this.$searchQuery.register_way,
+        register_end_time: this.$searchQuery.register_stop_time,
+        member_start_time: this.$searchQuery.be_member_start_time,
+        member_end_time: this.$searchQuery.be_member_stop_time
+      }
+      return conditions
+    }
   },
   mounted() {
     this.sourceRegisters()

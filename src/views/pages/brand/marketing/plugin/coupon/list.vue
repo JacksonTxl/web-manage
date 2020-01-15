@@ -53,7 +53,7 @@
                 props: { id: record.id, type: 'Sale', title: '可用门店' }
               }"
             >
-              共{{ record.shop_num }}家门店
+              多门店(共{{ record.shop_num }}家)
             </a>
             <!-- 改为弹框end -->
             <!-- <a-popover placement="right" v-else>

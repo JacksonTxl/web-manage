@@ -23,7 +23,7 @@
         ></div>
         <div :class="b('button-wapper')">
           <st-button type="primary" class="mg-t8" @click="onOk">
-            我知道了
+            查看详情
           </st-button>
         </div>
       </div>
@@ -32,15 +32,25 @@
 </template>
 
 <script>
+import CommonNotifyInfo from '@/views/biz-modals/common/notify/info'
+import { InfoService } from './info.service'
 export default {
   name: 'ModalNoticeSystem',
   bem: {
     b: 'modal-notice-system'
   },
+  serviceInject() {
+    return {
+      infoService: InfoService
+    }
+  },
   data() {
     return {
       show: false
     }
+  },
+  modals: {
+    CommonNotifyInfo
   },
   props: {
     info: {
@@ -60,7 +70,22 @@ export default {
       this.$emit('success')
     },
     onOk() {
-      this.setRead()
+      this.infoService
+        .getAnnouncementInfo({
+          id: this.info.announcement_id,
+          notify_type: 1
+        })
+        .subscribe(res => {
+          this.$modalRouter.push({
+            name: 'common-notify-info',
+            on: {
+              cancel: () => {
+                this.show = false
+                this.setRead()
+              }
+            }
+          })
+        })
     },
     onCancel() {
       this.setRead()

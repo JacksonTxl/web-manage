@@ -183,22 +183,26 @@ export default {
       this.$searchQuery.end_time = end_time
       this.onSearch()
     },
+    init() {
+      const start = this.$searchQuery.start_time
+        ? moment(this.$searchQuery.start_time)
+        : null
+      const end = this.$searchQuery.end_time
+        ? moment(this.$searchQuery.end_time)
+        : null
+      this.$set(this, 'date', [start, end])
+      console.log(this.date)
+    },
     onReset() {
-      this.date = [null, null]
-      this.onSearchNative()
+      this.$set(this, 'date', [moment(), moment()])
+      this.onSearchReset()
     },
     onPrint(id) {
       window.open('/ticket/print?id=' + id, '_blank', 'width=800,height=600')
     }
   },
   created() {
-    const start = this.$searchQuery.start_time
-      ? moment(this.$searchQuery.start_time)
-      : null
-    const end = this.$searchQuery.end_time
-      ? moment(this.$searchQuery.start_time)
-      : null
-    this.date = [start, end]
+    this.init()
   }
 }
 </script>
