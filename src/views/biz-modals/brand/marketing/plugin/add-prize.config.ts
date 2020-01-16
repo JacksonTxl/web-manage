@@ -4,13 +4,9 @@ export const ruleOptions = (vm: any) => {
     prize_name: {
       rules: [
         {
-          required: true,
-          message: '请输入奖品名称'
-        },
-        {
-          validator: (field: any, value: any, values: any) => {
-            if (value.length > 10) {
-              return '请输入1-10个字符'
+          validator: (filed: any, value: any, values: any) => {
+            if (!value || !value.match(vm.pattern.CN_EN_NUM_SPACE('1-10'))) {
+              return '请输入奖品名称，支持格式长度1-10个字符'
             }
           }
         }
