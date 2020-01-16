@@ -11,12 +11,13 @@ interface NotificationOptions {
   onClose?: any
   key?: string
 }
+const notify = notification as any
 /**
  *
  */
 export class NotificationService {
   success(config: NotificationOptions) {
-    notification.success({
+    notify.success({
       message: config.title + '',
       description: config.content,
       duration: config.duration,
@@ -24,7 +25,7 @@ export class NotificationService {
     })
   }
   info(config: NotificationOptions) {
-    notification.info({
+    notify.info({
       message: config.title + '',
       description: config.content,
       duration: config.duration,
@@ -32,7 +33,7 @@ export class NotificationService {
     })
   }
   error(config: NotificationOptions) {
-    notification.error({
+    notify.error({
       message: config.title + '',
       description: config.content,
       duration: config.duration,
@@ -40,7 +41,7 @@ export class NotificationService {
     })
   }
   warn(config: NotificationOptions) {
-    notification.warn({
+    notify.warn({
       message: config.title + '',
       description: config.content,
       duration: config.duration,
@@ -48,7 +49,7 @@ export class NotificationService {
     })
   }
   open(config: NotificationOptions) {
-    notification.open({
+    notify.open({
       class: 'st-notify-open',
       message: config.title + '',
       description: config.content,
@@ -59,7 +60,7 @@ export class NotificationService {
     })
   }
   openNormal(config: NotificationOptions) {
-    notification.open({
+    notify.open({
       class: 'st-notify-normal-open',
       message: config.title + '',
       description: config.content,
@@ -70,9 +71,9 @@ export class NotificationService {
     })
   }
   close(key: string) {
-    notification.close(key)
+    notify.close(key)
   }
   destroy() {
-    notification.destroy()
+    notify.destroy()
   }
 }
