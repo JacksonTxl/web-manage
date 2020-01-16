@@ -9,7 +9,8 @@
               <st-help-tooltip id="MDYXCJ001" />
             </div>
           </st-t2>
-          <st-refresh-btn :action="refresh"></st-refresh-btn>
+          // NOTE: 崔庆修复
+          <!-- <st-refresh-btn :action="refresh"></st-refresh-btn> -->
         </div>
         <section>
           <ul v-if="num">
