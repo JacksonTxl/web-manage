@@ -148,7 +148,7 @@ export default {
       this.venueList.forEach(item => (item.active = false))
       venue.active = true
       this.venueInfo = venue
-      this.manageService.setPerTime(venue.per_time)
+      this.manageService.SET_PER_TIME(venue.per_time)
     },
     clickVenue(venue) {
       this.setActive(venue)

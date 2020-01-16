@@ -37,8 +37,10 @@
                 {{ item.time_limit }}
               </td>
               <td>
-                <span v-if="item.cyclic_type === 1">每天</span>
-                <span v-if="item.cyclic_type === 2">
+                <span v-if="item.cyclic_type === CYCLIC_TYPE.EVERYDAY">
+                  每天
+                </span>
+                <span v-if="item.cyclic_type === CYCLIC_TYPE.CUSTOM">
                   {{ item.week_day | cycleFilter }}
                 </span>
               </td>
@@ -59,7 +61,7 @@
                     编辑
                   </a>
                   <a-divider type="vertical"></a-divider>
-                  <a href="javascript:;" v-if="auth.del">
+                  <a v-if="auth.del">
                     <st-popconfirm
                       :title="'一旦删除则无法恢复，确认删除？'"
                       @confirm="delSetting(item)"
@@ -86,26 +88,19 @@
 <script>
 import { SettingService } from './setting.service'
 import { MessageService } from '@/services/message.service'
-const weekMap = {
-  1: '周一',
-  2: '周二',
-  3: '周三',
-  4: '周四',
-  5: '周五',
-  6: '周六',
-  7: '周日'
-}
+import { CYCLIC_TYPE, WEEK_MAP } from '@/constants/venue'
+
 export default {
   serviceInject() {
     return {
-      Service: SettingService,
+      settingService: SettingService,
       messageService: MessageService
     }
   },
   rxState() {
     return {
-      list: this.Service.list$,
-      auth: this.Service.auth$
+      list: this.settingService.list$,
+      auth: this.settingService.auth$
     }
   },
   name: 'newLable',
@@ -125,24 +120,28 @@ export default {
   },
   data() {
     return {
-      show: false
+      show: false,
+      CYCLIC_TYPE
     }
   },
   filters: {
     cycleFilter(val) {
-      return '每' + val.map(item => weekMap[item]).join('、')
+      return '每' + val.map(item => WEEK_MAP[item]).join('、')
     }
   },
   mounted() {
-    this.Service.getList({ site_id: this.siteId }).subscribe()
+    this.getList()
   },
   methods: {
+    getList() {
+      this.settingService.getList({ site_id: this.siteId }).subscribe()
+    },
     delSetting(item) {
       const data = {
         settings_id: item.settings_id
       }
-      this.Service.deleteSetting(data).subscribe(() => {
-        this.Service.getList({ site_id: this.siteId }).subscribe()
+      this.settingService.deleteSetting(data).subscribe(() => {
+        this.getList()
       })
     },
     order(item) {
@@ -150,8 +149,8 @@ export default {
         site_id: this.siteId,
         settings_id: item.settings_id
       }
-      this.Service.orderSetting(data).subscribe(() => {
-        this.Service.getList({ site_id: this.siteId }).subscribe()
+      this.settingService.orderSetting(data).subscribe(() => {
+        this.getList()
       })
     },
     addRow() {
@@ -169,7 +168,6 @@ export default {
       })
     },
     save(e) {
-      let self = this
       let verify = true
       e.preventDefault()
       const sites = this.sites.map(item => {
@@ -182,12 +180,12 @@ export default {
       }
       let data = {
         venues_id: this.venuesId,
-        sites: self.sites.map(item => item.name)
+        sites: this.sites.map(item => item.name)
       }
-      self.Service.addSites(data).subscribe(state => {
+      this.settingService.addSites(data).subscribe(state => {
         this.messageService.success({ content: '添加成功' })
-        self.show = false
-        self.$emit('success', true)
+        this.show = false
+        this.$emit('success', true)
       })
     }
   }
