@@ -78,7 +78,7 @@
         :columns="columnsActivity"
         :dataSource="stReportList"
         :pagination="{
-          current: reportPage.page,
+          current: reportPage.current_page,
           total: reportPage.total_counts,
           pageSize: reportPage.size
         }"
