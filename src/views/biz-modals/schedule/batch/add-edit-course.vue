@@ -24,7 +24,7 @@
       <st-form :form="form" labelWidth="96px">
         <st-form-item label="课表名称" required>
           <a-input
-            placeholder="请选择课表名称"
+            placeholder="请输入课表名称"
             v-decorator="decorators.templateName"
             :class="basic('form-name')"
             maxlength="30"
