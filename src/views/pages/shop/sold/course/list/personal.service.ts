@@ -28,7 +28,6 @@ export class PersonalService implements Controller {
   getList(params: GetCourseListInput) {
     return this.courseApi.getCourseList(params, 'personal').pipe(
       tap((res: any) => {
-        res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
         this.total$.commit(() => res.total)

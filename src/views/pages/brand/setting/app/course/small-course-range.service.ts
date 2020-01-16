@@ -18,7 +18,6 @@ export class SmallCourseRangeService implements Controller {
   getCourseGroupRangeList(params: any) {
     return this.courseApi.getCourseGroupRangeList(params).pipe(
       tap(res => {
-        res = this.authService.filter(res)
         this.resData$.commit(() => res)
       })
     )

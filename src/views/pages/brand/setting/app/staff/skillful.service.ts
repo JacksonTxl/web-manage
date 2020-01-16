@@ -21,7 +21,6 @@ export class SkillfulService implements Controller {
   getSkillfulList(query: GetSkillfulListInput) {
     return this.skillfulApi.getSkillfulList(query).pipe(
       tap(res => {
-        res = this.authService.filter(res)
         this.resData$.commit(() => res)
       })
     )

@@ -40,7 +40,6 @@ export class AllService implements Controller {
   getList(query: CardListInput) {
     return this.cardApi.getCardList(query, 'shop', 'member').pipe(
       tap((res: any) => {
-        res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })

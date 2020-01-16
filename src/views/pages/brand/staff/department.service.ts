@@ -40,7 +40,6 @@ export class DepartmentService {
   getStaffList(data: Params) {
     return this.staffApi.getStaffBrandList(data).pipe(
       tap(res => {
-        this.authService.filter(res)
         this.staffList$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })

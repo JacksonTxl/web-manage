@@ -43,7 +43,6 @@ export class IndexService implements Controller {
   getList(params: GetSignUpList) {
     return this.signUpApi.getSignUpList(params).pipe(
       then((res: any) => {
-        res = this.authService.filter(res)
         this.SET_LIST(res.list)
         this.SET_PAGE(res.page)
       })

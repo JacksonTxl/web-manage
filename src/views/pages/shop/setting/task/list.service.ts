@@ -16,7 +16,6 @@ export class ListService implements Controller {
     return this.taskApi.getList(query).pipe(
       tap((res: any) => {
         this.last_updated_time$.commit(() => res.last_updated_time)
-        res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })

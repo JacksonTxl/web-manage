@@ -19,7 +19,6 @@ export class TrainingAimService implements Controller {
   getTrainingAimList() {
     return this.trainingApi.getTrainingAimList().pipe(
       tap(res => {
-        res = this.authService.filter(res)
         this.resData$.commit(() => res)
       })
     )

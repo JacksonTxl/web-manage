@@ -29,7 +29,6 @@ export class ListService implements Controller {
   getList(params: CouponListParams) {
     return this.couponApi.getList(params).pipe(
       tap((res: any) => {
-        res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })

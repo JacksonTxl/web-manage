@@ -24,7 +24,6 @@ export class DepartmentService {
   getDepartmentList() {
     return this.staffApi.getDepartmentList().pipe(
       tap(res => {
-        res = this.authService.filter(res)
         this.departmentList$.commit(() => res.department)
       })
     )

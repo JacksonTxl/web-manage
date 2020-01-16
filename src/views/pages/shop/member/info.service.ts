@@ -18,7 +18,6 @@ export class InfoService implements Controller {
   getHeaderInfo(id: string) {
     return this.cardsApi.getHeaderInfo(id).pipe(
       tap(res => {
-        res = this.authService.filter(res, 'auth')
         this.info$.commit(() => res.common_info)
         this.auth$.commit(() => res.auth)
       })

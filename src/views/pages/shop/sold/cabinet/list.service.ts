@@ -24,7 +24,6 @@ export class ListService implements Controller {
   getList(params: LeaseParams) {
     return this.cabinetApi.getLeaseList(params).pipe(
       tap((res: any) => {
-        res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })

@@ -19,7 +19,6 @@ export class PerformanceService implements Controller {
   getList(query: SalaryBasicQuery) {
     return this.cardsApi.getPerformanceList(query).pipe(
       tap(res => {
-        res = this.authService.filter(res)
         this.page$.commit(() => res.page)
         this.list$.commit(() => res.list)
       })
