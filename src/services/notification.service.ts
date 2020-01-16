@@ -1,4 +1,4 @@
-import notification from '@/views/biz-components/notification/notification-st'
+import notification from '@/views/biz-components/notification/notification-st/index'
 /**
  * title: 通知提醒标题，必选
  * description: 通知提醒内容，必选
@@ -11,13 +11,12 @@ interface NotificationOptions {
   onClose?: any
   key?: string
 }
-const notify = notification as any
 /**
  *
  */
 export class NotificationService {
   success(config: NotificationOptions) {
-    notify.success({
+    notification.success({
       message: config.title + '',
       description: config.content,
       duration: config.duration,
@@ -25,7 +24,7 @@ export class NotificationService {
     })
   }
   info(config: NotificationOptions) {
-    notify.info({
+    notification.info({
       message: config.title + '',
       description: config.content,
       duration: config.duration,
@@ -33,7 +32,7 @@ export class NotificationService {
     })
   }
   error(config: NotificationOptions) {
-    notify.error({
+    notification.error({
       message: config.title + '',
       description: config.content,
       duration: config.duration,
@@ -41,7 +40,7 @@ export class NotificationService {
     })
   }
   warn(config: NotificationOptions) {
-    notify.warn({
+    notification.warn({
       message: config.title + '',
       description: config.content,
       duration: config.duration,
@@ -49,7 +48,7 @@ export class NotificationService {
     })
   }
   open(config: NotificationOptions) {
-    notify.open({
+    notification.open({
       class: 'st-notify-open',
       message: config.title + '',
       description: config.content,
@@ -60,7 +59,7 @@ export class NotificationService {
     })
   }
   openNormal(config: NotificationOptions) {
-    notify.open({
+    notification.open({
       class: 'st-notify-normal-open',
       message: config.title + '',
       description: config.content,
@@ -71,9 +70,9 @@ export class NotificationService {
     })
   }
   close(key: string) {
-    notify.close(key)
+    notification.close(key)
   }
   destroy() {
-    notify.destroy()
+    notification.destroy()
   }
 }

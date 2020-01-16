@@ -13,6 +13,7 @@
     "sourceMap": true,
     "baseUrl": ".",
     "types": ["webpack-env"],
+    "noImplicitAny": false,
     "paths": {
       "@/*": ["src/*"],
       "vue-service-app/*": ["./vue-service-app/*"],
@@ -26,7 +27,8 @@
     "src/**/*.vue",
     "src/**/*.png",
     "tests/**/*.ts",
-    "tests/**/*.tsx", "src/views/pages/brand/finance/salary/.config.ts"
+    "tests/**/*.tsx",
+    "src/views/pages/brand/finance/salary/.config.ts"
   ],
   "exclude": ["node_modules", "vue-service-app", "rx-state"]
 }
