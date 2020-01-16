@@ -8,8 +8,8 @@
         <div slot="actions">
           <!-- 最近更新时间：2019-04-02 12:38 <a :class="bCount('refresh')" href="javascript:viod(0);" @click="refresh"><st-icon type="switch"></st-icon></a> -->
         </div>
-        <a-row :class="bCount('title')">
-          <a-col :lg="4"></a-col>
+        <a-row type="flex" justify="space-around" :class="bCount('title')">
+          <a-col :class="bCount('date')" :lg="4"></a-col>
           <a-col :lg="5" style="position:relative;left:-16px;">
             <st-help-tooltip id="TSNM001"></st-help-tooltip>
             新增入会(人)
@@ -18,9 +18,9 @@
             </span>
           </a-col>
           <a-col :lg="5">
-            净营收/营收额(元)
-            <span :class="[bCount('topIcon'), 'money']">
-              <img :src="topIconMoney" />
+            客流量(人次)
+            <span :class="[bCount('topIcon'), 'flow']">
+              <img :src="topIconFlow" />
             </span>
           </a-col>
           <a-col :lg="5" style="position:relative;left:-16px;">
@@ -31,13 +31,13 @@
             </span>
           </a-col>
           <a-col :lg="5">
-            客流量(人次)
-            <span :class="[bCount('topIcon'), 'flow']">
-              <img :src="topIconFlow" />
+            净营收/营收额(元)
+            <span :class="[bCount('topIcon'), 'money']">
+              <img :src="topIconMoney" />
             </span>
           </a-col>
         </a-row>
-        <a-row class="mg-t24 count1">
+        <a-row type="flex" justify="space-around" class="mg-t24 count1">
           <a-col :class="bCount('date')" style="line-height:40px;" :lg="4">
             今日
           </a-col>
@@ -45,16 +45,19 @@
             {{ beMemberNum.today || 0 }}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{ revenueAmount.today || 0 }}
+            {{ passengerFlow.today || 0 }}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
             {{ courseCheckInNum.today || 0 }}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{ passengerFlow.today || 0 }}
+            {{ matchAmount(revenueAmount.today)[1] || 0 }}/
+            <span :class="bCount('small')">
+              {{ matchAmount(revenueAmount.today)[2] || 0 }}
+            </span>
           </a-col>
         </a-row>
-        <a-row class="mg-t32 count2">
+        <a-row type="flex" justify="space-around" class="mg-t32 count2">
           <a-col :class="bCount('date')" :lg="4">
             昨日
           </a-col>
@@ -62,16 +65,16 @@
             {{ beMemberNum.yesterday || 0 }}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{ revenueAmount.yesterday || 0 }}
+            {{ passengerFlow.yesterday || 0 }}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
             {{ courseCheckInNum.yesterday || 0 }}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{ passengerFlow.yesterday || 0 }}
+            {{ revenueAmount.yesterday || 0 }}
           </a-col>
         </a-row>
-        <a-row class="mg-t32 count3">
+        <a-row type="flex" justify="space-around" class="mg-t32 count3">
           <a-col :class="bCount('date')" :lg="4">
             近7日
           </a-col>
@@ -79,16 +82,16 @@
             {{ beMemberNum.nearly_seven_days || 0 }}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{ revenueAmount.nearly_seven_days || 0 }}
+            {{ passengerFlow.nearly_seven_days || 0 }}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
             {{ courseCheckInNum.nearly_seven_days || 0 }}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{ passengerFlow.nearly_seven_days || 0 }}
+            {{ revenueAmount.nearly_seven_days || 0 }}
           </a-col>
         </a-row>
-        <a-row class="mg-t32 count4">
+        <a-row type="flex" justify="space-around" class="mg-t32 count4">
           <a-col :class="bCount('date')" :lg="4">
             近30日
           </a-col>
@@ -96,13 +99,13 @@
             {{ beMemberNum.nearly_thirty_days || 0 }}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{ revenueAmount.nearly_thirty_days || 0 }}
+            {{ passengerFlow.nearly_thirty_days || 0 }}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
             {{ courseCheckInNum.nearly_thirty_days || 0 }}
           </a-col>
           <a-col :class="bCount('count')" class="font-number" :lg="5">
-            {{ passengerFlow.nearly_thirty_days || 0 }}
+            {{ revenueAmount.nearly_thirty_days || 0 }}
           </a-col>
         </a-row>
       </st-panel>
@@ -378,6 +381,9 @@ export default {
     ShopCourseFacetBar
   },
   methods: {
+    matchAmount(str) {
+      if (str) return str.match(/(.*)\/(.*)/) || []
+    },
     inoutRecentChange(query) {
       this.clubComponentService.getInout(query).subscribe()
     },
