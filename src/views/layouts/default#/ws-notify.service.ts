@@ -92,7 +92,8 @@ export class WsNotifyService {
     const args = msg.payload.args
     const content = msg.payload.content
     const config = {
-      title: args.member_name,
+      title:
+        msg.payload.msg_sub_type !== 8 ? msg.payload.title : args.member_name,
       content: (h: any) => {
         return msg.payload.msg_sub_type !== 8
           ? h('div', { attrs: { class: 'st-ws-notice-description' } }, [
@@ -168,7 +169,7 @@ export class WsNotifyService {
               }
             })
       },
-      duration: 5,
+      duration: 500,
       onClose: () => {
         const oldMessage = this.messageArr.shift()
         this.notificationService.close(oldMessage.key)

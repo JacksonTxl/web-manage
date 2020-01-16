@@ -532,6 +532,10 @@
 .layout-fast-entry_icon:hover {
   color: #5e6a7f !important;
 }
+.ant-notification-notice.st-notify-open,
+.ant-notification-notice.st-notify-normal-open {
+  .mg-b(8px);
+}
 .st-notify-open {
   .pd(12px);
   .ant-notification-notice-content {
@@ -558,6 +562,7 @@
     .value,
     &__content {
       font-size: 12px;
+      .c(@text-color);
       .lh(17px);
     }
     .label {
