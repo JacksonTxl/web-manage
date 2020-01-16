@@ -105,7 +105,7 @@ export default {
       }
     },
     addSubmit(form) {
-      return form.mobile
+      return form.mobile || form.parent_mobile
         ? this.addReserveService.addReserveCreate(form)
         : this.addReserveService.addReserve(form)
     },
