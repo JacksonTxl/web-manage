@@ -24,7 +24,7 @@
               </a-select>
             </a-input>
           </st-form-item>
-          <st-form-item label="手机号" required v-show="!isShowParent">
+          <st-form-item label="手机号" required v-if="!isShowParent">
             <a-input-group compact>
               <a-select style="width:30%" v-model="country_prefix">
                 <a-select-option
@@ -42,7 +42,7 @@
               />
             </a-input-group>
           </st-form-item>
-          <st-form-item label="家长手机号" v-show="isShowParent" required>
+          <st-form-item label="家长手机号" v-if="isShowParent" required>
             <a-input-group compact>
               <a-select style="width:30%" v-decorator="rules.country_prefix">
                 <a-select-option
@@ -61,7 +61,7 @@
               />
             </a-input-group>
           </st-form-item>
-          <st-form-item label="家长姓名" v-show="isShowParent" required>
+          <st-form-item label="家长姓名" v-if="isShowParent" required>
             <a-input
               placeholder="支持中英文,不超过15个字"
               :disabled="isEditParent"
@@ -90,7 +90,6 @@
               height="264px"
               :list="faceList"
               placeholder="会员人脸信息"
-              v-decorator="rules.faceInfo"
             ></face-upload>
           </st-form-item>
         </a-col>
@@ -414,7 +413,7 @@ export default {
         register_type: ['register_type'],
         // 来源方式
         register_way: ['register_way'],
-        faceInfo: ['faceInfo'],
+        image_face: ['image_face'],
 
         sex: ['sex'],
         birthday: ['birthday'],
@@ -506,8 +505,9 @@ export default {
     getParentInfo(e) {
       setTimeout(() => {
         this.form.validateFields(['parent_mobile']).then(values => {
-          console.log(values.parent_mobile)
-          this.getParentInfoByPhone(values.parent_mobile)
+          if (values.parent_mobile) {
+            this.getParentInfoByPhone(values.parent_mobile)
+          }
         })
       })
     },
@@ -560,31 +560,29 @@ export default {
     },
     save(e) {
       e.preventDefault()
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          values.birthday = values.birthday
-            ? values.birthday.format('YYYY-MM-DD')
-            : ''
+      this.form.validateFields().then(values => {
+        values.birthday = values.birthday
+          ? values.birthday.format('YYYY-MM-DD')
+          : ''
 
-          if (values.cascader && values.cascader.length > 0) {
-            const cascader_name = this.getDistrictInfo(values.cascader)
-            values.province_id = values.cascader[0]
-            values.province_name = cascader_name.province_name
-            values.city_id = values.cascader[1]
-            values.city_name = cascader_name.city_name
-            values.district_id = values.cascader[2]
-            values.district_name = cascader_name.district_name
-          }
-          // 身份前缀
-          values.id_card_type = values.id_card_type
-          // 人脸信息
-          values.image_face = this.faceList[0] || {}
-          // 手机前缀
-          values.height = values.height || undefined
-          values.weight = values.weight || undefined
-          values.album_id = this.info.album_id // 这个给后端快捷找到相册使用，前端不需要处理使用
-          delete values.cascader
+        if (values.cascader && values.cascader.length > 0) {
+          const cascader_name = this.getDistrictInfo(values.cascader)
+          values.province_id = values.cascader[0]
+          values.province_name = cascader_name.province_name
+          values.city_id = values.cascader[1]
+          values.city_name = cascader_name.city_name
+          values.district_id = values.cascader[2]
+          values.district_name = cascader_name.district_name
         }
+        // 身份前缀
+        values.id_card_type = values.id_card_type
+        // 人脸信息
+        values.image_face = this.faceList[0] || {}
+        // 手机前缀
+        values.height = values.height || undefined
+        values.weight = values.weight || undefined
+        values.album_id = this.info.album_id // 这个给后端快捷找到相册使用，前端不需要处理使用
+        delete values.cascader
         this.editService.updateMemberEdit(this.id, values).subscribe(res => {
           this.messageService.success({ content: '修改成功' })
           this.$router.push({
@@ -618,36 +616,39 @@ export default {
       if (obj.district_id) {
         cascader.push(obj.district_id)
       }
-      this.form.setFieldsValue({
-        member_name: obj.member_name,
-        sex: +obj.sex || undefined,
-        country_id: +obj.country.id || undefined,
-        nation_id: +obj.nation.id || undefined,
-        birthday: obj.birthday ? moment(obj.birthday) : null,
-        education_level: +obj.education_level || undefined,
-        id_card_type: +obj.id_card_type || undefined,
-        height: obj.height || '',
-        weight: obj.weight || '',
-        jobs: obj.jobs,
-        id_card: obj.id_card,
-        income_level: obj.income_level,
-        married_type: +obj.married_type || undefined,
-        fitness_goal: obj.fitness_goal,
-        has_children: +obj.has_children || undefined,
-        register_type: +obj.register_type || undefined,
-        register_way: +obj.register_way || undefined,
-        fitness_level: obj.fitness_level,
-        email: obj.email,
-        mobile: obj.mobile,
-        wechat: obj.wechat,
-        cascader: cascader.length > 0 ? cascader : undefined,
-        country_prefix: +obj.country_prefix || undefined,
-        living_address: obj.living_address,
-        is_minors: obj.is_minors,
-        parent_username: obj.parent_info.username,
-        parent_mobile: obj.parent_info.mobile,
-        parent_user_role: obj.parent_user_role
+      this.$nextTick(function() {
+        this.form.setFieldsValue({
+          member_name: obj.member_name,
+          sex: +obj.sex || undefined,
+          country_id: +obj.country.id || undefined,
+          nation_id: +obj.nation.id || undefined,
+          birthday: obj.birthday ? moment(obj.birthday) : null,
+          education_level: +obj.education_level || undefined,
+          id_card_type: +obj.id_card_type || undefined,
+          height: obj.height || '',
+          weight: obj.weight || '',
+          jobs: obj.jobs,
+          id_card: obj.id_card,
+          income_level: obj.income_level,
+          married_type: +obj.married_type || undefined,
+          fitness_goal: obj.fitness_goal,
+          has_children: +obj.has_children || undefined,
+          register_type: +obj.register_type || undefined,
+          register_way: +obj.register_way || undefined,
+          fitness_level: obj.fitness_level,
+          email: obj.email,
+          mobile: obj.mobile,
+          wechat: obj.wechat,
+          cascader: cascader.length > 0 ? cascader : undefined,
+          country_prefix: +obj.country_prefix || undefined,
+          living_address: obj.living_address,
+          is_minors: obj.is_minors,
+          parent_username: obj.parent_info.username,
+          parent_mobile: obj.parent_info.mobile,
+          parent_user_role: obj.parent_user_role
+        })
       })
+
       this.id = obj.id
       if (obj.image_face && obj.image_face.image_id) {
         this.faceList = [obj.image_face]

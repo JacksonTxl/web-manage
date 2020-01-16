@@ -398,7 +398,6 @@ export default {
         register_type: ['register_type'],
         // 来源方式
         register_way: ['register_way'],
-        faceInfo: ['faceInfo'],
 
         sex: ['sex'],
         birthday: ['birthday'],
