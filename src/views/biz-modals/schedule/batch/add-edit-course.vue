@@ -49,7 +49,7 @@
           </st-input-number>
         </st-form-item>
         <st-form-item
-          label="最多上课安排"
+          label="每周上课安排"
           :help="tableTips"
           :validateStatus="tableErr ? 'error' : ''"
           required
