@@ -26,7 +26,7 @@
           </st-form-item>
           <st-form-item label="手机号" required v-if="!isShowParent">
             <a-input-group compact>
-              <a-select style="width:30%" v-decorator="rules.country_prefix">
+              <a-select style="width:30%" v-model="country_prefix">
                 <a-select-option
                   :value="code.code_id"
                   v-for="code in countryList.code_list"
@@ -510,7 +510,9 @@ export default {
     getParentInfo(e) {
       setTimeout(() => {
         this.form.validateFields(['parent_mobile']).then(values => {
-          this.getParentInfoByPhone(values.parent_mobile)
+          if (values.parent_mobile) {
+            this.getParentInfoByPhone(values.parent_mobile)
+          }
         })
       })
     },
@@ -555,6 +557,7 @@ export default {
         values.image_face = this.faceList[0] || {}
         values.height = values.height || undefined
         values.weight = values.weight || undefined
+        values.country_prefix = this.country_prefix
         delete values.cascader
         delete values.md
         this.addService.addUser(values).subscribe(() => {
