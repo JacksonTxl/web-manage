@@ -318,6 +318,7 @@ export default {
     createOrder() {
       return new Promise((resolve, reject) => {
         this.form.validate().then(values => {
+          console.log(values)
           const venues_data = this.selectedList.map(item => {
             return {
               time_start: item.start_time,
@@ -327,6 +328,8 @@ export default {
               venues_site_name: item.site_name
             }
           })
+          // FIXME: 修正逻辑 看下是否是对象
+          values.mobile = values.mobile.phone
           this.bookingService
             .createOrder({
               venues_id: this.query.venues_id,
