@@ -1,8 +1,9 @@
 <template>
-  <div class="st-image-upload" v-viewer="{ url: 'data-src' }">
+  <div class="st-image-upload">
     <div
       class="st-image-upload__item st-preview-item"
       v-for="(item, index) in fileList"
+      v-viewer="{ url: 'data-src' }"
       :style="sizeStyle"
       :key="index"
     >
