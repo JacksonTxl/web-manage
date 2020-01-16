@@ -74,11 +74,6 @@ export const ruleOptions = (vm: any) => {
             if (!value) {
               return '请填写价格'
             }
-            if (value) {
-              if (value <= 0 || value >= 99999) {
-                return '请填写正确的价格范围'
-              }
-            }
           }
         }
       ]

@@ -21,7 +21,7 @@
             </a-radio-group>
           </st-form-item>
           <st-form-item
-            v-if="timeLimit === 2"
+            v-if="timeLimit === TIME_LIMIT_TYPE.APPOINTED"
             :labelFix="true"
             labelWidth="120px"
           >
@@ -136,6 +136,8 @@
               v-decorator="decorators.price"
               :float="true"
               placeholder="请输入价格"
+              :max="99999.9"
+              :min="0.1"
             >
               <template slot="addonAfter">
                 元
@@ -170,7 +172,7 @@ import { cloneDeep } from 'lodash-es'
 import { AddService } from './add.service'
 import { ruleOptions } from './add.config'
 import { MessageService } from '@/services/message.service'
-import { CAN_RESERVE } from '@/constants/venue'
+import { CAN_RESERVE, TIME_LIMIT_TYPE } from '@/constants/venue'
 import { ManageService } from '../manage.service'
 export default {
   name: 'AddRole',
@@ -187,7 +189,7 @@ export default {
   rxState() {
     return {
       sites: this.addService.sites$,
-      harfEnums: this.addService.harfEnums$,
+      halfEnums: this.addService.halfEnums$,
       oneEnums: this.addService.oneEnums$,
       timeEnums: this.addService.timeEnums$,
       cyclicEnums: this.addService.cyclicEnums$,
@@ -203,21 +205,22 @@ export default {
     return {
       form,
       decorators,
-      timeLimit: 1,
+      TIME_LIMIT_TYPE,
+      timeLimit: TIME_LIMIT_TYPE.UNLIMITED,
       start_time: null,
       end_time: null,
       endOpen: false,
       cyclicType: 1,
       canReserve: true,
       pertimeEnums: {
-        1: this.harfEnums,
+        1: this.halfEnums,
         2: this.oneEnums
       }
     }
   },
   methods: {
     onChange(e) {
-      this.canReserve = e.target.value === CAN_RESERVE.YES ? true : false
+      this.canReserve = e.target.value === CAN_RESERVE.YES
     },
     timeLimitChange(e) {
       this.timeLimit = e.target.value
@@ -243,12 +246,7 @@ export default {
       const endValue = this.end_time
       if (!endValue) {
         // 结束时间未选择
-        return (
-          startValue.valueOf() <
-          moment()
-            .startOf('day')
-            .valueOf()
-        )
+        return startValue < moment().startOf('day')
       }
       let start =
         endValue.valueOf() >
