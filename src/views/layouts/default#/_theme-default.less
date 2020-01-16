@@ -355,8 +355,15 @@
     &__notify {
       padding: 4px;
       cursor: pointer;
+      .ant-scroll-number-only,
+      .ant-badge-count,
+      .ant-scroll-number-only > p {
+        .h(16px);
+      }
       .ant-badge-count {
         background: #ff5e41;
+        .lh(16px);
+        padding: 0 4px;
         box-shadow: 0 0 0 0;
       }
       &:hover {
@@ -532,6 +539,10 @@
 .layout-fast-entry_icon:hover {
   color: #5e6a7f !important;
 }
+.ant-notification-notice.st-notify-open,
+.ant-notification-notice.st-notify-normal-open {
+  .mg-b(8px);
+}
 .st-notify-open {
   .pd(12px);
   .ant-notification-notice-content {
@@ -558,6 +569,7 @@
     .value,
     &__content {
       font-size: 12px;
+      .c(@text-color);
       .lh(17px);
     }
     .label {

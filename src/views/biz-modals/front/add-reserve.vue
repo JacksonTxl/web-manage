@@ -114,7 +114,20 @@ export default {
         let form = cloneDeep(values)
         form.reserve_date = moment(values.reserve_date).format('YYYY-MM-DD')
         form.reserve_time = moment(values.reserve_date).format('HH:mm')
-        this.addSubmit(form).subscribe(res => {
+        this.addSubmit({
+          ...form,
+          mobile: values.mobile ? values.mobile.phone : undefined,
+          country_prefix: values.mobile ? values.mobile.code_id : undefined,
+          is_minors: values.is_minors,
+          parent_name: values.parent_name,
+          parent_mobile: values.parent_mobile
+            ? values.parent_mobile.phone
+            : undefined,
+          parent_country_prefix: values.parent_mobile
+            ? values.parent_mobile.code_id
+            : undefined,
+          parent_user_role: values.parent_user_role
+        }).subscribe(res => {
           this.show = false
           this.$emit('success')
         })
