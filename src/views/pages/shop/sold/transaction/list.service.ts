@@ -32,7 +32,6 @@ export class ListService {
   getProductList(params: TransactionListInput) {
     return this.transactionApi.getTransactionList(params).pipe(
       tap((res: any) => {
-        res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })

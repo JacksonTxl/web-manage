@@ -16,8 +16,6 @@ export class FollowHistoryService implements Controller {
   getListInfo(id: any) {
     return this.memberApi.getMemberFollowRecord(id).pipe(
       tap(res => {
-        console.log(res, '获取数据')
-        res = this.authService.filter(res)
         this.followHistoryInfo$.commit(() => res)
       })
     )

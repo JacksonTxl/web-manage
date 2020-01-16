@@ -29,7 +29,6 @@ export class ListService implements Controller {
   getList(params: StoreList) {
     return this.storeApi.getList(params).pipe(
       tap((res: any) => {
-        res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })

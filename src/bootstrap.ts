@@ -33,6 +33,7 @@ import Scrollbar from '@/vendor/vue-scrollbar'
 // @ts-ignore
 import VueComponentHooks from '@/vendor/vue-component-hooks'
 import { UserService } from './services/user.service'
+import { MessageService } from './services/message.service'
 
 Vue.use(VueServiceApp, container)
 Vue.use(Scrollbar)
@@ -104,9 +105,11 @@ export default function bootstrap(bootstrapConfig: BootstrapConfig) {
       }
     }
   })
-  Vue.prototype.$c = function(key: string) {
-    return container.get(UserService).c(key)
+  Vue.prototype.$c = (...args: any[]) => {
+    return container.get(UserService).c(...args)
   }
+  Vue.prototype.$message = container.get(MessageService)
+
   new Vue({
     el: '#app',
     router,

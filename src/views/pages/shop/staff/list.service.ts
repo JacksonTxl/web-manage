@@ -29,7 +29,6 @@ export class ListService implements Controller {
   getStaffList(query: GetListQuery) {
     return this.staffApi.getList(query).pipe(
       tap((res: any) => {
-        res = this.authService.filter(res)
         this.staffList$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })

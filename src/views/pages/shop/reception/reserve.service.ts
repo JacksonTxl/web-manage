@@ -31,7 +31,6 @@ export class ReserveService implements Controller {
   getList(params: GetListInput) {
     return this.api.getList(params).pipe(
       tap((res: any) => {
-        res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })

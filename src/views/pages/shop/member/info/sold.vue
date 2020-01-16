@@ -16,8 +16,7 @@
           </div>
           <div slot="reserve_status" slot-scope="text, record">
             {{
-              record.mina_reserve_status
-                | enumFilter('small_course.reserve_status')
+              record.mina_reserve_status | enumFilter('reserve.reserve_status')
             }}
           </div>
           <div slot="is_checkin" slot-scope="text, record">

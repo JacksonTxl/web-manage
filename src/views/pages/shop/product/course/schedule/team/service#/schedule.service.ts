@@ -33,7 +33,6 @@ export class TeamScheduleScheduleService {
   getList(query: GetScheduleListQuery) {
     return this.scheduleApi.getList(query).pipe(
       tap(res => {
-        res = this.authService.filter(res)
         this.scheduleTeamCourseList$.commit(() => res.list)
       })
     )
@@ -64,7 +63,6 @@ export class TeamScheduleScheduleService {
   getTable(query: GetScheduleTableQuery) {
     return this.scheduleApi.getTable({ size: 999, ...query }).pipe(
       tap(res => {
-        res = this.authService.filter(res)
         this.SET_SCHEDULE_TABLE(res.list)
       })
     )
