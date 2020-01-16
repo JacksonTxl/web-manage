@@ -237,6 +237,7 @@ export default {
   },
   watch: {
     reduce_price: debounce(function(val) {
+      if (!this.selectedList.length) return
       this.calcPrice()
     }, 500)
   },
