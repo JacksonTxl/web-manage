@@ -182,7 +182,7 @@
                 </a>
                 <a-divider type="vertical"></a-divider>
                 <a
-                  @click="del(item.reserve_id)"
+                  @click="cancellAtion(item.reserve_id)"
                   v-if="
                     item.auth['shop:reserve:small_class_course_reserve|del']
                   "
@@ -222,7 +222,7 @@
                 </a>
                 <a-divider type="vertical"></a-divider>
                 <a
-                  @click="remedialCourse(item.reserve_id, reserveInfo.id)"
+                  @click="remedialCourse(item.reserve_id)"
                   v-if="
                     item.auth[
                       'shop:reserve:small_class_course_reserve|supplement'
@@ -239,7 +239,7 @@
                 "
               >
                 <a
-                  @click="message(item.reserve_id)"
+                  @click="getMessage(item.reserve_id)"
                   v-if="
                     item.auth[
                       'shop:reserve:small_class_course_reserve|get_supplement'
@@ -259,7 +259,7 @@
                 "
               >
                 <a
-                  @click="remedialCourse(item.reserve_id, reserveInfo.id)"
+                  @click="remedialCourse(item.reserve_id)"
                   v-if="
                     item.auth[
                       'shop:reserve:small_class_course_reserve|supplement'
@@ -279,7 +279,7 @@
                 "
               >
                 <a
-                  @click="message(item.reserve_id)"
+                  @click="getMessage(item.reserve_id)"
                   v-if="
                     item.auth[
                       'shop:reserve:small_class_course_reserve|get_supplement'
@@ -450,7 +450,7 @@ export default {
         consume_type: this.consumeType,
         consume_id: this.consumeId
       }
-      this.reserveService.add(params).subscribe(res => {
+      this.reserveService.addAtion(params).subscribe(res => {
         this.onAddReserveSuccess()
       })
     },
@@ -521,8 +521,8 @@ export default {
       this.show = false
     },
     // 查看补课
-    message(id) {
-      this.reserveService.message(id).subscribe(res => {
+    getMessage(id) {
+      this.reserveService.getMessage(id).subscribe(res => {
         console.log(res)
         this.$modalRouter.push({
           name: 'schedule-small-course-remedial-info',
@@ -534,8 +534,8 @@ export default {
       })
     },
     // 取消预约
-    del(id) {
-      this.reserveService.del(id).subscribe(this.onDelScheduleScuccess)
+    cancellAtion(id) {
+      this.reserveService.cancellAtion(id).subscribe(this.onDelScheduleScuccess)
     },
     // 请假
     leave(id) {

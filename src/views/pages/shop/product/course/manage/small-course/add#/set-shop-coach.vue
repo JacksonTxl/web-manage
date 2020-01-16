@@ -48,7 +48,7 @@
       </a-col>
     </a-row>
     <a-row :gutter="10">
-      <a-col :lg="11" :xs="10">
+      <a-col :lg="12" :xs="12">
         <st-form-item labelFix>
           <st-button class="mg-r16" @click="onClickBack">
             上一步

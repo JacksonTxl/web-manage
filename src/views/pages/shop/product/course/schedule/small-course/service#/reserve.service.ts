@@ -37,8 +37,8 @@ export class SmallCourseScheduleReserveService {
    * @param params
    * 添加预约
    */
-  add(params: AddReserveInput) {
-    return this.reserveApi.add(params).pipe(
+  addAtion(params: AddReserveInput) {
+    return this.reserveApi.addAtion(params).pipe(
       tap(res => {
         this.msg.success({
           content: '添加预约成功'
@@ -51,8 +51,8 @@ export class SmallCourseScheduleReserveService {
    * @param params
    * 取消预约
    */
-  del(id: any) {
-    return this.reserveApi.del(id).pipe(
+  cancellAtion(id: any) {
+    return this.reserveApi.cancellAtion(id).pipe(
       tap(res => {
         this.msg.success({
           content: '取消预约成功'
@@ -131,8 +131,8 @@ export class SmallCourseScheduleReserveService {
   /**
    * 查看补课
    */
-  message(id: string) {
-    return this.reserveApi.msg(id)
+  getMessage(id: string) {
+    return this.reserveApi.getMessage(id)
   }
   /**
    * 补课回显

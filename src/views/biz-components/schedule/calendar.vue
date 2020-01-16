@@ -330,7 +330,8 @@ export default {
         query: {
           start_date: this.start,
           end_date: this.start,
-          time_unit: this.TIME_UNIT.TIME_DAY
+          time_unit: this.TIME_UNIT.TIME_DAY,
+          date: this.start
         }
       })
     },

@@ -328,8 +328,16 @@ export default {
               venues_site_name: item.site_name
             }
           })
-          // FIXME: 修正逻辑 看下是否是对象
-          values.mobile = values.mobile.phone
+          values.mobile = values.mobile ? values.mobile.phone : undefined
+          values.country_prefix = values.mobile
+            ? values.mobile.code_id
+            : undefined
+          values.parent_mobile = values.parent_mobile
+            ? values.parent_mobile.phone
+            : undefined
+          values.parent_country_prefix = values.parent_mobile
+            ? values.parent_mobile.code_id
+            : undefined
           this.bookingService
             .createOrder({
               venues_id: this.query.venues_id,

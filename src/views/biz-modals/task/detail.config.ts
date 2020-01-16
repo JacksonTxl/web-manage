@@ -3,7 +3,7 @@ export const columns = () => {
     {
       dataIndex: 'contract_number',
       slots: { title: 'customTitle' },
-      width: '278px'
+      width: '240px'
     },
     {
       dataIndex: 'member_name',
@@ -17,7 +17,7 @@ export const columns = () => {
     {
       title: '执行时间',
       dataIndex: 'task_time',
-      width: '250px'
+      width: '200px'
     }
   ]
 }
