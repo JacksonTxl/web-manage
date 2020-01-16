@@ -125,20 +125,6 @@ export default {
         this.scheduleOptions = res.list
       })
     },
-    // onChangeSchedules(value) {
-    //   this.courseOptions.forEach((item, index) => {
-    //     if (item.id === value) {
-    //       this.smallCourseInfo = item
-    //       console.log(item)
-    //       const day = item.start_date
-    //       const time = item.start_time
-    //       const start_days = moment(`${day} ${time}`)
-    //       this.form.setFieldsValue({
-    //         start_days: start_days
-    //       })
-    //     }
-    //   })
-    // },
     onSubmit() {
       this.form.validate().then(values => {
         this.show = false
@@ -147,7 +133,6 @@ export default {
         params.reserve_id = this.info.id
         params.member_id = this.info.member_id
         params.consume_id = this.info.consume_id
-        console.log(params)
         this.reserveService.remedial(params).subscribe()
       })
     },
