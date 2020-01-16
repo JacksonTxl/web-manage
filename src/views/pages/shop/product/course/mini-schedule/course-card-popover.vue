@@ -6,7 +6,6 @@
       v-model="showFlag"
       placement="bottom"
       v-if="cardItem.conflict"
-      trigger="click"
     >
       <template slot="content">
         <st-table
