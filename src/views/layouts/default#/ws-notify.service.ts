@@ -169,7 +169,7 @@ export class WsNotifyService {
               }
             })
       },
-      duration: 500,
+      duration: 5,
       onClose: () => {
         const oldMessage = this.messageArr.shift()
         this.notificationService.close(oldMessage.key)
