@@ -355,8 +355,15 @@
     &__notify {
       padding: 4px;
       cursor: pointer;
+      .ant-scroll-number-only,
+      .ant-badge-count,
+      .ant-scroll-number-only > p {
+        .h(16px);
+      }
       .ant-badge-count {
         background: #ff5e41;
+        .lh(16px);
+        padding: 0 4px;
         box-shadow: 0 0 0 0;
       }
       &:hover {

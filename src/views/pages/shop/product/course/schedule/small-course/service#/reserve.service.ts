@@ -82,8 +82,6 @@ export class SmallCourseScheduleReserveService {
     return this.reserveApi.getInfo(id).pipe(
       tap(res => {
         console.log(res)
-        res = this.authService.filter(res, 'list')
-        res = this.authService.filter(res, 'auth')
         this.infoAuth$.commit(() => res.auth)
         this.reserveInfo$.commit(() => res.info)
         this.reserveList$.commit(() => res.list)

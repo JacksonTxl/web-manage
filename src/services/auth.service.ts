@@ -7,11 +7,6 @@ import { NProgressService } from './nprogress.service'
 import { NotificationService } from './notification.service'
 import { UserService } from './user.service'
 
-interface DataState {
-  list?: any[]
-  [propName: string]: any
-}
-
 interface AuthTabConfig {
   /**
    * 需要附加的query参数字段数组
@@ -45,62 +40,6 @@ export class AuthService {
         this.SET_AUTH(get(res, 'auth', []))
       })
     )
-  }
-  /**
-   *
-   * @param data
-   * @param key
-   * 示例:
-   * authService.filter(data)
-   * authService.filter(data, 'list2')
-   * authService.filter(data, 'auth')
-   * authService.filter(data, 'info.auth')
-   */
-  filter(data: DataState, key: string = 'list') {
-    if (/auth$/.test(key)) {
-      data = this.objectAuthFilter(data, key)
-    } else {
-      data = this.listAuthFilter(data, key)
-    }
-    // console.log('filtered data by authService: ', data)
-    return data
-  }
-  /**
-   * 处理 list
-   */
-  private listAuthFilter(data: any, key = 'list') {
-    const auth: any = this.auth$.snapshot()
-    const list = data[key] || []
-    if (!list.length) {
-      return data
-    }
-    const keys: string[] = []
-    let newList: object[] = []
-    for (let i in list[0].auth) {
-      if (/:/.test(i)) {
-        keys.push(i)
-      }
-    }
-    newList = list.map((item: any, index: any) => {
-      keys.forEach(key => {
-        item.auth[key] = auth.indexOf(key) > -1 && item.auth[key]
-      })
-      return item
-    })
-    data.list = newList
-    return data
-  }
-  /**
-   * 处理特殊的 auth 对象
-   */
-  private objectAuthFilter(data: any, key = 'auth') {
-    const auth: any = this.auth$.snapshot()
-    const authObj = get(data, key)
-    for (let i in authObj) {
-      authObj[i] = auth.indexOf(i) > -1 && authObj[i]
-    }
-    set(data, key, authObj)
-    return data
   }
   /**
    * 校验某权限是否在全局下拥有

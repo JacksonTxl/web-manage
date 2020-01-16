@@ -17,7 +17,6 @@ export class BasicService implements Controller {
   getBasicInfo(query: SalaryBasicQuery) {
     return this.cardsApi.getSalaryBasicList(query).pipe(
       tap(res => {
-        res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })

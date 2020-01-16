@@ -49,7 +49,6 @@ export class SmallCourseScheduleService {
   getList(query: GetScheduleListQuery) {
     return this.scheduleApi.getList(query).pipe(
       tap(res => {
-        res = this.authService.filter(res)
         this.state$.commit(state => {
           state.scheduleSmallCourseList = res.list
         })
@@ -65,7 +64,6 @@ export class SmallCourseScheduleService {
     console.log('getTable')
     return this.scheduleApi.getList({ size: 999, ...query }).pipe(
       tap(res => {
-        //res = this.authService.filter(res)
         this.state$.commit(state => {
           state.scheduleTable = []
           const dateList = Array.from(

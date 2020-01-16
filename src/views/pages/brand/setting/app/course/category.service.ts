@@ -16,7 +16,6 @@ export class CategoryService implements Controller {
   getCourseCategoryList() {
     return this.courseApi.getCourseCategoryList().pipe(
       tap(res => {
-        res = this.authService.filter(res)
         this.resData$.commit(() => res)
       })
     )

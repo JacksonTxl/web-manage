@@ -34,7 +34,6 @@ export class ShelvesService implements Controller {
   getList(query: CardShelfListInput) {
     return this.cardApi.getCardShelfList(query, 'brand', 'deposit').pipe(
       tap((res: any) => {
-        res = this.authService.filter(res)
         this.page$.commit(() => res.page)
         this.list$.commit(() => res.list)
       })

@@ -21,7 +21,6 @@ export class SoldService implements Controller {
   getMemberReserve(id: string, params: any) {
     return this.memberApi.getMemberReserve(id, params).pipe(
       tap(res => {
-        res = this.authService.filter(res)
         this.soldListInfo$.commit(() => res.list)
         this.soldPage$.commit(() => res.page)
       })
@@ -30,7 +29,6 @@ export class SoldService implements Controller {
   getMemberEntrance(id: string, params: any) {
     return this.memberApi.getMemberEntrance(id, params).pipe(
       tap(res => {
-        res = this.authService.filter(res)
         this.entranceList$.commit(() => res.list)
         this.entrancePage$.commit(() => res.page)
       })
@@ -93,8 +91,6 @@ export class SoldService implements Controller {
   //   return this.reserveApi.getInfo(id).pipe(
   //     tap(res => {
   //       console.log(res)
-  //       res = this.authService.filter(res, 'list')
-  //       res = this.authService.filter(res, 'auth')
   //       this.infoAuth$.commit(() => res.auth)
   //       this.reserveInfo$.commit(() => res.info)
   //       this.reserveList$.commit(() => res.list)

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <st-panel-layout>
     <div :class="basic('receive-info')">
       <p :class="basic('receive-title')">{{ info.coupon_name }}</p>
       <p :class="basic('receive-tip')">{{ info.use_regulation }}</p>
@@ -66,7 +66,7 @@
         </st-table>
       </div>
     </st-panel>
-  </div>
+  </st-panel-layout>
 </template>
 
 <script>

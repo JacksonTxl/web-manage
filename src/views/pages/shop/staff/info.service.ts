@@ -15,7 +15,6 @@ export class InfoService implements Controller {
   getInfo(id: string) {
     return this.staffapi.getStaffInfoCommonHeader(id).pipe(
       tap(res => {
-        res = this.authService.filter(res, 'auth')
         this.info$.commit(() => res.common_info)
         this.auth$.commit(() => res.auth)
       })

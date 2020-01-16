@@ -16,7 +16,6 @@ export class ListService implements Controller {
   getListInfo(params: ListParams) {
     return this.labelApi.getLabelList(params).pipe(
       tap(res => {
-        res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })

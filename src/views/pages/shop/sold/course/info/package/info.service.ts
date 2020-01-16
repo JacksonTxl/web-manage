@@ -25,7 +25,6 @@ export class InfoService implements Controller {
   getPackageInfo(id: string, type: string) {
     return this.courseApi.getCourseInfo(id, type).pipe(
       tap((res: any) => {
-        res = this.authService.filter(res, 'auth')
         this.packageInfo$.commit(() => res.info)
         this.auth$.commit(() => res.auth)
       })

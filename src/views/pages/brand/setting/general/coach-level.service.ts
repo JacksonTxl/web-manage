@@ -22,7 +22,6 @@ export class CoachLevelService {
   getCoachLevelList(query: GetCoachLevelListInput) {
     return this.coachLevelApi.getCoachLevelList(query).pipe(
       tap((res: any) => {
-        res = this.authService.filter(res)
         this.resData$.commit(() => res)
       })
     )

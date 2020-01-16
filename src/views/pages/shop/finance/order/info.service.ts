@@ -14,7 +14,6 @@ export class InfoService implements Controller {
   getInfo(id: string) {
     return this.orderApi.getOrderInfo(id).pipe(
       tap((res: any) => {
-        res = this.authService.filter(res, 'auth')
         this.auth$.commit(() => res.auth)
         this.info$.commit(() => res.info)
         this.tabs$.commit(() => {

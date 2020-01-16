@@ -33,6 +33,8 @@ import Scrollbar from '@/vendor/vue-scrollbar'
 // @ts-ignore
 import VueComponentHooks from '@/vendor/vue-component-hooks'
 import { UserService } from './services/user.service'
+import { MessageService } from './services/message.service'
+import { NotificationService } from './services/notification.service'
 
 Vue.use(VueServiceApp, container)
 Vue.use(Scrollbar)
@@ -49,34 +51,6 @@ Vue.use(VueStyleguide)
 Vue.use(VueComponentHooks)
 
 Vue.component(ICountUp.name, ICountUp)
-
-const deperated = (oldName: string, serviceName: string) => {
-  return function() {
-    console.warn(
-      `this.$${oldName} is disabled,you should use serviceInject() to use ${serviceName} instead`
-    )
-  }
-}
-
-Object.defineProperty(Vue.prototype, '$notification', {
-  value: {
-    warn: deperated('notification.warn', 'notificationService'),
-    info: deperated('notification.info', 'notificationService'),
-    error: deperated('notification.error', 'notificationService'),
-    warning: deperated('notification.warning', 'notificationService'),
-    success: deperated('notification.success', 'notificationService')
-  }
-})
-
-Object.defineProperty(Vue.prototype, '$message', {
-  value: {
-    warn: deperated('message.warn', 'messageService'),
-    info: deperated('message.info', 'messageService'),
-    error: deperated('message.error', 'messageService'),
-    warning: deperated('message.warning', 'messageService'),
-    success: deperated('message.success', 'messageService')
-  }
-})
 
 interface BootstrapConfig {
   AppComponent: any
@@ -104,9 +78,12 @@ export default function bootstrap(bootstrapConfig: BootstrapConfig) {
       }
     }
   })
-  Vue.prototype.$c = function(key: string) {
-    return container.get(UserService).c(key)
+  Vue.prototype.$c = (...args: any[]) => {
+    return container.get(UserService).c(...args)
   }
+  Vue.prototype.$message = container.get(MessageService)
+  Vue.prototype.$notification = container.get(NotificationService)
+
   new Vue({
     el: '#app',
     router,

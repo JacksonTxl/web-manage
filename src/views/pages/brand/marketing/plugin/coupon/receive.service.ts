@@ -23,7 +23,6 @@ export class ReceiveService implements Controller {
   getReceiveList(params: any) {
     return this.marketingApi.getReceiveList(params).pipe(
       tap((res: any) => {
-        // res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
         this.info$.commit(() => res.info)
