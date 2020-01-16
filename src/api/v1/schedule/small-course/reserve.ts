@@ -14,7 +14,7 @@ export class SmallCourseScheduleReserveApi extends Api {
    * @param params
    * 添加预约
    */
-  add(params: AddReserveInput) {
+  addAtion(params: AddReserveInput) {
     return this.http.post('/v1/schedule/small_course/shop/reserve', { params })
   }
   /**
@@ -22,7 +22,7 @@ export class SmallCourseScheduleReserveApi extends Api {
    * @param id
    * 取消预约
    */
-  del(id: any) {
+  cancellAtion(id: any) {
     return this.http.put(`/v1/schedule/small_course/shop/cancel/${id}`)
   }
   /**
@@ -70,7 +70,7 @@ export class SmallCourseScheduleReserveApi extends Api {
   /**
    * 查看补课
    */
-  msg(id: string) {
+  getMessage(id: string) {
     return this.http.get(`/v1/schedule/small_course/shop/make_up/msg?id=${id}`)
   }
   /**

@@ -30,7 +30,6 @@ export class SmallCourseService implements Controller {
   getList(params: any) {
     return this.smallCourseApi.getSmallCourseList(params).pipe(
       tap((res: any) => {
-        res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })

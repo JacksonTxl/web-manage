@@ -29,7 +29,6 @@ export class ListService implements Controller {
   getAreaList(query: GetAreaListQuery) {
     return this.HareWareApi.getAreaList(query).pipe(
       tap((res: any) => {
-        res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })

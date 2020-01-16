@@ -37,7 +37,6 @@ export class MemberService implements Controller {
   getList(params: GetMemberListInput) {
     return this.cardApi.getMemberList(params, 'member').pipe(
       tap((res: any) => {
-        res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
         this.total$.commit(() => res.total)

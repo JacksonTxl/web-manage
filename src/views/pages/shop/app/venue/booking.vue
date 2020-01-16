@@ -318,6 +318,7 @@ export default {
     createOrder() {
       return new Promise((resolve, reject) => {
         this.form.validate().then(values => {
+          console.log(values)
           const venues_data = this.selectedList.map(item => {
             return {
               time_start: item.start_time,
@@ -327,6 +328,16 @@ export default {
               venues_site_name: item.site_name
             }
           })
+          values.mobile = values.mobile ? values.mobile.phone : undefined
+          values.country_prefix = values.mobile
+            ? values.mobile.code_id
+            : undefined
+          values.parent_mobile = values.parent_mobile
+            ? values.parent_mobile.phone
+            : undefined
+          values.parent_country_prefix = values.parent_mobile
+            ? values.parent_mobile.code_id
+            : undefined
           this.bookingService
             .createOrder({
               venues_id: this.query.venues_id,

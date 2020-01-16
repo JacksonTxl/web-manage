@@ -18,7 +18,6 @@ export class IndexService implements Controller {
   getListInfo() {
     return this.crowdAPI.getCrowdShopIndex().pipe(
       tap(res => {
-        res = this.authService.filter(res, 'info.list')
         this.crowdIndexInfo$.commit(() => res)
       })
     )

@@ -122,7 +122,8 @@ export default {
       this.$emit('pre', {
         start_date: this.startTime,
         end_date: this.endTime,
-        time_unit: this.$searchQuery.time_unit
+        time_unit: this.$searchQuery.time_unit,
+        date: this.startTime
       })
     },
     onClickNext() {
@@ -149,7 +150,8 @@ export default {
       this.$emit('next', {
         start_date: this.startTime,
         end_date: this.endTime,
-        time_unit: this.$searchQuery.time_unit
+        time_unit: this.$searchQuery.time_unit,
+        date: this.startTime
       })
     },
     onClickToday() {

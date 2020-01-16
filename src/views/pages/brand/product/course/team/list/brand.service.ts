@@ -30,7 +30,6 @@ export class BrandService implements Controller {
   getList(query: any) {
     return this.brandTeamCourseApi.getTeamCourseList(query).pipe(
       tap(res => {
-        res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })

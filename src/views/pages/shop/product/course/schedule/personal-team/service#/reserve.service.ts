@@ -62,13 +62,9 @@ export class PersonalTeamScheduleReserveService {
     return this.reserveApi.getInfo(id).pipe(
       tap(res => {
         this.state$.commit((state: any) => {
-          res = this.authService.filter(res, 'info.reserve')
-          res = this.authService.filter(res, 'auth')
           state.reserveInfo = res.info
           state.infoAuth = res.auth
         })
-        res = this.authService.filter(res, 'info.reserve')
-        res = this.authService.filter(res, 'auth')
         this.reserveInfo$.commit(() => res.info)
         this.infoAuth$.commit(() => res.auth)
         this.reserveList$.commit(() => res.info.reserve)

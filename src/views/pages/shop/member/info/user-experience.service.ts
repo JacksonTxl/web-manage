@@ -18,7 +18,6 @@ export class UserExperienceService implements Controller {
     return this.memberApi.getMemberSideRecord(id, query).pipe(
       tap(res => {
         console.log(res, '获取数据')
-        res = this.authService.filter(res)
         this.physicalListInfo$.commit(() => res)
       })
     )

@@ -114,7 +114,6 @@ export class PersonalScheduleReserveService {
   getList(query: GetListQuery) {
     return this.reserveApi.getList(query).pipe(
       tap(res => {
-        res = this.authService.filter(res)
         this.reserveTable$.commit(() => res.list)
 
         this.list$.commit(() => res.list)

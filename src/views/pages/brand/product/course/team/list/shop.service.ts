@@ -33,7 +33,6 @@ export class ShopService implements Controller {
   getList(params: GetTeamBrandCourseListInput) {
     return this.shopTeamCourseApi.getTeamCourseListInShop(params).pipe(
       tap(res => {
-        res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })

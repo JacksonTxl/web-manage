@@ -36,14 +36,12 @@
           format="HH:mm"
           style="width:100%"
           v-decorator="decorators.start_time"
-          @change="changeStartTime"
         />
       </st-form-item>
       <st-form-item label="结束时间" required>
         <a-time-picker
           format="HH:mm"
           style="width:100%"
-          @change="changeEndTime"
           v-decorator="decorators.end_time"
         />
       </st-form-item>
@@ -118,9 +116,7 @@ export default {
       courseItem: '',
       moment: moment,
       smallCourseInfo: {},
-      courseStartDate: '',
-      startTime: '',
-      endTime: ''
+      courseStartDate: ''
     }
   },
   props: {
@@ -141,14 +137,6 @@ export default {
   methods: {
     changeStartDays(valus) {
       this.courseStartDate = valus.format('YYYY-MM-DD')
-    },
-    changeStartTime(valus) {
-      this.startTime = moment(
-        `${this.courseStartDate} ${valus.format('HH:mm')}`
-      )
-    },
-    changeEndTime(valus) {
-      this.endTime = moment(`${this.courseStartDate} ${valus.format('HH:mm')}`)
     },
     onChangeCourse(value) {
       this.smallCourseScheduleCommonService.getBindCoachList(value).subscribe()

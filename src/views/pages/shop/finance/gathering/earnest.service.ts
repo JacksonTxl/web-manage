@@ -25,7 +25,6 @@ export class EarnestService implements Controller {
   getList(params: EarnestParams) {
     return this.gatheringApi.getEarnestList(params).pipe(
       tap((res: any) => {
-        res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
       })

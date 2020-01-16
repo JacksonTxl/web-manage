@@ -28,7 +28,6 @@ export class IncomeService implements Controller {
   getList(params: GetListInput) {
     return this.api.getIncomeListInShop(params).pipe(
       tap((res: any) => {
-        res = this.authService.filter(res)
         this.list$.commit(() => res.list)
         this.page$.commit(() => res.page)
         this.total$.commit(() => res.total)

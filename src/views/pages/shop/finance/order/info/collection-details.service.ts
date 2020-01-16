@@ -13,7 +13,6 @@ export class CollectionDetailsService implements Controller {
   getList(id: string) {
     return this.orderApi.getOrderFlowList(id).pipe(
       tap((res: any) => {
-        res = this.authService.filter(res)
         this.list$.commit(() => res.list)
       })
     )
