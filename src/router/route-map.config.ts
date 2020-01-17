@@ -155,7 +155,7 @@ export const routeMapConfig = {
     routeConfig.queryOptions = {
       search: { type: String, default: '' },
       card_type: { type: Number, default: -1 },
-      card_status: { type: Number, default: -1 },
+      card_status: { type: Number, default: 1 },
       is_open: { type: Number, default: -1 },
       start_time: { type: String, default: '' },
       end_time: { type: String, default: '' },
