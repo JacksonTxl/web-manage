@@ -16,7 +16,7 @@
       <st-form-item v-show="false">
         <input type="hidden" v-decorator="decorators.shop_id" />
       </st-form-item>
-      <st-form-item label="放假时间" required class="mg-b0" type="text">
+      <st-form-item label="放假时间" required class="mg-b0">
         <a-range-picker
           v-decorator="decorators.date"
           :showTime="{ format: appConfig.DATE_FORMAT.time }"
