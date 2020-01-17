@@ -10,8 +10,9 @@
       :loading="loading.getDetailList"
       :dataSource="list"
       :columns="columns"
-      :scroll="{ y: 230 }"
+      :scroll="{ x: 700, y: 230 }"
       @change="onPageChange"
+      :simplePage="true"
       :page="page"
       :class="list.length > 0 ? 'st-scroll-data' : ''"
     />
