@@ -40,19 +40,18 @@
 
 <script>
 import { RemedialCourseInfoService } from './remedial-info.service'
+import { SmallCourseScheduleReserveService as ReserveService } from '@/views/pages/shop/product/course/schedule/small-course/service#/reserve.service'
 export default {
   name: 'SubmitCourse',
   props: {
-    info: {
-      type: Object,
-      default: () => {
-        return {}
-      }
+    id: {
+      type: Number
     }
   },
   serviceInject() {
     return {
-      remedialInfoService: RemedialCourseInfoService
+      remedialInfoService: RemedialCourseInfoService,
+      reserveService: ReserveService
     }
   },
   rxState() {
@@ -60,9 +59,15 @@ export default {
       reserveStatusOptions: this.remedialInfoService.reserveStatusOptions$
     }
   },
+  created() {
+    this.reserveService.getMessage(this.id).subscribe(res => {
+      this.info = res.info
+    })
+  },
   data() {
     return {
-      show: false
+      show: false,
+      info: ''
     }
   }
 }

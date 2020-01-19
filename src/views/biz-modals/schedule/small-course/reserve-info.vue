@@ -504,34 +504,28 @@ export default {
     },
     // 补课回显
     remedialCourse(reserve_id) {
-      this.reserveService.courseInfo(reserve_id).subscribe(res => {
-        this.$modalRouter.push({
-          name: 'schedule-small-course-remedial-course',
-          props: {
-            info: res.info,
-            id: res.info.schedule_id
-          },
-          on: {
-            ok: () => {
-              this.$router.reload()
-            }
+      this.$modalRouter.push({
+        name: 'schedule-small-course-remedial-course',
+        props: {
+          reserve_id: reserve_id
+        },
+        on: {
+          ok: () => {
+            this.$router.reload()
           }
-        })
+        }
       })
       this.show = false
     },
     // 查看补课
     getMessage(id) {
-      this.reserveService.getMessage(id).subscribe(res => {
-        console.log(res)
-        this.$modalRouter.push({
-          name: 'schedule-small-course-remedial-info',
-          props: {
-            info: res.info
-          }
-        })
-        this.show = false
+      this.$modalRouter.push({
+        name: 'schedule-small-course-remedial-info',
+        props: {
+          id: id
+        }
       })
+      this.show = false
     },
     // 取消预约
     cancellAtion(id) {
