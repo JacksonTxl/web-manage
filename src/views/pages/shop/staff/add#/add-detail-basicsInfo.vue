@@ -153,13 +153,11 @@
           ></department-select>
         </st-form-item>
         <st-form-item label="工作性质">
-          <a-select placeholder="请选择" v-decorator="decorators.nature_work">
-            <template v-for="(item, index) in nature_works">
-              <a-select-option :key="index" :value="+item.value">
-                {{ item }}
-              </a-select-option>
-            </template>
-          </a-select>
+          <a-select
+            placeholder="请选择"
+            v-decorator="decorators.nature_work"
+            :options="nature_works"
+          ></a-select>
         </st-form-item>
         <st-form-item label="系统角色" required>
           <a-select
