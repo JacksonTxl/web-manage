@@ -44,35 +44,24 @@
         >
           全部导出
         </st-button>
-        <template
-          v-if="selectedRowKeys.length >= 1 && diffSelectedRows.length === 0"
+
+        <st-help-tooltip
+          :isCustom="true"
+          title="只支持一种类型卡选择"
+          :defaultVisible="true"
+          trigger="contextmenu"
+          v-model="action.giving.isShowTip"
+          @click="onGiving"
         >
           <st-button
             type="primary"
             class="mg-r8"
             v-if="auth.gift"
-            @click="onGiving"
+            :disabled="!action.giving.isAvaliable"
           >
             赠送额度
           </st-button>
-        </template>
-        <template v-else>
-          <st-help-tooltip
-            :isCustom="true"
-            title="只支持一种类型卡选择"
-            :defaultVisible="true"
-            v-model="visible"
-          >
-            <st-button
-              type="primary"
-              class="mg-r8"
-              v-if="auth.gift"
-              :disabled="true"
-            >
-              赠送额度
-            </st-button>
-          </st-help-tooltip>
-        </template>
+        </st-help-tooltip>
 
         <st-button
           type="primary"
@@ -93,6 +82,23 @@
         >
           变更入场时段
         </st-button>
+        <st-help-tooltip
+          v-if="auth.extendDay"
+          :isCustom="true"
+          title="只支持已开卡的会员卡"
+          :defaultVisible="true"
+          trigger="contextmenu"
+          v-model="action.extendDay.isShowTip"
+        >
+          <st-button
+            type="primary"
+            class="mg-r8"
+            @click="onExtendDays"
+            :disabled="!action.extendDay.isAvaliable"
+          >
+            延长有效期
+          </st-button>
+        </st-help-tooltip>
       </div>
       <st-total
         :indexs="totalColumns"
@@ -261,6 +267,7 @@ import SoldCardGiving from '@/views/biz-modals/sold/card/giving'
 import SoldCardRefund from '@/views/biz-modals/sold/card/refund'
 import SoldCardSetTime from '@/views/biz-modals/sold/card/set-time'
 import SoldCardTransfer from '@/views/biz-modals/sold/card/transfer'
+import SoldCardExtendDay from '@/views/biz-modals/sold/card/extend-day'
 import useCardActions from '@/hooks/card-actions.hook'
 import CommonTaskSuccessTip from '@/views/biz-modals/common/task/success-tip'
 export default {
@@ -278,7 +285,8 @@ export default {
     SoldCardTransfer,
     CommonTaskSuccessTip,
     SoldCardBatchArea,
-    SoldCardBatchEnterTime
+    SoldCardBatchEnterTime,
+    SoldCardExtendDay
   },
   serviceInject() {
     return {
@@ -329,12 +337,27 @@ export default {
   },
   data() {
     return {
-      visible: false,
+      action: {
+        /**
+         * 赠送额度
+         */
+        giving: {
+          isAvaliable: false,
+          isShowTip: false
+        },
+        /**
+         * 延长卡有效期
+         */
+        extendDay: {
+          isAvaliable: false,
+          isShowTip: false
+        }
+      },
       // 结束时间面板是否显示
       endOpen: false,
       selectedRowKeys: [],
       selectedRows: [],
-      diffSelectedRows: [],
+      // diffSelectedRows: [],
       date: []
     }
   },
@@ -380,21 +403,33 @@ export default {
     moment,
     // 列表选择
     onSelectChange(selectedRowKeys, selectedRows) {
-      this.visible = false
-      if (selectedRows && selectedRows.length > 0) {
+      this.checkSelectedRows(selectedRows, 'card_type', 'giving', () => {
+        let isAvaliable
         const firstItem = selectedRows[0]
-        this.diffSelectedRows = selectedRows.filter(
+        const diffSelectedRows = selectedRows.filter(
           item => item.card_type !== firstItem.card_type
         )
-        if (this.diffSelectedRows.length) {
-          this.visible = true
-          setTimeout(() => {
-            this.visible = false
-          }, 2000)
-        }
-      }
+        return !diffSelectedRows.length
+      })
+      this.checkSelectedRows(selectedRows, 'is_open', 'extendDay', () => {
+        return !selectedRows.filter(item => !item.is_open).length
+      })
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
+    },
+    checkSelectedRows(selectedRows, key, targetDataKey, checkFn) {
+      this.action[targetDataKey].isShowTip = false
+      const isAvaliable = checkFn()
+      this.action[targetDataKey].isAvaliable =
+        selectedRows.length && isAvaliable
+      if (!isAvaliable) {
+        this.action[targetDataKey].isShowTip = true
+        const timerKey = `timer_${targetDataKey}`
+        clearTimeout(this[timerKey])
+        this[timerKey] = setTimeout(() => {
+          this.action[targetDataKey].isShowTip = false
+        }, 2000)
+      }
     },
     // 详情
     onDetail(record) {
@@ -559,6 +594,20 @@ export default {
     onClear() {
       this.selectedRowKeys = []
       this.selectedRows = []
+    },
+    onExtendDays() {
+      this.$modalRouter.push({
+        name: 'sold-card-extend-day',
+        props: {
+          ids: this.selectedRowKeys,
+          searchQuery: this.$searchQuery
+        },
+        on: {
+          success: () => {
+            this.successTip()
+          }
+        }
+      })
     }
   }
 }
