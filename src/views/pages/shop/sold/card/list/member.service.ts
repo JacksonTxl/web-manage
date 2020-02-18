@@ -16,7 +16,8 @@ export class MemberService implements Controller {
     export: 'shop:sold:sold_member_card|export',
     gift: 'shop:sold:sold_member_card|gift',
     batch_admission: 'shop:sold:sold_member_card|batch_admission',
-    vipRegion: 'shop:sold:sold_member_card|vip_region'
+    vipRegion: 'shop:sold:sold_member_card|vip_region',
+    extendDay: 'shop:sold:sold_member_card|batch_extend_valid'
   })
   cardTypes$ = this.userService.getOptions$('sold_common.card_type', {
     addAll: true

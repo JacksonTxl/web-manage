@@ -57,6 +57,23 @@ export interface RenewalCardInput {
   contract_type: number
   discounts_price?: number
 }
+
+export interface GetRenewalTaskNumInput {
+  search?: string
+  card_type?: number
+  card_status?: number
+  is_open?: number
+  start_time?: string
+  end_time?: string
+}
+
+export interface TaskExtendDaysInput {
+  sold_ids: number[]
+  extend_days: number
+  batch_type: number
+  content: string
+  conditions: object
+}
 export class CardApi extends Api {
   /**
    * 会员卡列表
@@ -246,5 +263,19 @@ export class CardApi extends Api {
    */
   changeCardMember(id: number, params: any) {
     return this.http.put(`/v1/sold/cards/member/cards/edit/${id}`, { params })
+  }
+  /**
+   * 获取批量延期会员卡查询总数
+   */
+  getRenewalTaskNum(query: GetRenewalTaskNumInput) {
+    return this.http.get('/v1/sold/cards/batch/renewal/task_num', { query })
+  }
+  /**
+   * 售出会员卡延长有效期
+   */
+  taskExtendDays(params: TaskExtendDaysInput) {
+    return this.http.post('/v1/sold/cards/batch/renewal', {
+      params
+    })
   }
 }
