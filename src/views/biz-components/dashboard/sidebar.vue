@@ -6,7 +6,7 @@
       </a>
     </div>
     <st-container type="2" class="pluginbox bg-white mg-t12">
-      <st-t3 :class="b('title')">
+      <st-t3>
         三体AIoT
         <!-- <a target="_blank" href="https://www.styd.cn/default/product_iot">
           查看更多
@@ -82,8 +82,7 @@ import ai4 from '@/assets/img/shop/dashboard/ai4.png'
 export default {
   name: 'SidebarComponent',
   bem: {
-    sidebar: 'page-shop-dashboard-sidebar',
-    b: 'page-shop-dashboard-club'
+    sidebar: 'page-dashboard-sidebar'
   },
   data() {
     return {
