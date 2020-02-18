@@ -165,7 +165,7 @@ import DashboardTabs from './components#/tabs'
 import CountCard from './components#/count-card'
 import FunnelVertical from '@/views/biz-components/stat/brand-funnel-vertical'
 import { StudioService } from './studio.service'
-import SidebarComponent from './components#/sidebar.component'
+import SidebarComponent from '@/views/biz-components/dashboard/sidebar'
 
 export default {
   name: 'Dashboard',
