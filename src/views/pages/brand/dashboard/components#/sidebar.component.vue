@@ -1,11 +1,8 @@
 <template>
   <div :class="sidebar()">
     <div>
-      <a
-        href="https://mp.weixin.qq.com/s/LHPD08fe4RdEztp9V0IZXg"
-        target="_blank"
-      >
-        <img width="280px" height="186px" :src="pic" alt="" />
+      <a href="https://blog.styd.cn/star_shop" target="_blank">
+        <img width="280px" height="186px" :src="pic" alt="banner" />
       </a>
     </div>
     <st-container type="2" class="pluginbox bg-white mg-t12">
@@ -47,7 +44,7 @@
       </div>
 
       <div class="book-content  mg-l24">
-        <div class="book-content-t">2018中国健身行业数据报告</div>
+        <div class="book-content-t">2019中国健身行业数据报告</div>
         <div class="font-number">¥599</div>
         <st-button ghost pill type="primary" @click="download" class="mg-t8">
           立即购买
@@ -109,7 +106,7 @@ export default {
   methods: {
     download() {
       window.open(
-        'https://www.styd.cn/m/378564/training/info/1008082?act=preview&is_shared=1',
+        'https://www.styd.cn/m/378564/training/info/1013190?act=preview',
         '_blank'
       )
     }
