@@ -3,7 +3,7 @@ export const columns = () => {
     {
       title: '合同编号',
       dataIndex: 'contract_number',
-      width: '20%'
+      width: '30%'
     },
     {
       title: '会员姓名',
@@ -18,7 +18,7 @@ export const columns = () => {
     {
       title: '执行时间',
       dataIndex: 'task_time',
-      width: '40%'
+      width: '30%'
     }
   ]
 }

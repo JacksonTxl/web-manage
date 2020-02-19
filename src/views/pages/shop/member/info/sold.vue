@@ -104,7 +104,7 @@
                 签到
               </a>
               <a
-                @click="message(record.id)"
+                @click="getMessage(record.id)"
                 v-if="
                   record.auth[
                     'shop:reserve:small_class_course_reserve|get_supplement'
@@ -290,16 +290,14 @@ export default {
         .subscribe()
     },
     // 查看补课
-    message(id) {
-      this.soldService.message(id).subscribe(res => {
-        this.$modalRouter.push({
-          name: 'schedule-small-course-remedial-info',
-          props: {
-            info: res.info
-          }
-        })
-        this.show = false
+    getMessage(id) {
+      this.$modalRouter.push({
+        name: 'schedule-small-course-remedial-info',
+        props: {
+          id: id
+        }
       })
+      this.show = false
     },
     // 补签到
     checkSign(id) {
@@ -315,19 +313,16 @@ export default {
     },
     // 补课回显
     remedialCourse(reserve_id) {
-      this.soldService.courseInfo(reserve_id).subscribe(res => {
-        this.$modalRouter.push({
-          name: 'schedule-small-course-remedial-course',
-          props: {
-            info: res.info,
-            id: res.info.schedule_id
-          },
-          on: {
-            ok: () => {
-              this.$router.reload()
-            }
+      this.$modalRouter.push({
+        name: 'schedule-small-course-remedial-course',
+        props: {
+          reserve_id: reserve_id
+        },
+        on: {
+          ok: () => {
+            this.$router.reload()
           }
-        })
+        }
       })
       this.show = false
     },
