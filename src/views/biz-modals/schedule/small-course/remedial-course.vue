@@ -7,7 +7,7 @@
       <st-form-item label="缺课班名" required>
         {{ info.lack_course_name }}
       </st-form-item>
-      <st-form-item label="适应范围" required>
+      <st-form-item label="适应范围" required v-if="info">
         {{ scopeApplication }}
       </st-form-item>
       <st-form-item :label="`${$c('small_course')}`" required>
@@ -37,15 +37,6 @@
           </a-select-option>
         </a-select>
       </st-form-item>
-      <!-- <st-form-item label="日期" required class="mg-b0">
-        <a-date-picker
-          style="width:100%"
-          :showTime="{ format: 'YYYY-MM-DD HH:mm' }"
-          format="YYYY-MM-DD HH:mm"
-          v-decorator="decorators.start_days"
-          :disabled="disabled"
-        />
-      </st-form-item> -->
     </st-form>
     <template slot="footer">
       <st-button @click="onClick">取消</st-button>
@@ -89,17 +80,13 @@ export default {
       scheduleOptions: [],
       courseSmallCourseOptions: '',
       smallCourseInfo: '',
-      courseId: ''
+      courseId: '',
+      info: '',
+      id: ''
     }
   },
   props: {
-    info: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    },
-    id: {
+    reserve_id: {
       type: Number
     }
   },
@@ -109,9 +96,13 @@ export default {
     }
   },
   created() {
-    const member_id = this.info.member_id
-    this.reserveService.courseList(member_id).subscribe(res => {
-      this.courseSmallCourseOptions = res.list
+    this.reserveService.courseInfo(this.reserve_id).subscribe(res => {
+      this.info = res.info
+      this.id = res.info.schedule_id
+      const member_id = this.info.member_id
+      this.reserveService.courseList(member_id).subscribe(res => {
+        this.courseSmallCourseOptions = res.list
+      })
     })
   },
   methods: {
