@@ -6,7 +6,7 @@
     </div>
     <div :class="mapButton('update')" v-else>
       <p>{{ `${province.name} ${city.name} ${district.name}` }}</p>
-      <p>{{ address }}</p>
+      <p>{{ pureAddress }}</p>
     </div>
   </div>
 </template>
@@ -76,6 +76,12 @@ export default {
     },
     st_district() {
       return this.district
+    },
+    pureAddress() {
+      return this.address
+        .replace(this.province.name, '')
+        .replace(this.city.name, '')
+        .replace(this.district.name, '')
     }
   },
   methods: {
